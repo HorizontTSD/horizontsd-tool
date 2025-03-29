@@ -2,10 +2,12 @@
 .env
 .venv
 
-# mypy
-.mypy_cache/
-./DS_Store
 
-.DS_Store/
-./DS_Store/
+# node models
+.node_modules
 
+.git
+dist
+*.log
+.env
+.DS_Store
