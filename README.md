@@ -1,31 +1,16 @@
-# horizontsd-tool
+<!-- markdownlint-disable first-line-h1 -->
+<!-- markdownlint-disable html -->
+<!-- markdownlint-disable no-duplicate-header -->
 
-<p align="center">
+<div align="center">
+  <img src="/readme_materials/logo_line_white.svg" width="80%" alt="DeepSeek-V3" />
+</div>
+<hr>
 
-[![pre-commit](https://img.shields.io/badge/pre--commit-enabled-brightgreen?logo=pre-commit)](https://github.com/pre-commit/pre-commit)
-![Code Coverage](coverage.svg)
+[English description](#english-description) | [Русское описание](#русское-описание)
 
-</p>
+## English description
+Welcome to the project!
 
-# Для запуска в собранном режиме
-
-cd dist
-serve .
-
-# Запуск контейнера локально
-
-### Строим контейнер
-
-```bash
-sudo docker build -t horizon_tool-frontend .
-```
-
-Узнаем его ID
-
-```bash
-sudo docker images
-```
-
-```bash
-sudo docker run -d -p 5173:5173 <IMAGE ID>
-```
+## Русское описание
+Добро пожаловать в проект!
