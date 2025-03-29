@@ -17,7 +17,7 @@ serve .
 ### Строим контейнер
 
 ```bash
-sudo docker build -t horizon_tool .
+sudo docker build -t horizon_tool-frontend .
 ```
 
 Узнаем его ID
