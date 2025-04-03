@@ -40,7 +40,7 @@ export const AppTheme = (props: AppThemeProps) => {
         ...themeComponents,
       },
       palette: {
-        mode, // Используем текущий режим
+        mode,
       },
     });
   }, [disableCustomTheme, themeComponents, mode]);

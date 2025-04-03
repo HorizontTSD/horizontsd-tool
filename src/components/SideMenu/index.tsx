@@ -1,11 +1,32 @@
-import { styled } from "@mui/material/styles";
+import { styled, useColorScheme, useTheme } from "@mui/material/styles";
 import MuiDrawer, { drawerClasses } from "@mui/material/Drawer";
 import Box from "@mui/material/Box";
 import Divider from "@mui/material/Divider";
 import { SelectContent, MenuContent } from "components";
-import { Stack, Typography } from "@mui/material";
-import ComputerIcon from "@mui/icons-material/Computer";
+import { Stack } from "@mui/material";
+
 const drawerWidth = 240;
+
+import macosLightUrl from "assets/svg/logoMacosx/white.svg?url";
+import macosDarkUrl from "assets/svg/logoMacosx/dark.svg?url";
+import windowsLightUrl from "assets/svg/logoPc/white.svg?url";
+import windowsDarkUrl from "assets/svg/logoPc/dark.svg?url";
+import { useState } from "react";
+
+const LOGO_THEMES = [
+  {
+    code: "windows",
+    name: "Windows",
+    lightUrl: windowsLightUrl,
+    darkUrl: windowsDarkUrl,
+  },
+  {
+    code: "macos",
+    name: "macOS",
+    lightUrl: macosLightUrl,
+    darkUrl: macosDarkUrl,
+  },
+];
 
 const Drawer = styled(MuiDrawer)({
   width: drawerWidth,
@@ -19,6 +40,13 @@ const Drawer = styled(MuiDrawer)({
 });
 
 export const SideMenu = () => {
+  const { mode } = useColorScheme();
+  const [currentOS] = useState("windows");
+
+  const currentLogoData = LOGO_THEMES.find((os) => os.code === currentOS);
+
+  const logoUrl = mode === "dark" ? currentLogoData?.lightUrl : currentLogoData?.darkUrl;
+
   return (
     <Drawer
       variant="permanent"
@@ -32,17 +60,30 @@ export const SideMenu = () => {
       <Box
         sx={{
           display: "flex",
-          mt: "calc(var(--template-frame-height, 0px) - 4px)",
-          p: 1.5,
-          marginLeft: 1,
-          gap: 4,
+          justifyContent: "center",
+          alignItems: "center",
+          height: 64,
+          px: 2,
+          borderBottom: "1px solid",
+          borderColor: "divider",
         }}
       >
-        <ComputerIcon fontSize="medium" />
-        <Typography component="p" variant="h6">
-          HorizontTSD
-        </Typography>
+        {logoUrl && (
+          <Box
+            component="img"
+            src={logoUrl}
+            alt={currentLogoData?.name || "Logo"}
+            sx={{
+              height: 207,
+              width: 207,
+              maxWidth: "100%",
+              objectFit: "contain",
+              display: "block",
+            }}
+          />
+        )}
       </Box>
+
       <Divider />
       <Box
         sx={{
