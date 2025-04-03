@@ -1,4 +1,4 @@
-import { styled, useColorScheme, useTheme } from "@mui/material/styles";
+import { styled, useColorScheme } from "@mui/material/styles";
 import MuiDrawer, { drawerClasses } from "@mui/material/Drawer";
 import Box from "@mui/material/Box";
 import Divider from "@mui/material/Divider";

@@ -1,64 +1,107 @@
-import { useEffect, useCallback } from "react";
-import { useDispatch } from "react-redux";
+import { useCallback, useEffect, useRef } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import axios from "axios";
 import { setForecastData } from "store/forecastSlice";
-import { ForecastData } from "types";
 import { RootState } from "store";
+import { SensorData, TimeSeriesPoint } from "types";
 
-export const selectForecastData = (state: RootState) => state.forecast.data;
-const isValidForecastData = (data: unknown): data is ForecastData => {
+const isValidForecastData = (data: unknown): data is SensorData => {
   return !!data && typeof data === "object" && "arithmetic_1464947681" in data;
 };
 
-const FORECAST_DATA_KEY = "forecastData";
-
-const useForecastData = () => {
+export const useForecastData = () => {
   const dispatch = useDispatch();
+  const forecastData = useSelector((state: RootState) => state.forecast.data);
+  const intervalRef = useRef<NodeJS.Timeout | null>(null);
 
-  const fetchDataFromServer = useCallback(async () => {
+  const parseSeriesData = useCallback((data: unknown): [number, number][] => {
     try {
-      const response = await axios.get<ForecastData>("/backend/v1/get_forecast_data");
-      console.log("Полученные данные с сервера:", response.data);
+      const parsed = typeof data === "string" ? JSON.parse(data) : data;
+      return Array.isArray(parsed)
+        ? parsed.map((item: TimeSeriesPoint) => [item.datetime, item.load_consumption])
+        : [];
+    } catch (e) {
+      console.error("Error parsing data:", e);
+      return [];
+    }
+  }, []);
+
+  const prepareChartData = useCallback(
+    (data: SensorData) => {
+      if (!data) return null;
+
+      const firstKey = Object.keys(data)[0] as keyof SensorData;
+      const sensorData = data[firstKey];
+
+      if (!sensorData?.map_data?.data || !sensorData?.description) {
+        return null;
+      }
+
+      const { last_real_data, actual_prediction_lstm, actual_prediction_xgboost, ensemble } =
+        sensorData.map_data.data;
+
+      return {
+        description: sensorData.description,
+        legend: sensorData.map_data.legend,
+        series: [
+          {
+            name: sensorData.map_data.legend.real_data_line.text.en,
+            data: parseSeriesData(last_real_data),
+            color: sensorData.map_data.legend.real_data_line.color,
+          },
+          {
+            name: sensorData.map_data.legend.LSTM_data_line.text.en,
+            data: parseSeriesData(actual_prediction_lstm),
+            color: sensorData.map_data.legend.LSTM_data_line.color,
+          },
+          {
+            name: sensorData.map_data.legend.XGBoost_data_line.text.en,
+            data: parseSeriesData(actual_prediction_xgboost),
+            color: sensorData.map_data.legend.XGBoost_data_line.color,
+          },
+          {
+            name: sensorData.map_data.legend.Ensemble_data_line.text.en,
+            data: parseSeriesData(ensemble),
+            color: sensorData.map_data.legend.Ensemble_data_line.color,
+            lineWidth: 3,
+          },
+        ],
+      };
+    },
+    [parseSeriesData]
+  );
+
+  const fetchData = useCallback(async () => {
+    try {
+      const response = await axios.get<SensorData>("/backend/v1/get_forecast_data");
 
       if (isValidForecastData(response.data)) {
         dispatch(setForecastData(response.data));
-        localStorage.setItem(FORECAST_DATA_KEY, JSON.stringify(response.data));
-      } else {
-        console.error("Данные с сервера имеют некорректную структуру");
+        return response.data;
       }
+      console.error("Invalid data structure from server");
+      return null;
     } catch (error) {
-      console.error("Ошибка при загрузке данных с сервера:", error);
-    }
-  }, [dispatch]);
-
-  const loadDataFromLocalStorage = useCallback(() => {
-    try {
-      const savedData = localStorage.getItem(FORECAST_DATA_KEY);
-      if (!savedData) return null;
-
-      const parsedData: unknown = JSON.parse(savedData);
-      if (isValidForecastData(parsedData)) {
-        dispatch(setForecastData(parsedData));
-        console.log("Загружены данные из localStorage:", parsedData);
-        return parsedData;
-      } else {
-        console.error("Данные в localStorage имеют некорректную структуру");
-        localStorage.removeItem(FORECAST_DATA_KEY);
-        return null;
-      }
-    } catch (error) {
-      console.error("Ошибка при разборе данных из localStorage:", error);
-      localStorage.removeItem(FORECAST_DATA_KEY);
+      console.error("Error fetching data:", error);
       return null;
     }
   }, [dispatch]);
 
   useEffect(() => {
-    const loadedData = loadDataFromLocalStorage();
-    if (!loadedData) {
-      fetchDataFromServer();
-    }
-  }, [loadDataFromLocalStorage, fetchDataFromServer]);
-};
+    fetchData();
 
-export default useForecastData;
+    intervalRef.current = setInterval(fetchData, 5 * 60 * 1000);
+
+    return () => {
+      if (intervalRef.current) {
+        clearInterval(intervalRef.current);
+      }
+    };
+  }, [fetchData]);
+
+  return {
+    fetchData,
+    forecastData,
+    chartData: forecastData ? prepareChartData(forecastData) : null,
+  };
+};
