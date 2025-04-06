@@ -21,3 +21,5 @@ export { MainGrid } from "./MainGrid";
 export { OriginalProjectInfo } from "./OriginalProjectInfo";
 export { StatCard } from "./StatCard";
 export { LoadForecastGraph } from "./LoadForecastGraph";
+export { CustomizedDataGrid } from "./GridDetails";
+export { ModelSelectorDropdown } from "./ui/ModelSelectorDropdown";

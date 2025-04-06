@@ -1,9 +1,10 @@
-import { useCallback, useEffect, useRef } from "react";
+import { useCallback } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import axios from "axios";
 import { setForecastData } from "store/forecastSlice";
 import { RootState } from "store";
 import { SensorData, TimeSeriesPoint } from "types";
+import { usePolling } from "./usePoling";
 
 const isValidForecastData = (data: unknown): data is SensorData => {
   return !!data && typeof data === "object" && "arithmetic_1464947681" in data;
@@ -12,7 +13,6 @@ const isValidForecastData = (data: unknown): data is SensorData => {
 export const useForecastData = () => {
   const dispatch = useDispatch();
   const forecastData = useSelector((state: RootState) => state.forecast.data);
-  const intervalRef = useRef<NodeJS.Timeout | null>(null);
 
   const parseSeriesData = useCallback((data: unknown): [number, number][] => {
     try {
@@ -71,7 +71,7 @@ export const useForecastData = () => {
     [parseSeriesData]
   );
 
-  const fetchData = useCallback(async () => {
+  const fetchData = useCallback(async (): Promise<SensorData | null> => {
     try {
       const response = await axios.get<SensorData>("/backend/v1/get_forecast_data");
 
@@ -87,17 +87,7 @@ export const useForecastData = () => {
     }
   }, [dispatch]);
 
-  useEffect(() => {
-    fetchData();
-
-    intervalRef.current = setInterval(fetchData, 5 * 60 * 1000);
-
-    return () => {
-      if (intervalRef.current) {
-        clearInterval(intervalRef.current);
-      }
-    };
-  }, [fetchData]);
+  usePolling(fetchData, 5 * 60 * 1000, true);
 
   return {
     fetchData,

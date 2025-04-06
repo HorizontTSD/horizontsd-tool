@@ -1,2 +1,2 @@
 export type { SensorData, TimeSeriesPoint } from "./ForecastData";
-export type { WeatherStatProps } from "./WeatherStatProps";
+export type { WeatherStatsResponse, WeatherStat } from "./WeatherStatProps";
