@@ -40,10 +40,10 @@ export const MenuContent = () => {
         ml: 2,
         fontSize: 'clamp(8px, 1.5vw, 16px)',
         padding: '6px 16px',
-        backgroundColor: 'rgb(173, 216, 230)',
+        backgroundColor: 'rgb(100, 149, 237)',
         color: 'text.primary',
         '&:hover': {
-          backgroundColor: 'rgb(173, 216, 230)',
+          backgroundColor: 'rgb(70, 130, 180',
         },
       }}
       onClick={() => window.open("http://77.37.136.11:7071", "_blank", "noopener noreferrer")}
