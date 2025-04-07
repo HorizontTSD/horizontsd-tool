@@ -27,7 +27,7 @@ export const MenuContent = () => {
           <ListItem key={index} disablePadding sx={{ display: "block" }}>
             <ListItemButton selected={index === 0}>
               <ListItemIcon>{item.icon}</ListItemIcon>
-              <ListItemText primary={item.text} />
+              <ListItemText sx={{ color: "text.primary" }} primary={item.text} />
             </ListItemButton>
           </ListItem>
         ))}

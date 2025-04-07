@@ -1,10 +1,48 @@
-import { Card, CircularProgress, useColorScheme } from "@mui/material";
+import { Box, Button, Card, CircularProgress, Typography, useColorScheme } from "@mui/material";
 import ReactECharts from "echarts-for-react";
 import { useForecastData } from "hooks/useForecastData";
+import { useEffect, useState } from "react";
+import DownloadIcon from "@mui/icons-material/Download";
+import { ModelSelectorDropdown } from "components/ui/ModelSelectorDropdown";
+
+interface TooltipParam {
+  color: string;
+  seriesName: string;
+  value: [number, number];
+}
 
 export const LoadForecastGraph = () => {
   const { mode } = useColorScheme();
   const { chartData } = useForecastData();
+
+  const [isMobile, setIsMobile] = useState(false);
+  const [textSize, setTextSize] = useState(false);
+  const [selectedModel, setSelectedModel] = useState<string | null>(null);
+
+  const availableModels = ["Neural network", "XGBoost"];
+
+  const handleDownload = () => {
+    console.log("Download button clicked");
+  };
+
+  const handleModelSelect = (model: string) => {
+    setSelectedModel(model);
+    console.log(`Selected model: ${model}`);
+  };
+
+  useEffect(() => {
+    const handleResize = () => {
+      setIsMobile(window.innerWidth <= 960);
+      setTextSize(window.innerWidth <= 1090);
+    };
+
+    window.addEventListener("resize", handleResize);
+    handleResize();
+
+    return () => {
+      window.removeEventListener("resize", handleResize);
+    };
+  }, []);
 
   if (!chartData) {
     return (
@@ -12,7 +50,7 @@ export const LoadForecastGraph = () => {
         variant="outlined"
         sx={{
           width: "100%",
-          height: 415,
+          height: 615,
           p: 2,
           borderRadius: "10px",
           display: "flex",
@@ -33,7 +71,7 @@ export const LoadForecastGraph = () => {
     backgroundColor: "transparent",
     tooltip: {
       trigger: "axis",
-      formatter: (params: any) => {
+      formatter: (params: TooltipParam[]): string => {
         const date = new Date(params[0].value[0]);
         const day = date.getDate().toString().padStart(2, "0");
         const month = (date.getMonth() + 1).toString().padStart(2, "0");
@@ -43,7 +81,7 @@ export const LoadForecastGraph = () => {
         const dateTimeStr = `${day}.${month}.${year} ${hours}:${minutes}`;
 
         let result = `<div>${dateTimeStr}</div>`;
-        params.forEach((param: any) => {
+        params.forEach((param) => {
           result += `<div style="display:flex;align-items:center;">
             <div style="width:10px;height:10px;background:${param.color};margin-right:5px;"></div>
             ${param.seriesName}: <strong>${param.value[1]?.toFixed(2) || "N/A"}</strong>
@@ -67,11 +105,15 @@ export const LoadForecastGraph = () => {
     },
     legend: {
       data: chartData.series.map((s) => s.name),
+      orient: isMobile ? "horizontal" : "vertical",
+      bottom: isMobile ? 10 : "auto",
       right: 0,
-      orient: "vertical",
-      top: "10%",
-      itemGap: 15,
-      textStyle: { padding: [0, 0, 0, 5] },
+      left: isMobile ? 0 : "auto",
+      top: isMobile ? "0" : "10%",
+      width: isMobile ? "auto" : 120,
+      textStyle: {
+        padding: [0, 0, 0, 5],
+      },
       itemStyle: {
         borderWidth: 1,
         borderColor: "#666",
@@ -90,16 +132,17 @@ export const LoadForecastGraph = () => {
       },
     },
     grid: {
-      left: "1%",
-      right: "12%",
+      left: isMobile ? 5 : 0,
+      right: isMobile ? 5 : 190,
       bottom: "15%",
-      top: "10%",
+      top: isMobile ? "15%" : "10%",
       containLabel: true,
     },
     xAxis: {
       type: "time",
       boundaryGap: false,
       axisLabel: {
+        fontSize: window.innerWidth <= 500 ? 5.5 : textSize || isMobile ? 8 : 12,
         formatter: (value: number) => {
           const date = new Date(value);
           const day = date.getDate().toString().padStart(2, "0");
@@ -135,10 +178,34 @@ export const LoadForecastGraph = () => {
   };
 
   return (
-    <Card variant="outlined" sx={{ width: "100%", height: 415, p: 2, borderRadius: "10px" }}>
-      <ReactECharts option={chartOption} style={{ height: "100%", width: "100%" }} theme={mode} />
-    </Card>
+    <>
+      <Box sx={{ display: "flex", justifyContent: "space-between", alignItems: "center", mb: 2 }}>
+        <ModelSelectorDropdown
+          availableModels={availableModels}
+          selectedModel={selectedModel}
+          onSelect={handleModelSelect}
+        />
+        <Typography variant="h4" component="div">
+          Forecast chart Sensor name - {chartData.description.sensor_name} Sensor ID -{" "}
+          {chartData.description.sensor_id}
+        </Typography>
+        <Button
+          variant="contained"
+          startIcon={<DownloadIcon />}
+          onClick={handleDownload}
+          sx={{ ml: 2 }}
+        >
+          Скачать прогноз
+        </Button>
+      </Box>
+      <Card variant="outlined" sx={{ width: "100%", height: 615, p: 2, borderRadius: "10px" }}>
+        <ReactECharts
+          option={chartOption}
+          style={{ height: "100%", width: "100%" }}
+          theme={mode}
+          opts={{ renderer: "svg" }}
+        />
+      </Card>
+    </>
   );
 };
-
-// time actual consumption  predicted consumption Mape R2 RMSE MAE
