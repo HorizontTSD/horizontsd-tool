@@ -5,7 +5,9 @@ import Divider from "@mui/material/Divider";
 import { SelectContent, MenuContent } from "components";
 import { Stack } from "@mui/material";
 
-const drawerWidth = 250;
+// const drawerWidth = 250;
+const drawerWidth = 260;
+
 
 import macosLightUrl from "assets/svg/logoMacosx/white.svg?url";
 import macosDarkUrl from "assets/svg/logoMacosx/dark.svg?url";

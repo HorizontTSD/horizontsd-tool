@@ -19,7 +19,7 @@ export const LoadForecastGraph = () => {
   const [textSize, setTextSize] = useState(false);
   const [selectedModel, setSelectedModel] = useState<string | null>(null);
 
-  const availableModels = ["Neural network", "XGBoost"];
+  const availableModels = ["sensor_id_1", "sensor_id_2", "sensor_id_3"];
 
   const handleDownload = () => {
     console.log("Download button clicked");
@@ -185,15 +185,47 @@ export const LoadForecastGraph = () => {
           selectedModel={selectedModel}
           onSelect={handleModelSelect}
         />
-        <Typography variant="h4" component="div">
-          Forecast chart Sensor name - {chartData.description.sensor_name} Sensor ID -{" "}
-          {chartData.description.sensor_id}
+        <Typography component="div" style={{ fontSize: 'clamp(8px, 1.2vw, 20px)',  fontWeight: 'bold' }}>
+          Forecast chart : {' '}
+          Sensor name -{' '}
+          <span
+            style={{
+              backgroundColor: 'rgba(0, 123, 255, 0.2)',
+              color: 'inherit',
+              border: '1px solid blue',
+              borderRadius: '12px',
+              padding: '2px 8px',
+              fontWeight: 'bold',
+            }}
+          >
+            {chartData.description.sensor_name}
+          </span>
+           {' '} : {' '}
+          <span style={{ fontWeight: 'bold' }}>
+            Sensor ID -{' '}
+            <span
+              style={{
+                backgroundColor: 'rgba(255, 0, 0, 0.2)',
+                color: 'inherit',
+                border: '1px solid red',
+                borderRadius: '12px',
+                padding: '2px 8px',
+                fontWeight: 'bold',
+              }}
+            >
+              {chartData.description.sensor_id}
+            </span>
+          </span>
         </Typography>
         <Button
           variant="contained"
           startIcon={<DownloadIcon />}
           onClick={handleDownload}
-          sx={{ ml: 2 }}
+        sx={{
+          ml: 2,
+          fontSize: 'clamp(8px, 1.5vw, 16px)',
+          padding: '6px 16px',
+        }}
         >
           Скачать прогноз
         </Button>

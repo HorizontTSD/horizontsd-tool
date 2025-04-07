@@ -48,7 +48,7 @@ export const ModelSelectorDropdown = ({
         }}
       >
         <Typography variant="body2" sx={{ mr: 1 }}>
-          {selectedModel || "Select model"}
+          {selectedModel || "Sensor id"}
         </Typography>
         <ArrowDropDownIcon fontSize="small" />
       </IconButton>
