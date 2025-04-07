@@ -17,7 +17,7 @@ export const MenuContent = () => {
   const { t } = useTranslation();
 
   const mainListItems = [
-    { text: t("sidebar.menu.load_forecast"), icon: <QueryStatsIcon /> },
+    { text: t("sidebar.menu.data_forecast"), icon: <QueryStatsIcon /> },
     { text: t("sidebar.menu.alert_settings"), icon: <EditNotificationsIcon /> },
     { text: t("sidebar.menu.data_analysis"), icon: <AnalyticsIcon /> },
     { text: t("sidebar.menu.quick_forecast"), icon: <RocketLaunchIcon /> },

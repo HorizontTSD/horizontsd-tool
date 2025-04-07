@@ -11,6 +11,8 @@ import Grid from "@mui/material/Grid";
 import { RootState } from "store/store";
 import { useSelector } from "react-redux";
 import { useMiniChartData } from "hooks";
+import { useTranslation } from "react-i18next";
+
 
 const trendColors = (theme: Theme) => ({
   positive: theme.palette.success.main,
@@ -20,11 +22,13 @@ const trendColors = (theme: Theme) => ({
 const trendLabels = {
   positive: "↑",
   negative: "↓",
+  neutral: "→",
 };
 
 const chipColors = {
   positive: "success",
   negative: "error",
+  neutral: "gray",
 } as const;
 
 const formatDate = (timestamp: number) => {
@@ -38,6 +42,10 @@ export const WeatherStatCard = () => {
   const colors = trendColors(theme);
   const charts = useSelector((state: RootState) => state.miniCharts.charts);
 
+  const { i18n } = useTranslation();
+  const currentLanguage = i18n.language;
+  const lang = currentLanguage.toLowerCase();
+
   return (
     <>
       {charts.map((stat) => (
@@ -46,7 +54,7 @@ export const WeatherStatCard = () => {
             <Card variant="outlined" sx={{ height: "100%", flexGrow: 1 }}>
               <CardContent>
                 <Typography component="h2" variant="subtitle2" gutterBottom>
-                  {stat.title.ru}
+                  {stat.title[lang]}
                 </Typography>
                 <Stack direction="column" sx={{ gap: 1 }}>
                   <Stack direction="row" justifyContent="space-between" alignItems="center">
@@ -58,7 +66,7 @@ export const WeatherStatCard = () => {
                     />
                   </Stack>
                   <Typography variant="caption" sx={{ color: "text.secondary" }}>
-                    {stat.description.ru}
+                    {stat.description[lang]}
                   </Typography>
                   <Box sx={{ width: "100%", height: 50 }}>
                     <SparkLineChart

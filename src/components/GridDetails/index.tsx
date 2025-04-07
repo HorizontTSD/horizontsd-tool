@@ -354,9 +354,9 @@ export const CustomizedDataGrid: React.FC = () => {
         disableColumnResize
         density="compact"
         initialState={{
-          pagination: { paginationModel: { pageSize: 10 } },
+          pagination: { paginationModel: { pageSize: 100 } },
         }}
-        pageSizeOptions={[10, 20, 50]}
+        pageSizeOptions={[100, 250, 500]}
         getRowClassName={(params) => (params.indexRelativeToCurrentPage % 2 === 0 ? "even" : "odd")}
         slotProps={{
           filterPanel: {

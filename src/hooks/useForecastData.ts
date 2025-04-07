@@ -34,7 +34,8 @@ export const useForecastData = () => {
       console.error("Error parsing data:", e);
       return [];
     }
-  }, []);
+  }, [lang]);
+
 
   const prepareChartData = useCallback(
     (data: SensorData) => {
@@ -51,7 +52,6 @@ export const useForecastData = () => {
         sensorData.map_data.data;
 
 
-
       return {
         description: sensorData.description,
         legend: sensorData.map_data.legend,
@@ -62,17 +62,17 @@ export const useForecastData = () => {
             color: sensorData.map_data.legend.real_data_line.color,
           },
           {
-            name: sensorData.map_data.legend.LSTM_data_line.text.en,
+            name: sensorData.map_data.legend.LSTM_data_line.text[lang],
             data: parseSeriesData(actual_prediction_lstm),
             color: sensorData.map_data.legend.LSTM_data_line.color,
           },
           {
-            name: sensorData.map_data.legend.XGBoost_data_line.text.en,
+            name: sensorData.map_data.legend.XGBoost_data_line.text[lang],
             data: parseSeriesData(actual_prediction_xgboost),
             color: sensorData.map_data.legend.XGBoost_data_line.color,
           },
           {
-            name: sensorData.map_data.legend.Ensemble_data_line.text.en,
+            name: sensorData.map_data.legend.Ensemble_data_line.text[lang],
             data: parseSeriesData(ensemble),
             color: sensorData.map_data.legend.Ensemble_data_line.color,
             lineWidth: 3,

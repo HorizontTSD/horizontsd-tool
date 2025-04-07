@@ -1,12 +1,21 @@
 {
   "sidebar": {
     "menu": {
-      "load_forecast": "Прогноз нагрузки",
+      "data_forecast": "Прогноз данных",
       "alert_settings": "Настройка оповещений",
       "data_analysis": "Анализ данных",
       "quick_forecast": "Быстрый прогноз",
       "about": "Подробнее о нас"
     }
+  },
+  "nav_bar": {
+    "path": {
+      "main_path": "Горизонт ТСД",
+      "home": "Прогноз данных"
+    }
+  },
+  "footer": {
+    "text": "Все права защищены. Horizon - это оригинальный проект.."
   },
   "ready_made_forecast_page" : {
     "additional_info": "Дополнительная информация",

@@ -15,14 +15,11 @@ interface TooltipParam {
 
 export const LoadForecastGraph = () => {
 
-//   const { i18n } = useTranslation();
-//   const currentLanguage = i18n.language.toLowerCase();
-
   const { i18n } = useTranslation();
   const currentLanguage = i18n.language;
   const lang = currentLanguage.toLowerCase();
-
   const { t } = useTranslation();
+
   const { mode } = useColorScheme();
   const { chartData } = useForecastData();
 
@@ -78,6 +75,14 @@ export const LoadForecastGraph = () => {
     );
   }
 
+  const minValue = Math.min(...chartData.series.flatMap((s) => s.data.map((item) => item[1])));
+  const maxValue = Math.max(...chartData.series.flatMap((s) => s.data.map((item) => item[1])));
+
+  const rangeOffset = 0.1;
+
+  const minValueY =  minValue * (1 - rangeOffset);
+  const maxValueY =  maxValue * (1 + rangeOffset);
+
   const chartOption = {
     backgroundColor: "transparent",
     tooltip: {
@@ -122,8 +127,29 @@ export const LoadForecastGraph = () => {
       left: isMobile ? 0 : "auto",
       top: isMobile ? "0" : "10%",
       width: isMobile ? "auto" : 120,
+        formatter: function(name) {
+          const maxLineLength = 24;
+          const words = name.split(" ");
+          let lines = [];
+          let currentLine = "";
+          words.forEach(word => {
+            if ((currentLine + (currentLine ? " " : "") + word).length <= maxLineLength) {
+              currentLine += (currentLine ? " " : "") + word;
+            } else {
+              if (currentLine) {
+                lines.push(currentLine);
+              }
+              currentLine = word;
+            }
+          });
+          if (currentLine) {
+            lines.push(currentLine);
+          }
+          return lines.join("\n");
+        },
       textStyle: {
         padding: [0, 0, 0, 5],
+        overflow: 'break',
       },
       itemStyle: {
         borderWidth: 1,
@@ -166,17 +192,38 @@ export const LoadForecastGraph = () => {
       },
       splitLine: { show: true, interval: "auto" },
     },
+
     yAxis: {
       type: "value",
-      name: `${chartData.description.sensor_name} ${chartData.legend.last_know_data_line.text[currentLanguage]}`,
       nameLocation: "end",
       nameTextStyle: { align: "left" },
       splitLine: { show: true, interval: "auto" },
-      axisLabel: { formatter: "{value}" },
+      axisLabel: {
+          formatter: (value) => {
+            if (value === minValueY || value === maxValueY) {
+              return "";
+            }
+            return value;
+          }
+      },
+      min: minValueY,
+      max: maxValueY,
     },
     dataZoom: [
-      { type: "inside", start: 0, end: 100 },
-      { start: 0, end: 100 },
+      {
+        type: "inside",
+        start: 0,
+        end: 100,
+        throttle: 5,
+        moveOnMouseMove: false,
+        minSpan: 10,
+      },
+      {
+        type: "slider",
+        start: 0,
+        end: 100,
+        throttle: 100,
+      }
     ],
     series: chartData.series.map((series) => ({
       name: series.name,
@@ -190,7 +237,7 @@ export const LoadForecastGraph = () => {
 
   return (
     <>
-      <Box sx={{ display: "flex", justifyContent: "space-between", alignItems: "center", mb: 2 }}>
+      <Box sx={{ display: "flex", justifyContent: "space-between", alignItems: "center", mb: 2}}>
         <ModelSelectorDropdown
           availableModels={availableModels}
           selectedModel={selectedModel}
@@ -229,19 +276,24 @@ export const LoadForecastGraph = () => {
           </span>
         </Typography>
         <Button
-          variant="contained"
           startIcon={<DownloadIcon />}
           onClick={handleDownload}
-        sx={{
-          ml: 2,
-          fontSize: 'clamp(8px, 1.5vw, 16px)',
-          padding: '6px 16px',
-        }}
+          sx={{
+            ml: 2,
+            fontSize: 'clamp(8px, 1.5vw, 16px)',
+            padding: '6px 16px',
+            backgroundColor: 'rgb(129, 199, 132)',
+            color: 'text.primary',
+            '&:hover': {
+              backgroundColor: 'rgb(70, 130, 180',
+            },
+          }}
         >
           {t("ready_made_forecast_page.download_button")}
         </Button>
       </Box>
-      <Card variant="outlined" sx={{ width: "100%", height: 615, p: 2, borderRadius: "10px" }}>
+
+      <Card variant="outlined" sx={{ width: "100%", height: 615, p: 2, pt: 0,  borderRadius: "10px" }}>
         <ReactECharts
           option={chartOption}
           style={{ height: "100%", width: "100%" }}
