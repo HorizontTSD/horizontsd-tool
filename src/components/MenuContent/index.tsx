@@ -13,8 +13,7 @@ import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { setActiveDashboardComponent } from "store";
 import { useState } from "react";
-import { Box, Button, Card, CircularProgress, Typography, useColorScheme } from "@mui/material";
-
+import { Button } from "@mui/material";
 
 export const MenuContent = () => {
   const { t } = useTranslation();
@@ -23,13 +22,35 @@ export const MenuContent = () => {
   const [selectedIndex, setSelectedIndex] = useState<number>(0);
 
   const mainListItems = [
-    { text: t("sidebar.menu.data_forecast"), icon: <QueryStatsIcon /> },
-    { text: t("sidebar.menu.alert_settings"), icon: <EditNotificationsIcon /> },
-    { text: t("sidebar.menu.data_analysis"), icon: <AnalyticsIcon /> },
-    { text: t("sidebar.menu.quick_forecast"), icon: <RocketLaunchIcon /> },
+    {
+      text: t("sidebar.menu.data_forecast"),
+      icon: <QueryStatsIcon />,
+      value: "forecast",
+    },
+    {
+      text: t("sidebar.menu.alert_settings"),
+      icon: <EditNotificationsIcon />,
+      value: "alerts",
+    },
+    {
+      text: t("sidebar.menu.data_analysis"),
+      icon: <AnalyticsIcon />,
+      value: "analytics",
+    },
+    {
+      text: t("sidebar.menu.quick_forecast"),
+      icon: <RocketLaunchIcon />,
+      value: "quick-forecast",
+    },
   ];
 
-  const secondaryListItems = [{ text: t("sidebar.menu.about"), icon: <InfoRoundedIcon /> }];
+  const secondaryListItems = [
+    {
+      text: t("sidebar.menu.about"),
+      icon: <InfoRoundedIcon />,
+      value: "about",
+    },
+  ];
 
   const handleMenuClick = (value: string, index: number) => {
     dispatch(
@@ -61,22 +82,34 @@ export const MenuContent = () => {
         ))}
       </List>
 
-          <Button
-            sx={{
-              ml: 2,
-              fontSize: 'clamp(8px, 1.5vw, 16px)',
-              padding: '6px 16px',
-              backgroundColor: 'rgb(100, 149, 237)',
-              color: 'text.primary',
-              '&:hover': {
-                backgroundColor: 'rgb(70, 130, 180',
-              },
-            }}
-            onClick={() => window.open("http://77.37.136.11:7071", "_blank", "noopener noreferrer")}
-          >
-            {t("sidebar.menu.about")}
-          </Button>
+      <List dense>
+        {secondaryListItems.map((item, index) => (
+          <ListItem key={index} disablePadding sx={{ display: "block" }}>
+            <ListItemButton
+              onClick={() => handleMenuClick(item.value, mainListItems.length + index)}
+            >
+              <ListItemIcon>{item.icon}</ListItemIcon>
+              <ListItemText primary={item.text} />
+            </ListItemButton>
+          </ListItem>
+        ))}
+      </List>
 
+      <Button
+        sx={{
+          ml: 2,
+          fontSize: "clamp(8px, 1.5vw, 16px)",
+          padding: "6px 16px",
+          backgroundColor: "rgb(100, 149, 237)",
+          color: "text.primary",
+          "&:hover": {
+            backgroundColor: "rgb(70, 130, 180)",
+          },
+        }}
+        onClick={() => window.open("http://77.37.136.11:7071", "_blank", "noopener noreferrer")}
+      >
+        {t("sidebar.menu.about")}
+      </Button>
     </Stack>
   );
 };
