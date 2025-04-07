@@ -5,7 +5,15 @@
       "alert_settings": "Настройка оповещений",
       "data_analysis": "Анализ данных",
       "quick_forecast": "Быстрый прогноз",
-      "about": "О проекте"
+      "about": "Подробнее о нас"
     }
+  },
+  "ready_made_forecast_page" : {
+    "additional_info": "Дополнительная информация",
+    "forecast_chart": "График прогноза",
+    "sensor_name": "Имя датчика",
+    "sensor_id": "ID датчика",
+    "download_button": "Скачать"
+
   }
 }

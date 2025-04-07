@@ -14,11 +14,14 @@ import {
 // import SessionsChart from "./SessionsChart";
 // import { StatCard } from "components";
 
+import { useTranslation } from "react-i18next";
+
 export const MainGrid = () => {
+    const { t } = useTranslation();
   return (
     <Box sx={{ width: "100%", maxWidth: { sm: "100%", md: "1700px" } }}>
       <Typography component="h2" variant="h6" sx={{ mb: 2 }}>
-        Additional information
+        {t("ready_made_forecast_page.additional_info")}
       </Typography>
       <Grid container spacing={2} columns={12} sx={{ mb: (theme) => theme.spacing(2) }}>
         <WeatherStatCard />

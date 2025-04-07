@@ -10,6 +10,8 @@ import EditNotificationsIcon from "@mui/icons-material/EditNotifications";
 import AnalyticsIcon from "@mui/icons-material/Analytics";
 import RocketLaunchIcon from "@mui/icons-material/RocketLaunch";
 import { useTranslation } from "react-i18next";
+import { Box, Button, Card, CircularProgress, Typography, useColorScheme } from "@mui/material";
+
 
 export const MenuContent = () => {
   const { t } = useTranslation();
@@ -20,8 +22,6 @@ export const MenuContent = () => {
     { text: t("sidebar.menu.data_analysis"), icon: <AnalyticsIcon /> },
     { text: t("sidebar.menu.quick_forecast"), icon: <RocketLaunchIcon /> },
   ];
-
-  const secondaryListItems = [{ text: t("sidebar.menu.about"), icon: <InfoRoundedIcon /> }];
 
   return (
     <Stack sx={{ flexGrow: 1, p: 1, justifyContent: "space-between", display: "flex" }}>
@@ -35,16 +35,22 @@ export const MenuContent = () => {
           </ListItem>
         ))}
       </List>
-      <List dense>
-        {secondaryListItems.map((item, index) => (
-          <ListItem key={index} disablePadding sx={{ display: "block" }}>
-            <ListItemButton>
-              <ListItemIcon>{item.icon}</ListItemIcon>
-              <ListItemText primary={item.text} />
-            </ListItemButton>
-          </ListItem>
-        ))}
-      </List>
+    <Button
+      sx={{
+        ml: 2,
+        fontSize: 'clamp(8px, 1.5vw, 16px)',
+        padding: '6px 16px',
+        backgroundColor: 'rgb(173, 216, 230)',
+        color: 'text.primary',
+        '&:hover': {
+          backgroundColor: 'rgb(173, 216, 230)',
+        },
+      }}
+      onClick={() => window.open("http://77.37.136.11:7071", "_blank", "noopener noreferrer")}
+    >
+      {t("sidebar.menu.about")}
+    </Button>
+
     </Stack>
   );
 };

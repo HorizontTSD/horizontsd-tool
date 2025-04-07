@@ -5,12 +5,22 @@ import { setForecastData } from "store/forecastSlice";
 import { RootState } from "store";
 import { SensorData, TimeSeriesPoint } from "types";
 import { usePolling } from "./usePoling";
+import { useTranslation } from "react-i18next";
+import { useEffect } from "react";
+
+
 
 const isValidForecastData = (data: unknown): data is SensorData => {
   return !!data && typeof data === "object" && "arithmetic_1464947681" in data;
 };
 
 export const useForecastData = () => {
+
+  const { i18n } = useTranslation();
+  const currentLanguage = i18n.language;
+  const lang = currentLanguage.toLowerCase();
+
+
   const dispatch = useDispatch();
   const forecastData = useSelector((state: RootState) => state.forecast.data);
 
@@ -40,12 +50,14 @@ export const useForecastData = () => {
       const { last_real_data, actual_prediction_lstm, actual_prediction_xgboost, ensemble } =
         sensorData.map_data.data;
 
+
+
       return {
         description: sensorData.description,
         legend: sensorData.map_data.legend,
         series: [
           {
-            name: sensorData.map_data.legend.real_data_line.text.en,
+            name: sensorData.map_data.legend.real_data_line.text[lang],
             data: parseSeriesData(last_real_data),
             color: sensorData.map_data.legend.real_data_line.color,
           },

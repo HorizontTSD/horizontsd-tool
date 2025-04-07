@@ -4,6 +4,8 @@ import { useForecastData } from "hooks/useForecastData";
 import { useEffect, useState } from "react";
 import DownloadIcon from "@mui/icons-material/Download";
 import { ModelSelectorDropdown } from "components/ui/ModelSelectorDropdown";
+import { useTranslation } from "react-i18next";
+
 
 interface TooltipParam {
   color: string;
@@ -12,6 +14,15 @@ interface TooltipParam {
 }
 
 export const LoadForecastGraph = () => {
+
+//   const { i18n } = useTranslation();
+//   const currentLanguage = i18n.language.toLowerCase();
+
+  const { i18n } = useTranslation();
+  const currentLanguage = i18n.language;
+  const lang = currentLanguage.toLowerCase();
+
+  const { t } = useTranslation();
   const { mode } = useColorScheme();
   const { chartData } = useForecastData();
 
@@ -157,7 +168,7 @@ export const LoadForecastGraph = () => {
     },
     yAxis: {
       type: "value",
-      name: `${chartData.description.sensor_name} ${chartData.legend.last_know_data_line.text.en}`,
+      name: `${chartData.description.sensor_name} ${chartData.legend.last_know_data_line.text[currentLanguage]}`,
       nameLocation: "end",
       nameTextStyle: { align: "left" },
       splitLine: { show: true, interval: "auto" },
@@ -186,8 +197,8 @@ export const LoadForecastGraph = () => {
           onSelect={handleModelSelect}
         />
         <Typography component="div" style={{ fontSize: 'clamp(8px, 1.2vw, 20px)',  fontWeight: 'bold' }}>
-          Forecast chart : {' '}
-          Sensor name -{' '}
+          {t("ready_made_forecast_page.forecast_chart")}: {' '}
+          {t("ready_made_forecast_page.sensor_name")} - {' '}
           <span
             style={{
               backgroundColor: 'rgba(0, 123, 255, 0.2)',
@@ -202,7 +213,7 @@ export const LoadForecastGraph = () => {
           </span>
            {' '} : {' '}
           <span style={{ fontWeight: 'bold' }}>
-            Sensor ID -{' '}
+            {t("ready_made_forecast_page.sensor_id")} - {' '}
             <span
               style={{
                 backgroundColor: 'rgba(255, 0, 0, 0.2)',
@@ -227,7 +238,7 @@ export const LoadForecastGraph = () => {
           padding: '6px 16px',
         }}
         >
-          Скачать прогноз
+          {t("ready_made_forecast_page.download_button")}
         </Button>
       </Box>
       <Card variant="outlined" sx={{ width: "100%", height: 615, p: 2, borderRadius: "10px" }}>

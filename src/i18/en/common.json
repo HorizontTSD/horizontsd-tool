@@ -5,7 +5,15 @@
       "alert_settings": "Alert settings",
       "data_analysis": "Data analysis",
       "quick_forecast": "Quick forecast",
-      "about": "About"
+      "about": "More about us"
     }
+  },
+  "ready_made_forecast_page" : {
+    "additional_info": "Additional information",
+    "forecast_chart": "Forecast chart",
+    "sensor_name": "Sensor name",
+    "sensor_id": "Sensor ID",
+    "download_button": "Download"
+
   }
 }
