@@ -8,6 +8,7 @@ import Typography from "@mui/material/Typography";
 import { SparkLineChart } from "@mui/x-charts/SparkLineChart";
 import { areaElementClasses } from "@mui/x-charts/LineChart";
 import Grid from "@mui/material/Grid";
+import { useForecastData } from "hooks/useForecastData";
 
 interface WeatherStat {
   id: number;
