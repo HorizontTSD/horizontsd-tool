@@ -82,19 +82,6 @@ export const MenuContent = () => {
         ))}
       </List>
 
-      <List dense>
-        {secondaryListItems.map((item, index) => (
-          <ListItem key={index} disablePadding sx={{ display: "block" }}>
-            <ListItemButton
-              onClick={() => handleMenuClick(item.value, mainListItems.length + index)}
-            >
-              <ListItemIcon>{item.icon}</ListItemIcon>
-              <ListItemText primary={item.text} />
-            </ListItemButton>
-          </ListItem>
-        ))}
-      </List>
-
       <Button
         sx={{
           ml: 2,
