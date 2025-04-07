@@ -74,6 +74,7 @@ export default defineConfig({
       layouts: "/src/layouts",
       theme: "/src/theme",
       lib: "/src/lib",
+      i18: "/src/i18",
     },
   },
   base: "/",

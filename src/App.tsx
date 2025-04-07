@@ -10,6 +10,7 @@ import {
   loaderCustomizations,
   AppTheme,
 } from "theme";
+import "i18/index";
 
 import { router } from "router";
 import { store } from "store";

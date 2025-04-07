@@ -9,17 +9,20 @@ import QueryStatsIcon from "@mui/icons-material/QueryStats";
 import EditNotificationsIcon from "@mui/icons-material/EditNotifications";
 import AnalyticsIcon from "@mui/icons-material/Analytics";
 import RocketLaunchIcon from "@mui/icons-material/RocketLaunch";
-
-const mainListItems = [
-  { text: "Прогноз нагрузки", icon: <QueryStatsIcon /> },
-  { text: "Настройка оповещений", icon: <EditNotificationsIcon /> },
-  { text: "Анализ данных", icon: <AnalyticsIcon /> },
-  { text: "Быстрый прогноз", icon: <RocketLaunchIcon /> },
-];
-
-const secondaryListItems = [{ text: "About", icon: <InfoRoundedIcon /> }];
+import { useTranslation } from "react-i18next";
 
 export const MenuContent = () => {
+  const { t } = useTranslation();
+
+  const mainListItems = [
+    { text: t("sidebar.menu.load_forecast"), icon: <QueryStatsIcon /> },
+    { text: t("sidebar.menu.alert_settings"), icon: <EditNotificationsIcon /> },
+    { text: t("sidebar.menu.data_analysis"), icon: <AnalyticsIcon /> },
+    { text: t("sidebar.menu.quick_forecast"), icon: <RocketLaunchIcon /> },
+  ];
+
+  const secondaryListItems = [{ text: t("sidebar.menu.about"), icon: <InfoRoundedIcon /> }];
+
   return (
     <Stack sx={{ flexGrow: 1, p: 1, justifyContent: "space-between", display: "flex" }}>
       <List dense>
