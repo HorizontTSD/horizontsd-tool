@@ -1,11 +1,28 @@
 {
   "sidebar": {
     "menu": {
-      "load_forecast": "Load forecast",
+      "data_forecast": "Data forecast",
       "alert_settings": "Alert settings",
       "data_analysis": "Data analysis",
       "quick_forecast": "Quick forecast",
-      "about": "About"
+      "about": "More about us"
     }
+  },
+  "nav_bar": {
+    "path": {
+      "main_path": "Horizon TSD",
+      "home": "Forecast data"
+    }
+  },
+  "footer": {
+    "text": "All rights reserved. Horizon is an original project."
+  },
+  "ready_made_forecast_page" : {
+    "additional_info": "Additional information",
+    "forecast_chart": "Forecast chart",
+    "sensor_name": "Sensor name",
+    "sensor_id": "Sensor ID",
+    "download_button": "Download"
+
   }
 }

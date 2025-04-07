@@ -4,6 +4,7 @@ import DownloadIcon from "@mui/icons-material/Download";
 import { ModelSelectorDropdown } from "components/ui/ModelSelectorDropdown";
 import { LoadForecastPureGraph } from "./LoadForecastPureGraph";
 import { useForecastData } from "hooks/useForecastData";
+import { useTranslation } from "react-i18next";
 
 export const LoadForecastGraphBlock = () => {
   const [selectedModel, setSelectedModel] = useState<string | null>(null);
@@ -19,6 +20,11 @@ export const LoadForecastGraphBlock = () => {
     console.log(`Selected model: ${model}`);
   };
 
+  const { i18n } = useTranslation();
+  const currentLanguage = i18n.language;
+  const lang = currentLanguage.toLowerCase();
+  const { t } = useTranslation();
+
   return (
     <>
       <Box sx={{ display: "flex", justifyContent: "space-between", alignItems: "center", mb: 2 }}>
@@ -32,7 +38,8 @@ export const LoadForecastGraphBlock = () => {
             component="div"
             style={{ fontSize: "clamp(8px, 1.2vw, 20px)", fontWeight: "bold" }}
           >
-            Forecast chart : Sensor name -{" "}
+                      {t("ready_made_forecast_page.forecast_chart")}: {' '}
+                      {t("ready_made_forecast_page.sensor_name")} - {' '}
             <span
               style={{
                 backgroundColor: "rgba(0, 123, 255, 0.2)",
@@ -47,7 +54,7 @@ export const LoadForecastGraphBlock = () => {
             </span>{" "}
             :{" "}
             <span style={{ fontWeight: "bold" }}>
-              Sensor ID -{" "}
+              {t("ready_made_forecast_page.sensor_id")} - {' '}
               <span
                 style={{
                   backgroundColor: "rgba(255, 0, 0, 0.2)",
@@ -66,16 +73,20 @@ export const LoadForecastGraphBlock = () => {
           <Typography>Данные ещё загружаются...</Typography>
         )}
         <Button
-          variant="contained"
           startIcon={<DownloadIcon />}
           onClick={handleDownload}
           sx={{
             ml: 2,
-            fontSize: "clamp(8px, 1.5vw, 16px)",
-            padding: "6px 16px",
+            fontSize: 'clamp(8px, 1.5vw, 16px)',
+            padding: '6px 16px',
+            backgroundColor: 'rgb(129, 199, 132)',
+            color: 'text.primary',
+            '&:hover': {
+              backgroundColor: 'rgb(70, 130, 180',
+            },
           }}
         >
-          Скачать прогноз
+          {t("ready_made_forecast_page.download_button")}
         </Button>
       </Box>
       <Card variant="outlined" sx={{ width: "100%", height: 615, p: 2, borderRadius: "10px" }}>
