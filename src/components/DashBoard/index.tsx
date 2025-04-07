@@ -1,7 +1,13 @@
 import { alpha, Box, Stack } from "@mui/material";
-import { MainGrid, Header } from "components";
+import { AlertSettings, Header, LoadForecast, OriginalProjectInfo } from "components";
+import { useSelector } from "react-redux";
+import { RootState } from "store/store";
 
 export const Dashboard = () => {
+  const activeComponent = useSelector(
+    (state: RootState) => state.dashboardNavigation.activeComponent
+  );
+
   return (
     <Box
       component="main"
@@ -18,12 +24,14 @@ export const Dashboard = () => {
         sx={{
           alignItems: "center",
           mx: 3,
-          pb: 5,
+          pb: 2,
           mt: { xs: 8, md: 0 },
         }}
       >
         <Header />
-        <MainGrid />
+        {activeComponent === "forecast" && <LoadForecast />}
+        {activeComponent === "alerts" && <AlertSettings />}
+        <OriginalProjectInfo />
       </Stack>
     </Box>
   );

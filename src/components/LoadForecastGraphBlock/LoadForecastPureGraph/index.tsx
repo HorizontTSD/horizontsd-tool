@@ -1,9 +1,6 @@
-import { Box, Button, Card, CircularProgress, Typography, useColorScheme } from "@mui/material";
+import { useColorScheme } from "@mui/material";
 import ReactECharts from "echarts-for-react";
-import { useForecastData } from "hooks/useForecastData";
 import { useEffect, useState } from "react";
-import DownloadIcon from "@mui/icons-material/Download";
-import { ModelSelectorDropdown } from "components/ui/ModelSelectorDropdown";
 
 interface TooltipParam {
   color: string;
@@ -11,24 +8,32 @@ interface TooltipParam {
   value: [number, number];
 }
 
-export const LoadForecastGraph = () => {
-  const { mode } = useColorScheme();
-  const { chartData } = useForecastData();
+interface LoadForecastPureGraphProps {
+  sensorName: string;
+  sensorId: string;
+  series: {
+    name: string;
+    data: [number, number][];
+    color: string;
+    lineWidth?: number;
+  }[];
+  legend: {
+    last_know_data_line: {
+      text: {
+        en: string;
+      };
+    };
+  };
+}
 
+export const LoadForecastPureGraph = ({
+  sensorName,
+  series,
+  legend,
+}: LoadForecastPureGraphProps) => {
+  const { mode } = useColorScheme();
   const [isMobile, setIsMobile] = useState(false);
   const [textSize, setTextSize] = useState(false);
-  const [selectedModel, setSelectedModel] = useState<string | null>(null);
-
-  const availableModels = ["sensor_id_1", "sensor_id_2", "sensor_id_3"];
-
-  const handleDownload = () => {
-    console.log("Download button clicked");
-  };
-
-  const handleModelSelect = (model: string) => {
-    setSelectedModel(model);
-    console.log(`Selected model: ${model}`);
-  };
 
   useEffect(() => {
     const handleResize = () => {
@@ -43,29 +48,6 @@ export const LoadForecastGraph = () => {
       window.removeEventListener("resize", handleResize);
     };
   }, []);
-
-  if (!chartData) {
-    return (
-      <Card
-        variant="outlined"
-        sx={{
-          width: "100%",
-          height: 615,
-          p: 2,
-          borderRadius: "10px",
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "center",
-        }}
-      >
-        <CircularProgress
-          sx={{ display: "flex", margin: "0 auto", justifyContent: "center", alignItems: "center" }}
-          size={150}
-          value={100}
-        />
-      </Card>
-    );
-  }
 
   const chartOption = {
     backgroundColor: "transparent",
@@ -83,9 +65,11 @@ export const LoadForecastGraph = () => {
         let result = `<div>${dateTimeStr}</div>`;
         params.forEach((param) => {
           result += `<div style="display:flex;align-items:center;">
-            <div style="width:10px;height:10px;background:${param.color};margin-right:5px;"></div>
-            ${param.seriesName}: <strong>${param.value[1]?.toFixed(2) || "N/A"}</strong>
-          </div>`;
+                <div style="width:10px;height:10px;background:${
+                  param.color
+                };margin-right:5px;"></div>
+                ${param.seriesName}: <strong>${param.value[1]?.toFixed(2) || "N/A"}</strong>
+              </div>`;
         });
         return result;
       },
@@ -104,7 +88,7 @@ export const LoadForecastGraph = () => {
       },
     },
     legend: {
-      data: chartData.series.map((s) => s.name),
+      data: series.map((s) => s.name),
       orient: isMobile ? "horizontal" : "vertical",
       bottom: isMobile ? 10 : "auto",
       right: 0,
@@ -157,7 +141,7 @@ export const LoadForecastGraph = () => {
     },
     yAxis: {
       type: "value",
-      name: `${chartData.description.sensor_name} ${chartData.legend.last_know_data_line.text.en}`,
+      name: `${sensorName} ${legend.last_know_data_line.text.en}`,
       nameLocation: "end",
       nameTextStyle: { align: "left" },
       splitLine: { show: true, interval: "auto" },
@@ -167,7 +151,7 @@ export const LoadForecastGraph = () => {
       { type: "inside", start: 0, end: 100 },
       { start: 0, end: 100 },
     ],
-    series: chartData.series.map((series) => ({
+    series: series.map((series) => ({
       name: series.name,
       type: "line",
       showSymbol: false,
@@ -178,66 +162,11 @@ export const LoadForecastGraph = () => {
   };
 
   return (
-    <>
-      <Box sx={{ display: "flex", justifyContent: "space-between", alignItems: "center", mb: 2 }}>
-        <ModelSelectorDropdown
-          availableModels={availableModels}
-          selectedModel={selectedModel}
-          onSelect={handleModelSelect}
-        />
-        <Typography component="div" style={{ fontSize: 'clamp(8px, 1.2vw, 20px)',  fontWeight: 'bold' }}>
-          Forecast chart : {' '}
-          Sensor name -{' '}
-          <span
-            style={{
-              backgroundColor: 'rgba(0, 123, 255, 0.2)',
-              color: 'inherit',
-              border: '1px solid blue',
-              borderRadius: '12px',
-              padding: '2px 8px',
-              fontWeight: 'bold',
-            }}
-          >
-            {chartData.description.sensor_name}
-          </span>
-           {' '} : {' '}
-          <span style={{ fontWeight: 'bold' }}>
-            Sensor ID -{' '}
-            <span
-              style={{
-                backgroundColor: 'rgba(255, 0, 0, 0.2)',
-                color: 'inherit',
-                border: '1px solid red',
-                borderRadius: '12px',
-                padding: '2px 8px',
-                fontWeight: 'bold',
-              }}
-            >
-              {chartData.description.sensor_id}
-            </span>
-          </span>
-        </Typography>
-        <Button
-          variant="contained"
-          startIcon={<DownloadIcon />}
-          onClick={handleDownload}
-        sx={{
-          ml: 2,
-          fontSize: 'clamp(8px, 1.5vw, 16px)',
-          padding: '6px 16px',
-        }}
-        >
-          Скачать прогноз
-        </Button>
-      </Box>
-      <Card variant="outlined" sx={{ width: "100%", height: 615, p: 2, borderRadius: "10px" }}>
-        <ReactECharts
-          option={chartOption}
-          style={{ height: "100%", width: "100%" }}
-          theme={mode}
-          opts={{ renderer: "svg" }}
-        />
-      </Card>
-    </>
+    <ReactECharts
+      option={chartOption}
+      style={{ height: "100%", width: "100%" }}
+      theme={mode}
+      opts={{ renderer: "svg" }}
+    />
   );
 };
