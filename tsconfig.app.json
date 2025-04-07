@@ -34,7 +34,9 @@
       "utils/*": ["utils/*"],
       "hooks/*": ["hooks/*"],
       "interface/*": ["interface/*"],
-      "store/*": ["store/*"]
+      "store/*": ["store/*"],
+      "lib/*": ["lib/*"],
+      "i18/*": ["i18/*"]
     }
   },
 

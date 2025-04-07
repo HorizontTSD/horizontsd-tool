@@ -1,0 +1,11 @@
+{
+  "sidebar": {
+    "menu": {
+      "load_forecast": "Load forecast",
+      "alert_settings": "Alert settings",
+      "data_analysis": "Data analysis",
+      "quick_forecast": "Quick forecast",
+      "about": "About"
+    }
+  }
+}

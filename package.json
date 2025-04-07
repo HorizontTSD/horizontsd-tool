@@ -8,7 +8,8 @@
     "build": "tsc -b && vite build",
     "analyze": "vite build --mode analyze",
     "lint": "eslint . --ext ts,tsx --fix",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "proxy": "http://77.37.136.11:7072"
   },
   "dependencies": {
     "@emotion/react": "^11.0.0-rc.0",
@@ -16,13 +17,21 @@
     "@mui/icons-material": "7.0.0",
     "@mui/material": "7.0.0",
     "@mui/x-charts": "^7.28.0",
-    "@mui/x-data-grid": "^7.28.2",
+    "@mui/x-data-grid": "^7.28.3",
     "@mui/x-data-grid-pro": "^7.28.2",
     "@mui/x-date-pickers": "^7.28.2",
     "@mui/x-date-pickers-pro": "^7.28.2",
     "@mui/x-tree-view": "^7.28.1",
+    "@reduxjs/toolkit": "^2.6.1",
+    "axios": "^1.8.4",
+    "echarts": "^5.6.0",
+    "echarts-for-react": "^3.0.2",
+    "i18next": "^24.2.3",
+    "i18next-browser-languagedetector": "^8.0.4",
     "react": "19.0.0",
     "react-dom": "19.0.0",
+    "react-i18next": "^15.4.1",
+    "react-redux": "^9.2.0",
     "react-router": "7.4.0",
     "sass": "1.86.0"
   },

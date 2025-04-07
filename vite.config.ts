@@ -15,6 +15,9 @@ export default defineConfig({
   ],
   server: {
     host: "0.0.0.0",
+    proxy: {
+      "/backend/v1": "http://77.37.136.11:7072",
+    },
     port: 5174,
     cors: true,
     strictPort: true,
@@ -70,6 +73,8 @@ export default defineConfig({
       router: "/src/router",
       layouts: "/src/layouts",
       theme: "/src/theme",
+      lib: "/src/lib",
+      i18: "/src/i18",
     },
   },
   base: "/",

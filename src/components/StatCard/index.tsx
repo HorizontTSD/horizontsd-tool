@@ -7,7 +7,6 @@ import Stack from "@mui/material/Stack";
 import Typography from "@mui/material/Typography";
 import { SparkLineChart } from "@mui/x-charts/SparkLineChart";
 import { areaElementClasses } from "@mui/x-charts/LineChart";
-import { StatCardProps } from "types";
 
 function getDaysInMonth(month: number, year: number) {
   const date = new Date(year, month, 0);
@@ -82,7 +81,7 @@ export const StatCard = ({ title, value, interval, trend, data }: StatCardProps)
               showTooltip
               xAxis={{
                 scaleType: "band",
-                data: daysInWeek, // Use the correct property 'data' for xAxis
+                data: daysInWeek,
               }}
               sx={{
                 [`& .${areaElementClasses.root}`]: {

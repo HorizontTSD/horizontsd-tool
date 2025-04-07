@@ -382,7 +382,7 @@ export const typography = {
     fontSize: defaultTheme.typography.pxToRem(14),
   },
   body2: {
-    fontSize: defaultTheme.typography.pxToRem(14),
+    fontSize: defaultTheme.typography.pxToRem(16),
     fontWeight: 400,
   },
   caption: {

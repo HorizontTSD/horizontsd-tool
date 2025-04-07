@@ -1,6 +1,6 @@
 import { RouterProvider } from "react-router";
 import { CssBaseline } from "@mui/material";
-import { StrictMode } from "react";
+import { Provider } from "react-redux";
 
 import {
   chartsCustomizations,
@@ -10,8 +10,10 @@ import {
   loaderCustomizations,
   AppTheme,
 } from "theme";
+import "i18/index";
 
 import { router } from "router";
+import { store } from "store";
 
 const xThemeComponents = {
   ...chartsCustomizations,
@@ -23,11 +25,13 @@ const xThemeComponents = {
 
 export function App() {
   return (
-    <StrictMode>
-      <AppTheme themeComponents={xThemeComponents}>
-        <CssBaseline enableColorScheme />
-        <RouterProvider router={router} />
-      </AppTheme>
-    </StrictMode>
+    <>
+      <Provider store={store}>
+        <AppTheme themeComponents={xThemeComponents}>
+          <CssBaseline enableColorScheme />
+          <RouterProvider router={router} />
+        </AppTheme>
+      </Provider>
+    </>
   );
 }

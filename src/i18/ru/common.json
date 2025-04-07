@@ -1,0 +1,11 @@
+{
+  "sidebar": {
+    "menu": {
+      "load_forecast": "Прогноз нагрузки",
+      "alert_settings": "Настройка оповещений",
+      "data_analysis": "Анализ данных",
+      "quick_forecast": "Быстрый прогноз",
+      "about": "О проекте"
+    }
+  }
+}
