@@ -24,5 +24,13 @@
     "sensor_id": "ID датчика",
     "download_button": "Скачать"
 
+  },
+  "metrix_block" : {
+    "error_date_1": "Не удалось загрузить диапазон дат.",
+    "date_range_error": "Выберите дату в пределах допустимого диапазона. Допустимый диапазон ",
+    "sensor_name": "Имя датчика",
+    "sensor_id": "ID датчика",
+    "download_button": "Скачать"
+
   }
 }
