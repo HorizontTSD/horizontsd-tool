@@ -1,14 +1,62 @@
-import Grid from "@mui/material/Grid";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
-import { WeatherStatCard, CustomizedDataGrid, LoadForecastGraphBlock } from "components";
-// import CustomizedTreeView from "./CustomizedTreeView";
-// import CustomizedDataGrid from "./CustomizedDataGrid";
-// import HighlightedCard from "./HighlightedCard";
-// import PageViewsBarChart from "./PageViewsBarChart";
-// import SessionsChart from "./SessionsChart";
-// import { StatCard } from "components";
+import Button from "@mui/material/Button";
+import { useState } from "react";
+import { LoadForecastPureGraph } from "components/LoadForecastGraphBlock/LoadForecastPureGraph";
+import { useSelector } from "react-redux";
 
 export const AlertSettings = () => {
-  return <Box sx={{ width: "100%", maxWidth: { sm: "100%", md: "1700px" } }}>ALERT</Box>;
+  const [showGraph, setShowGraph] = useState(false);
+  const chartData = useSelector((state) => state.forecastData);
+
+  const handleToggleGraph = () => {
+    setShowGraph(!showGraph);
+  };
+
+  return (
+    <Box sx={{ width: "100%", maxWidth: { sm: "100%", md: "1700px" }, p: 3 }}>
+      <Typography variant="h5" gutterBottom>
+        Список уведомлений
+      </Typography>
+
+      <Button
+        fullWidth
+        variant="outlined"
+        onClick={handleToggleGraph}
+        sx={{
+          py: 2,
+          mb: 3,
+          fontSize: "1rem",
+          fontWeight: "bold",
+          textTransform: "none",
+          border: "2px solid",
+          borderColor: "primary.main",
+        }}
+      >
+        {showGraph ? "Скрыть график" : "Показать график"}
+      </Button>
+
+      {showGraph && (
+        <Box
+          sx={{
+            transition: "max-height 0.5s ease-out",
+            maxHeight: showGraph ? "1000px" : "0",
+            overflow: "hidden",
+            border: "1px solid",
+            borderColor: "divider",
+            borderRadius: 1,
+            p: 2,
+            mb: 3,
+          }}
+        >
+          {/* <LoadForecastPureGraph
+           
+          /> */}
+          <Typography variant="body1" color="text.secondary">
+            График будет отображён здесь
+          </Typography>
+        </Box>
+      )}
+    </Box>
+  );
 };

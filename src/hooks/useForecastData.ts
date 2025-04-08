@@ -6,8 +6,6 @@ import { RootState } from "store";
 import { SensorData, TimeSeriesPoint } from "types";
 import { usePolling } from "./usePoling";
 import { useTranslation } from "react-i18next";
-import { useEffect } from "react";
-
 
 
 const isValidForecastData = (data: unknown): data is SensorData => {
@@ -15,14 +13,11 @@ const isValidForecastData = (data: unknown): data is SensorData => {
 };
 
 export const useForecastData = () => {
-
+  const dispatch = useDispatch();
+  const forecastData = useSelector((state: RootState) => state.forecast.data);
   const { i18n } = useTranslation();
   const currentLanguage = i18n.language;
   const lang = currentLanguage.toLowerCase();
-
-
-  const dispatch = useDispatch();
-  const forecastData = useSelector((state: RootState) => state.forecast.data);
 
   const parseSeriesData = useCallback((data: unknown): [number, number][] => {
     try {
@@ -34,7 +29,7 @@ export const useForecastData = () => {
       console.error("Error parsing data:", e);
       return [];
     }
-  }, []);
+  }, [lang]);
 
   const prepareChartData = useCallback(
     (data: SensorData) => {
@@ -50,8 +45,6 @@ export const useForecastData = () => {
       const { last_real_data, actual_prediction_lstm, actual_prediction_xgboost, ensemble } =
         sensorData.map_data.data;
 
-
-
       return {
         description: sensorData.description,
         legend: sensorData.map_data.legend,
@@ -62,17 +55,17 @@ export const useForecastData = () => {
             color: sensorData.map_data.legend.real_data_line.color,
           },
           {
-            name: sensorData.map_data.legend.LSTM_data_line.text.en,
+            name: sensorData.map_data.legend.LSTM_data_line.text[lang],
             data: parseSeriesData(actual_prediction_lstm),
             color: sensorData.map_data.legend.LSTM_data_line.color,
           },
           {
-            name: sensorData.map_data.legend.XGBoost_data_line.text.en,
+            name: sensorData.map_data.legend.XGBoost_data_line.text[lang],
             data: parseSeriesData(actual_prediction_xgboost),
             color: sensorData.map_data.legend.XGBoost_data_line.color,
           },
           {
-            name: sensorData.map_data.legend.Ensemble_data_line.text.en,
+            name: sensorData.map_data.legend.Ensemble_data_line.text[lang],
             data: parseSeriesData(ensemble),
             color: sensorData.map_data.legend.Ensemble_data_line.color,
             lineWidth: 3,
