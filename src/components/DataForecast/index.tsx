@@ -12,7 +12,6 @@ import { useTranslation } from "react-i18next";
 import { LoadForecastGraphBlockCopy } from "components/LoadForecastGraphBlockcopy";
 import { MetrixDateRangeBlock } from "components/MetrixModelsBlock";
 
-
 export const DataForecast = () => {
   const { i18n } = useTranslation();
   const currentLanguage = i18n.language;
@@ -33,21 +32,21 @@ export const DataForecast = () => {
           <LoadForecastGraphBlockCopy />
         </Grid>
       </Grid>
-        <Grid
-          container
-          spacing={2}
-          columns={1}
-          sx={{
-            mb: 2,
-            border: `0.8px solid lightgray`,
-            padding: 2,
-            borderRadius: 1,
-          }}
-        >
-          <Grid item xs={12}>
-            <MetrixDateRangeBlock />
-          </Grid>
+      <Grid
+        container
+        spacing={2}
+        columns={1}
+        sx={{
+          mb: 2,
+          border: `0.8px solid lightgray`,
+          padding: 2,
+          borderRadius: 1,
+        }}
+      >
+        <Grid item xs={12}>
+          <MetrixDateRangeBlock />
         </Grid>
+      </Grid>
       <Grid container spacing={2} columns={1}>
         <Grid size={{ xs: 1, lg: 1 }}>
           <CustomizedDataGrid />

@@ -4,7 +4,6 @@ import ListItemButton from "@mui/material/ListItemButton";
 import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
 import Stack from "@mui/material/Stack";
-import InfoRoundedIcon from "@mui/icons-material/InfoRounded";
 import QueryStatsIcon from "@mui/icons-material/QueryStats";
 import EditNotificationsIcon from "@mui/icons-material/EditNotifications";
 import AnalyticsIcon from "@mui/icons-material/Analytics";
@@ -44,14 +43,6 @@ export const MenuContent = () => {
     },
   ];
 
-  const secondaryListItems = [
-    {
-      text: t("sidebar.menu.about"),
-      icon: <InfoRoundedIcon />,
-      value: "about",
-    },
-  ];
-
   const handleMenuClick = (value: string, index: number) => {
     dispatch(
       setActiveDashboardComponent(
@@ -81,18 +72,8 @@ export const MenuContent = () => {
           </ListItem>
         ))}
       </List>
-
       <Button
-        sx={{
-          ml: 2,
-          fontSize: "clamp(8px, 1.5vw, 16px)",
-          padding: "6px 16px",
-          backgroundColor: "rgb(100, 149, 237)",
-          color: "text.primary",
-          "&:hover": {
-            backgroundColor: "rgb(70, 130, 180)",
-          },
-        }}
+        variant="contained"
         onClick={() => window.open("http://77.37.136.11:7071", "_blank", "noopener noreferrer")}
       >
         {t("sidebar.menu.about")}

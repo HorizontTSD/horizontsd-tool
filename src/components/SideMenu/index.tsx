@@ -106,7 +106,7 @@ export const SideMenu = () => {
           borderColor: "divider",
         }}
       >
-        <SelectContent />
+        {/* <SelectContent /> */}
         {/* <Avatar
           sizes="small"
           alt="Riley Carter"
