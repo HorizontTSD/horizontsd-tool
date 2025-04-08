@@ -1,3 +1,4 @@
+export { QuickForecast } from "./QuickForecast";
 export { ColorModeSelect } from "./ui/ColorModeSelect";
 export { ColorModeIconDropdown } from "./ui/ColorModeIconDropdown";
 export { LanguageDropdown } from "./ui/LanguageDropdown";
@@ -12,8 +13,7 @@ export { SelectContent } from "./SelectContent";
 export { SideMenu } from "./SideMenu";
 export { SideMenuMobile } from "./SideMenuMobile";
 // export { OptionsMenu } from "./OptionsMenu";
-export { NavbarBreadcrumbs } from "./NavbarBreadcrumbs";
-export { LoadForecast } from "./LoadForecast";
+export { DataForecast } from "./DataForecast";
 // export { HighlightedCard } from "./HighlightedCard";
 // export { SessionsChart } from "./SessionsChart";
 // export { PageViewsBarChart } from "./PageViewsBarChart";

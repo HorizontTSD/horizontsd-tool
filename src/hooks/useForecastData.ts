@@ -7,7 +7,6 @@ import { SensorData, TimeSeriesPoint } from "types";
 import { usePolling } from "./usePoling";
 import { useTranslation } from "react-i18next";
 
-
 const isValidForecastData = (data: unknown): data is SensorData => {
   return !!data && typeof data === "object" && "arithmetic_1464947681" in data;
 };
@@ -19,17 +18,20 @@ export const useForecastData = () => {
   const currentLanguage = i18n.language;
   const lang = currentLanguage.toLowerCase();
 
-  const parseSeriesData = useCallback((data: unknown): [number, number][] => {
-    try {
-      const parsed = typeof data === "string" ? JSON.parse(data) : data;
-      return Array.isArray(parsed)
-        ? parsed.map((item: TimeSeriesPoint) => [item.datetime, item.load_consumption])
-        : [];
-    } catch (e) {
-      console.error("Error parsing data:", e);
-      return [];
-    }
-  }, [lang]);
+  const parseSeriesData = useCallback(
+    (data: unknown): [number, number][] => {
+      try {
+        const parsed = typeof data === "string" ? JSON.parse(data) : data;
+        return Array.isArray(parsed)
+          ? parsed.map((item: TimeSeriesPoint) => [item.datetime, item.load_consumption])
+          : [];
+      } catch (e) {
+        console.error("Error parsing data:", e);
+        return [];
+      }
+    },
+    [lang]
+  );
 
   const prepareChartData = useCallback(
     (data: SensorData) => {
