@@ -2,12 +2,9 @@ import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
 import { useState } from "react";
-import { LoadForecastPureGraph } from "components/LoadForecastGraphBlock/LoadForecastPureGraph";
-import { useSelector } from "react-redux";
 
 export const AlertSettings = () => {
   const [showGraph, setShowGraph] = useState(false);
-  const chartData = useSelector((state) => state.forecastData);
 
   const handleToggleGraph = () => {
     setShowGraph(!showGraph);
@@ -16,7 +13,7 @@ export const AlertSettings = () => {
   return (
     <Box sx={{ width: "100%", maxWidth: { sm: "100%", md: "1700px" }, p: 3 }}>
       <Typography variant="h5" gutterBottom>
-        Список уведомлений
+        Создание Уведомления
       </Typography>
 
       <Button
@@ -49,12 +46,7 @@ export const AlertSettings = () => {
             mb: 3,
           }}
         >
-          {/* <LoadForecastPureGraph
-           
-          /> */}
-          <Typography variant="body1" color="text.secondary">
-            График будет отображён здесь
-          </Typography>
+          ГРАФИК
         </Box>
       )}
     </Box>

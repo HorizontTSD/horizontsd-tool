@@ -9,10 +9,9 @@ import { WeatherStatCard, CustomizedDataGrid, LoadForecastGraphBlock } from "com
 // import SessionsChart from "./SessionsChart";
 // import { StatCard } from "components";
 import { useTranslation } from "react-i18next";
+import { LoadForecastGraphBlockCopy } from "components/LoadForecastGraphBlockcopy";
 
-
-export const LoadForecast = () => {
-
+export const DataForecast = () => {
   const { i18n } = useTranslation();
   const currentLanguage = i18n.language;
   const lang = currentLanguage.toLowerCase();
@@ -27,7 +26,8 @@ export const LoadForecast = () => {
       </Grid>
       <Grid container spacing={2} columns={1} sx={{ mb: 2 }}>
         <Grid size={{ xs: 1, lg: 1 }}>
-          <LoadForecastGraphBlock />
+          {/* <LoadForecastGraphBlock /> */}
+          <LoadForecastGraphBlockCopy />
         </Grid>
       </Grid>
       <Grid container spacing={2} columns={1}>

@@ -1,5 +1,11 @@
 import { alpha, Box, Stack } from "@mui/material";
-import { AlertSettings, Header, LoadForecast, OriginalProjectInfo } from "components";
+import {
+  AlertSettings,
+  Header,
+  DataForecast,
+  OriginalProjectInfo,
+  QuickForecast,
+} from "components";
 import { useSelector } from "react-redux";
 import { RootState } from "store/store";
 
@@ -29,8 +35,9 @@ export const Dashboard = () => {
         }}
       >
         <Header />
-        {activeComponent === "forecast" && <LoadForecast />}
+        {activeComponent === "forecast" && <DataForecast />}
         {activeComponent === "alerts" && <AlertSettings />}
+        {activeComponent === "quick-forecast" && <QuickForecast />}
         <OriginalProjectInfo />
       </Stack>
     </Box>
