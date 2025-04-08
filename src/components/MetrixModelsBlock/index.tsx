@@ -128,6 +128,22 @@ const ModelMetricsBlock = ({ metrics }) => {
                     </span>
                   </Typography>
 
+                    <Typography
+                      variant="body1"
+                      sx={{
+                        fontSize: '1rem',
+                        color: 'text.secondary',
+                        fontWeight: 500,
+                        display: 'flex',
+                        justifyContent: 'space-between',
+                      }}
+                    >
+                      <span> RMSE: </span>
+                      <span style={{ fontWeight: 'bold', color: 'primary.main' }}>
+                        {modelMetrics.RMSE}
+                      </span>
+                    </Typography>
+
                   {modelMetrics.mark && (
                     <Chip
                       size="small"
@@ -199,6 +215,8 @@ export const MetrixDateRangeBlock = ({ sensorId }: { sensorId: string }) => {
 
   const fetchMetrics = async () => {
 
+     setError(null);
+
      const earliestDateISO = dayjs(earliestDate).format("YYYY-MM-DD HH:mm:ss");
      const maxDateISO = dayjs(maxDate).format("YYYY-MM-DD HH:mm:ss");
 
@@ -244,6 +262,7 @@ export const MetrixDateRangeBlock = ({ sensorId }: { sensorId: string }) => {
       setLoading(false);
     }
   };
+
 
 return (
     <Stack sx={{ padding: 1, gap: 6 }}>
