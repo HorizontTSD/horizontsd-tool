@@ -1,23 +1,27 @@
 import { Box, Button, Card, CircularProgress, Typography } from "@mui/material";
-import { useState } from "react";
 import DownloadIcon from "@mui/icons-material/Download";
 import { ModelSelectorDropdown } from "components/ui/ModelSelectorDropdown";
 import { LoadForecastPureGraph } from "./LoadForecastPureGraph";
-import { useForecastData } from "hooks/useForecastData";
+import { useForecastData, useSensorModels } from "hooks";
 import { useTranslation } from "react-i18next";
+import { useDispatch, useSelector } from "react-redux";
+import { RootState, setSelectedModel } from "store";
+import { exportForecastToExcel } from "utils";
 
 export const LoadForecastGraphBlock = () => {
-  const [selectedModel, setSelectedModel] = useState<string | null>(null);
-  const availableModels = ["sensor_id_1", "sensor_id_2", "sensor_id_3"];
-  const { chartData, sensorList } = useForecastData();
+  const dispatch = useDispatch();
+  const selectedModel = useSelector((state: RootState) => state.sensor.selectedModel);
+  const { models } = useSensorModels();
+  const { chartData, excelInfo } = useForecastData();
 
   const handleDownload = () => {
-    console.log("Download button clicked");
+    if (excelInfo) {
+      exportForecastToExcel(excelInfo);
+    }
   };
 
   const handleModelSelect = (model: string) => {
-    setSelectedModel(model);
-    console.log(`Selected model: ${model}`);
+    dispatch(setSelectedModel(model));
   };
 
   const { i18n } = useTranslation();
@@ -29,7 +33,7 @@ export const LoadForecastGraphBlock = () => {
     <>
       <Box sx={{ display: "flex", justifyContent: "space-between", alignItems: "center", mb: 2 }}>
         <ModelSelectorDropdown
-          availableModels={availableModels}
+          availableModels={models}
           selectedModel={selectedModel}
           onSelect={handleModelSelect}
         />
@@ -75,6 +79,7 @@ export const LoadForecastGraphBlock = () => {
         <Button
           startIcon={<DownloadIcon />}
           onClick={handleDownload}
+          disabled={!excelInfo?.data?.length}
           sx={{
             ml: 2,
             fontSize: "clamp(8px, 1.5vw, 16px)",

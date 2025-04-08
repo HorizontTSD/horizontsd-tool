@@ -71,6 +71,7 @@ export default defineConfig({
       interface: "/src/interface",
       store: "/src/store",
       router: "/src/router",
+      utils: "/src/utils",
       layouts: "/src/layouts",
       theme: "/src/theme",
       lib: "/src/lib",
