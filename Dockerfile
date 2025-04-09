@@ -2,9 +2,12 @@ FROM node:22-alpine
 
 WORKDIR /app
 
-COPY package*.json ./
+COPY package.json ./
 
-RUN npm install
+RUN npm cache clean --force && \
+    rm -rf node_modules && \
+    rm package-lock.json && \
+    npm install
 
 COPY . .
 
