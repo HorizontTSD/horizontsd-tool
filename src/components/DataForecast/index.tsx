@@ -31,21 +31,13 @@ export const DataForecast = () => {
           {/* <LoadForecastGraphBlockCopy /> */}
         </Grid>
       </Grid>
-      <Grid
-        container
-        spacing={2}
-        columns={1}
-        sx={{
-          mb: 2,
-          border: `0.8px solid lightgray`,
-          padding: 2,
-          borderRadius: 1,
-        }}
-      >
-        <Grid item xs={12}>
-          <MetrixDateRangeBlock />
+
+        <Grid container spacing={5} columns={1} sx={{ mb: 5 }}>
+          <Grid size={{ xs: 2, lg: 2 }} sx={{ border: '1px solid', borderColor: 'lightgray', borderRadius: 1, padding: 3, }}>
+            <MetrixDateRangeBlock />
+          </Grid>
         </Grid>
-      </Grid>
+
       <Grid container spacing={2} columns={1}>
         <Grid size={{ xs: 1, lg: 1 }}>
           <CustomizedDataGrid />

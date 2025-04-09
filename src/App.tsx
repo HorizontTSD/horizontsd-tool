@@ -2,6 +2,7 @@ import { RouterProvider } from "react-router";
 import { CssBaseline } from "@mui/material";
 import { Provider } from "react-redux";
 
+
 import {
   chartsCustomizations,
   dataGridCustomizations,

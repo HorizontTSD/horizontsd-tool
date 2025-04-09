@@ -35,12 +35,11 @@ const ModelMetricsBlock = ({ metrics }) => {
   return (
     <Grid
       container
-      spacing={2}
+      spacing={5}
       sx={{
-        width: '100%',
-        display: 'grid',
-        gridTemplateColumns: 'repeat(auto-fill, minmax(150px, 1fr))',
-        gap: 2,
+        width: 'fit-content',
+        display: 'center',
+        gap: 3,
         justifyItems: 'center',
         alignItems: 'center',
         margin: '0 auto',
@@ -54,7 +53,9 @@ const ModelMetricsBlock = ({ metrics }) => {
               sx={{
                 height: "100%",
                 display: 'flex',
-                flexDirection: 'column',
+                flexDirection: 'row',
+                ml: 3,
+                mr: 3,
                 boxShadow: 3,
                 '&:hover': {
                   boxShadow: 3,
@@ -63,7 +64,7 @@ const ModelMetricsBlock = ({ metrics }) => {
                 }
               }}
             >
-              <CardContent sx={{ flexGrow: 1 }}>
+              <CardContent sx={{ flexGrow: 2, direction: 'column', }}>
                 <Typography
                   component="h2"
                   variant="h6"
@@ -74,6 +75,7 @@ const ModelMetricsBlock = ({ metrics }) => {
                     fontSize: '1.1rem',
                     textAlign: 'center',
                     textTransform: 'capitalize'
+
                   }}
                 >
                   {modelName}
@@ -164,6 +166,139 @@ const ModelMetricsBlock = ({ metrics }) => {
   );
 };
 
+//
+//
+// const ModelMetricsBlock = ({ metrics }) => {
+//   return (
+//     <Grid
+//       container
+//       spacing={5}
+//       sx={{
+//         width: 'fit-content',
+//         display: 'center',
+//         gap: 5,
+//         justifyItems: 'center',
+//         alignItems: 'center',
+//         margin: '0 auto',
+//       }}
+//     >
+//       {metrics &&
+//         Object.entries(metrics).map(([modelName, modelMetrics]) => (
+//           <Grid item key={modelName}>
+//             <Card
+//               variant="outlined"
+//               sx={{
+//                 display: 'grid',
+//                 gap: 40,
+//                 justifyItems: 'center',
+//                 alignItems: 'start',
+//                 margin: '1 auto',
+//                 width: '100%',
+//                 maxWidth: '1000px',
+//               }
+//           }
+//             >
+//               <CardContent sx={{ flexGrow: 2, direction: 'column', }}>
+//                 <Typography
+//                   component="h2"
+//                   variant="h6"
+//                   sx={{
+//                     fontWeight: 'bold',
+//                     marginBottom: 1,
+//                     color: 'text.primary',
+//                     fontSize: '1.1rem',
+//                     textAlign: 'center',
+//                     textTransform: 'capitalize'
+//
+//                   }}
+//                 >
+//                   {modelName}
+//                 </Typography>
+//
+//                 <Stack direction="column" sx={{ gap: 1 }}>
+//                   <Typography
+//                     variant="body1"
+//                     sx={{
+//                       fontSize: '1rem',
+//                       color: 'text.secondary',
+//                       fontWeight: 500,
+//                       display: 'flex',
+//                       justifyContent: 'space-between',
+//                     }}
+//                   >
+//                     <span>MAPE:</span>
+//                     <span style={{ fontWeight: 'bold', color: 'primary.main' }}>
+//                       {modelMetrics.MAPE}
+//                     </span>
+//                   </Typography>
+//
+//                   <Typography
+//                     variant="body1"
+//                     sx={{
+//                       fontSize: '1rem',
+//                       color: 'text.secondary',
+//                       fontWeight: 500,
+//                       display: 'flex',
+//                       justifyContent: 'space-between',
+//                     }}
+//                   >
+//                     <span>R2:</span>
+//                     <span style={{ fontWeight: 'bold', color: 'primary.main' }}>
+//                       {modelMetrics.R2}
+//                     </span>
+//                   </Typography>
+//
+//                   <Typography
+//                     variant="body1"
+//                     sx={{
+//                       fontSize: '1rem',
+//                       color: 'text.secondary',
+//                       fontWeight: 500,
+//                       display: 'flex',
+//                       justifyContent: 'space-between',
+//                     }}
+//                   >
+//                     <span>MAE:</span>
+//                     <span style={{ fontWeight: 'bold', color: 'primary.main' }}>
+//                       {modelMetrics.MAE}
+//                     </span>
+//                   </Typography>
+//
+//                     <Typography
+//                       variant="body1"
+//                       sx={{
+//                         fontSize: '1rem',
+//                         color: 'text.secondary',
+//                         fontWeight: 500,
+//                         display: 'flex',
+//                         justifyContent: 'space-between',
+//                       }}
+//                     >
+//                       <span> RMSE: </span>
+//                       <span style={{ fontWeight: 'bold', color: 'primary.main' }}>
+//                         {modelMetrics.RMSE}
+//                       </span>
+//                     </Typography>
+//
+//                   {modelMetrics.mark && (
+//                     <Chip
+//                       size="small"
+//                       label={modelMetrics.mark}
+//                       color={modelMetrics.markColor || 'default'}
+//                       sx={{
+//                         marginTop: 1,
+//                         fontSize: '0.875rem', // Меньший шрифт для чипа
+//                       }}
+//                     />
+//                   )}
+//                 </Stack>
+//               </CardContent>
+//             </Card>
+//           </Grid>
+//         ))}
+//     </Grid>
+//   );
+// };
 
 
 export const MetrixDateRangeBlock = ({ sensorId }: { sensorId: string }) => {
@@ -262,11 +397,10 @@ export const MetrixDateRangeBlock = ({ sensorId }: { sensorId: string }) => {
       setLoading(false);
     }
   };
-
-
 return (
+  <>
     <Stack sx={{ padding: 1, gap: 6 }}>
-      <Grid container spacing={2} direction="row" alignItems="center">
+      <Grid container spacing={5} alignItems="center">
         <Typography variant="h6">Диапазон дат</Typography>
         <Grid item xs={6} sm={3}>
           <LocalizationProvider dateAdapter={AdapterDateFns}>
@@ -293,6 +427,7 @@ return (
           </LocalizationProvider>
         </Grid>
       </Grid>
+    </Stack>
 
     {error && (
       <Typography color="error" variant="body1">
@@ -300,12 +435,20 @@ return (
       </Typography>
     )}
 
-      <Stack>
-        <Grid container spacing={2} direction="row">
-          <ModelMetricsBlock metrics={metrics} />
-        </Grid>
-      </Stack>
-
+    <Stack>
+      <Grid
+        container
+        spacing={5}
+        direction="row"
+        justifyContent="center"
+        alignItems="center"
+        padding={2}
+      >
+        <ModelMetricsBlock metrics={metrics} />
+      </Grid>
     </Stack>
-  );
+  </>
+);
+
+
 };
