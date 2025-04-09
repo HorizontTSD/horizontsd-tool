@@ -6,10 +6,17 @@ import { ru } from "date-fns/locale";
 import { useMetrixRange } from "hooks";
 import { useState } from "react";
 
+
 export const Metrix = () => {
   const { data } = useMetrixRange();
-  const [startDate, setStartDate] = useState<string>(startDefaultDate);
-  const [endDate, setEndDate] = useState<string>(endDefaultDate);
+
+  const startDefaultDate = new Date();
+  const endDefaultDate = new Date();
+  const earliestDate = new Date("2020-01-01");
+  const maxDate = new Date();
+
+  const [startDate, setStartDate] = useState<Date | null>(startDefaultDate);
+  const [endDate, setEndDate] = useState<Date | null>(endDefaultDate);
 
   return (
     <Card variant="outlined" sx={{ width: "100%", p: 3 }}>
@@ -70,3 +77,4 @@ export const Metrix = () => {
     </Card>
   );
 };
+
