@@ -9,7 +9,6 @@ interface TooltipParam {
 }
 
 interface LoadForecastPureGraphProps {
-  sensorName: string;
   sensorId: string;
   series: {
     name: string;
@@ -17,20 +16,9 @@ interface LoadForecastPureGraphProps {
     color: string;
     lineWidth?: number;
   }[];
-  legend: {
-    last_know_data_line: {
-      text: {
-        en: string;
-      };
-    };
-  };
 }
 
-export const LoadForecastPureGraph = ({
-  sensorName,
-  series,
-  legend,
-}: LoadForecastPureGraphProps) => {
+export const LoadForecastPureGraph = ({ series }: LoadForecastPureGraphProps) => {
   const { mode } = useColorScheme();
   const [isMobile, setIsMobile] = useState(false);
   const [textSize, setTextSize] = useState(false);
@@ -144,7 +132,7 @@ export const LoadForecastPureGraph = ({
       },
     },
     grid: {
-      left: isMobile ? 5 : 0,
+      left: isMobile ? 6 : 6,
       right: isMobile ? 5 : 190,
       bottom: "15%",
       top: isMobile ? "15%" : "10%",
@@ -169,7 +157,7 @@ export const LoadForecastPureGraph = ({
     },
     yAxis: {
       type: "value",
-      name: `${sensorName} ${legend.last_know_data_line.text.en}`,
+
       nameLocation: "end",
       nameTextStyle: { align: "left" },
       splitLine: { show: true, interval: "auto" },
