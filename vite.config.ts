@@ -14,7 +14,7 @@ export default defineConfig({
     }),
   ],
   server: {
-    host: "0.0.0.0",
+    host: true,
     proxy: {
       "/backend/v1": "http://77.37.136.11:7072",
     },
