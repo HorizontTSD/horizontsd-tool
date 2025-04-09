@@ -32,7 +32,7 @@ interface DownloadableDataPoint {
   datetime: number;
   XGBoost_predict: number;
   LSTM_predict: number;
-  Ensemble_predict: number;
+  ensemble_predict: number;
   Real_data?: number;
 }
 

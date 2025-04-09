@@ -6,39 +6,51 @@ import { RootState } from "store";
 import { SensorData, TimeSeriesPoint } from "types";
 import { usePolling } from "./usePoling";
 import { useTranslation } from "react-i18next";
+import { ExcelInfo } from "types";
 
-const isValidForecastData = (data: unknown): data is SensorData => {
-  return !!data && typeof data === "object" && "arithmetic_1464947681" in data;
+interface TextLocale {
+  ru: string;
+  en: string;
+}
+
+interface NewForecastResponse {
+  [index: string]: SensorData;
+}
+
+const isValidForecastData = (data: unknown): data is NewForecastResponse => {
+  if (!data || typeof data !== "object" || data === null) return false;
+
+  const zeroData = (data as Record<string, unknown>)["0"];
+  if (!zeroData || typeof zeroData !== "object" || zeroData === null) return false;
+
+  return Object.keys(zeroData).length > 0;
 };
 
 export const useForecastData = () => {
   const dispatch = useDispatch();
   const forecastData = useSelector((state: RootState) => state.forecast.data);
+  const selectedModel = useSelector((state: RootState) => state.sensor.selectedModel);
   const { i18n } = useTranslation();
   const currentLanguage = i18n.language;
-  const lang = currentLanguage.toLowerCase();
+  const lang = currentLanguage.toLowerCase() as keyof TextLocale;
 
-  const parseSeriesData = useCallback(
-    (data: unknown): [number, number][] => {
-      try {
-        const parsed = typeof data === "string" ? JSON.parse(data) : data;
-        return Array.isArray(parsed)
-          ? parsed.map((item: TimeSeriesPoint) => [item.datetime, item.load_consumption])
-          : [];
-      } catch (e) {
-        console.error("Error parsing data:", e);
-        return [];
-      }
-    },
-    [lang]
-  );
+  const parseSeriesData = useCallback((data: unknown): [number, number][] => {
+    try {
+      const parsed = typeof data === "string" ? JSON.parse(data) : data;
+      return Array.isArray(parsed)
+        ? parsed.map((item: TimeSeriesPoint) => [item.datetime, item.load_consumption])
+        : [];
+    } catch (e) {
+      console.error("Error parsing data:", e);
+      return [];
+    }
+  }, []);
 
   const prepareChartData = useCallback(
     (data: SensorData) => {
-      if (!data) return null;
+      if (!data || !selectedModel || !data[selectedModel]) return null;
 
-      const firstKey = Object.keys(data)[0] as keyof SensorData;
-      const sensorData = data[firstKey];
+      const sensorData = data[selectedModel];
 
       if (!sensorData?.map_data?.data || !sensorData?.description) {
         return null;
@@ -75,16 +87,34 @@ export const useForecastData = () => {
         ],
       };
     },
-    [parseSeriesData]
+    [lang, parseSeriesData, selectedModel]
   );
+
+  const prepareExcelInfo = useCallback((data: SensorData, model: string): ExcelInfo | null => {
+    if (!data || !model || !data[model]) return null;
+
+    const sensorData = data[model];
+    return {
+      data: sensorData.table_to_download || [],
+      sensorName: sensorData.description.sensor_name,
+      sensorId: sensorData.description.sensor_id,
+    };
+  }, []);
 
   const fetchData = useCallback(async (): Promise<SensorData | null> => {
     try {
-      const response = await axios.get<SensorData>("/backend/v1/get_forecast_data");
+      if (!selectedModel) return null;
+
+      const response = await axios.post<NewForecastResponse>("/backend/v1/get_forecast_data", {
+        sensor_ids: [selectedModel],
+      });
 
       if (isValidForecastData(response.data)) {
-        dispatch(setForecastData(response.data));
-        return response.data;
+        const transformedData: SensorData = {
+          [selectedModel]: response.data[0][selectedModel],
+        };
+        dispatch(setForecastData(transformedData));
+        return transformedData;
       }
       console.error("Invalid data structure from server");
       return null;
@@ -92,7 +122,7 @@ export const useForecastData = () => {
       console.error("Error fetching data:", error);
       return null;
     }
-  }, [dispatch]);
+  }, [dispatch, selectedModel]);
 
   usePolling(fetchData, 5 * 60 * 1000, true);
 
@@ -100,5 +130,6 @@ export const useForecastData = () => {
     fetchData,
     forecastData,
     chartData: forecastData ? prepareChartData(forecastData) : null,
+    excelInfo: forecastData && selectedModel ? prepareExcelInfo(forecastData, selectedModel) : null,
   };
 };

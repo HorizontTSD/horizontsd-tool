@@ -42,13 +42,14 @@ export const ModelSelectorDropdown = ({
           borderColor: "divider",
           borderRadius: 1,
           padding: "6px 12px",
+          width: "auto",
           "&:hover": {
             backgroundColor: "action.hover",
           },
         }}
       >
-        <Typography variant="body2" sx={{ mr: 1 }}>
-          {selectedModel || "Sensor id"}
+        <Typography variant="body2" sx={{ mr: 1, textTransform: "none" }}>
+          {selectedModel || "Select sensor"}
         </Typography>
         <ArrowDropDownIcon fontSize="small" />
       </IconButton>
@@ -60,6 +61,7 @@ export const ModelSelectorDropdown = ({
         PaperProps={{
           sx: {
             minWidth: 160,
+            maxHeight: 300,
             boxShadow: 2,
             mt: 1,
             "& .MuiMenuItem-root": {
@@ -83,7 +85,9 @@ export const ModelSelectorDropdown = ({
               },
             }}
           >
-            <Typography variant="body2">{model}</Typography>
+            <Typography variant="body2" sx={{ textTransform: "none" }}>
+              {model}
+            </Typography>
           </MenuItem>
         ))}
       </Menu>
