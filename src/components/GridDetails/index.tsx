@@ -2,6 +2,7 @@ import * as React from "react";
 import { DataGrid, GridColDef, GridRowsProp, GridCellParams } from "@mui/x-data-grid";
 import Chip from "@mui/material/Chip";
 import { SparkLineChart } from "@mui/x-charts/SparkLineChart";
+import { Box } from "@mui/material";
 
 interface CustomRow {
   id: number;
@@ -346,7 +347,7 @@ const rows: GridRowsProp<CustomRow> = [
 
 export const CustomizedDataGrid: React.FC = () => {
   return (
-    <div style={{ height: 600, width: "100%" }}>
+    <Box style={{ height: 600, width: "100%" }}>
       <DataGrid
         rows={rows}
         columns={columns}
@@ -385,6 +386,6 @@ export const CustomizedDataGrid: React.FC = () => {
           },
         }}
       />
-    </div>
+    </Box>
   );
 };

@@ -24,3 +24,5 @@ export { LoadForecastGraphBlock } from "./LoadForecastGraphBlock";
 export { CustomizedDataGrid } from "./GridDetails";
 export { ModelSelectorDropdown } from "./ui/ModelSelectorDropdown";
 export { AlertSettings } from "./AlertSettings";
+export { DynamicFavicon } from "./DynamicFavicon";
+export { Metrix } from "./Metrix";

@@ -13,7 +13,6 @@ import { useSelector } from "react-redux";
 import { useMiniChartData } from "hooks";
 import { useTranslation } from "react-i18next";
 
-
 const trendColors = (theme: Theme) => ({
   positive: theme.palette.success.main,
   negative: theme.palette.error.main,

@@ -31,7 +31,15 @@ export const LoadForecastGraphBlock = () => {
 
   return (
     <>
-      <Box sx={{ display: "flex", justifyContent: "space-between", alignItems: "center", mb: 2 }}>
+      <Box
+        sx={{
+          display: "flex",
+          justifyContent: "space-between",
+          gap: 2,
+          alignItems: "center",
+          mb: 2,
+        }}
+      >
         <ModelSelectorDropdown
           availableModels={models}
           selectedModel={selectedModel}
@@ -77,20 +85,23 @@ export const LoadForecastGraphBlock = () => {
           <Typography>Данные ещё загружаются...</Typography>
         )}
         <Button
-          startIcon={<DownloadIcon />}
           onClick={handleDownload}
           disabled={!excelInfo?.data?.length}
           sx={{
             ml: 2,
+            padding: "6px 12px",
             fontSize: "clamp(8px, 1.5vw, 16px)",
-            padding: "6px 16px",
             backgroundColor: "rgb(129, 199, 132)",
             color: "text.primary",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
             "&:hover": {
-              backgroundColor: "rgb(70, 130, 180",
+              backgroundColor: "rgb(70, 130, 180)",
             },
           }}
         >
+          <DownloadIcon />
           {t("ready_made_forecast_page.download_button")}
         </Button>
       </Box>
