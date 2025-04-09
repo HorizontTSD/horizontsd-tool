@@ -6,8 +6,7 @@ export const exportForecastToExcel = (excelInfo: ExcelInfo) => {
     console.error("No data to export");
     return;
   }
-  console.log("Raw data before formatting:", excelInfo.data);
-  console.log(excelInfo);
+
   const formattedData = excelInfo.data.map((item) => ({
     "Дата и время": new Date(item.datetime).toLocaleString(),
     "Прогноз LSTM": item.LSTM_predict,

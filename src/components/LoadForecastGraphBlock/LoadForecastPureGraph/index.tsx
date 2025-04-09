@@ -40,9 +40,8 @@ export const LoadForecastPureGraph = ({
 
   const rangeOffset = 0.1;
 
-  const minValueY =  minValue * (1 - rangeOffset);
-  const maxValueY =  maxValue * (1 + rangeOffset);
-
+  const minValueY = minValue * (1 - rangeOffset);
+  const maxValueY = maxValue * (1 + rangeOffset);
 
   useEffect(() => {
     const handleResize = () => {
@@ -57,8 +56,6 @@ export const LoadForecastPureGraph = ({
       window.removeEventListener("resize", handleResize);
     };
   }, []);
-
-
 
   const chartOption = {
     backgroundColor: "transparent",
@@ -106,12 +103,12 @@ export const LoadForecastPureGraph = ({
       left: isMobile ? 0 : "auto",
       top: isMobile ? "0" : "10%",
       width: isMobile ? "auto" : 120,
-      formatter: function(name) {
+      formatter: function (name: string) {
         const maxLineLength = 24;
         const words = name.split(" ");
-        let lines = [];
+        const lines = [];
         let currentLine = "";
-        words.forEach(word => {
+        words.forEach((word: string) => {
           if ((currentLine + (currentLine ? " " : "") + word).length <= maxLineLength) {
             currentLine += (currentLine ? " " : "") + word;
           } else {
@@ -177,12 +174,12 @@ export const LoadForecastPureGraph = ({
       nameTextStyle: { align: "left" },
       splitLine: { show: true, interval: "auto" },
       axisLabel: {
-          formatter: (value) => {
-            if (value === minValueY || value === maxValueY) {
-              return "";
-            }
-            return value;
+        formatter: (value: number) => {
+          if (value === minValueY || value === maxValueY) {
+            return "";
           }
+          return value;
+        },
       },
       min: minValueY,
       max: maxValueY,
@@ -201,7 +198,7 @@ export const LoadForecastPureGraph = ({
         start: 0,
         end: 100,
         throttle: 100,
-      }
+      },
     ],
     series: series.map((series) => ({
       name: series.name,
