@@ -1,7 +1,7 @@
 import { RouterProvider } from "react-router";
 import { CssBaseline } from "@mui/material";
 import { Provider } from "react-redux";
-
+import { DynamicFavicon } from "components";
 import {
   chartsCustomizations,
   dataGridCustomizations,
@@ -28,6 +28,7 @@ export function App() {
     <>
       <Provider store={store}>
         <AppTheme themeComponents={xThemeComponents}>
+          <DynamicFavicon />
           <CssBaseline enableColorScheme />
           <RouterProvider router={router} />
         </AppTheme>
