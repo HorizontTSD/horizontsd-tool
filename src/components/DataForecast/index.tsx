@@ -9,7 +9,10 @@ import { WeatherStatCard, CustomizedDataGrid, LoadForecastGraphBlock } from "com
 // import SessionsChart from "./SessionsChart";
 // import { StatCard } from "components";
 import { useTranslation } from "react-i18next";
+
 import { Metrix } from "components/Metrix";
+
+
 
 export const DataForecast = () => {
   const { i18n } = useTranslation();
