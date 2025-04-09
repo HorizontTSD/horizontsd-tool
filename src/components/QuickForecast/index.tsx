@@ -34,7 +34,6 @@ export const QuickForecast = () => {
 
   const handleGoogleSheetsSubmit = useCallback(() => {
     setIsLoading(true);
-    console.log("Processing Google Sheets URL:", googleSheetsUrl);
     setTimeout(() => setIsLoading(false), 2000);
   }, [googleSheetsUrl]);
 
