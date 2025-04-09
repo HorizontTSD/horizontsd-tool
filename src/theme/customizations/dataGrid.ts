@@ -31,7 +31,8 @@ export const dataGridCustomizations: DataGridProComponents<Theme> & DataGridProC
           },
         },
         [`& .${tablePaginationClasses.root}`]: {
-          marginRight: theme.spacing(1),
+          marginRight: 0,
+          overflowY: "hidden",
           "& .MuiIconButton-root": {
             maxHeight: 32,
             maxWidth: 32,

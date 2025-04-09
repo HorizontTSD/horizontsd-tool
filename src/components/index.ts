@@ -26,3 +26,4 @@ export { ModelSelectorDropdown } from "./ui/ModelSelectorDropdown";
 export { AlertSettings } from "./AlertSettings";
 export { DynamicFavicon } from "./DynamicFavicon";
 export { Metrix } from "./Metrix";
+export { GridDropdown } from "./ui/GridDropdown";

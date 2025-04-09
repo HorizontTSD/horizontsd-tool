@@ -1,12 +1,10 @@
 import { useCallback } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import axios from "axios";
-import { setForecastData } from "store/forecastSlice";
-import { RootState } from "store";
-import { SensorData, TimeSeriesPoint } from "types";
+import { setForecastData, RootState } from "store";
+import { SensorData, TimeSeriesPoint, ExcelInfo, ForecastMetrics } from "types";
 import { usePolling } from "./usePoling";
 import { useTranslation } from "react-i18next";
-import { ExcelInfo } from "types";
 
 interface TextLocale {
   ru: string;
@@ -101,6 +99,23 @@ export const useForecastData = () => {
     };
   }, []);
 
+  const prepareMetricsTables = useCallback((data: SensorData, model: string) => {
+    if (!data || !model || !data[model]) return null;
+
+    const sensorData = data[model];
+    const metrixTables = sensorData.metrix_tables;
+
+    if (!metrixTables) return null;
+
+    const metricsResult: { [key: string]: ForecastMetrics[] } = {};
+
+    Object.keys(metrixTables).forEach((key) => {
+      metricsResult[key] = metrixTables[key]?.metrics_table || [];
+    });
+
+    return metricsResult;
+  }, []);
+
   const fetchData = useCallback(async (): Promise<SensorData | null> => {
     try {
       if (!selectedModel) return null;
@@ -131,5 +146,7 @@ export const useForecastData = () => {
     forecastData,
     chartData: forecastData ? prepareChartData(forecastData) : null,
     excelInfo: forecastData && selectedModel ? prepareExcelInfo(forecastData, selectedModel) : null,
+    metricsTables:
+      forecastData && selectedModel ? prepareMetricsTables(forecastData, selectedModel) : null,
   };
 };

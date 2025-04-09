@@ -34,6 +34,7 @@ export const LoadForecastGraphBlock = () => {
       <Box
         sx={{
           display: "flex",
+          flexWrap: "wrap",
           justifyContent: "space-between",
           gap: 2,
           alignItems: "center",
@@ -89,6 +90,8 @@ export const LoadForecastGraphBlock = () => {
           disabled={!excelInfo?.data?.length}
           sx={{
             ml: 2,
+            widows: "130px",
+            maxWidth: "100%",
             padding: "6px 12px",
             fontSize: "clamp(8px, 1.5vw, 16px)",
             backgroundColor: "rgb(129, 199, 132)",
@@ -129,10 +132,8 @@ export const LoadForecastGraphBlock = () => {
             </Box>
           ) : (
             <LoadForecastPureGraph
-              sensorName={chartData.description.sensor_name}
               sensorId={chartData.description.sensor_id}
               series={chartData.series}
-              legend={chartData.legend}
             />
           )}
         </Box>
