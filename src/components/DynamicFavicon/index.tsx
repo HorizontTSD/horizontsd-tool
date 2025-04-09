@@ -10,7 +10,6 @@ export const DynamicFavicon = () => {
 
       const newFavicon = mode === "dark" ? "/dark.svg" : "/light.svg";
 
-      console.log("Changing favicon to:", newFavicon);
       if (favicon) {
         favicon.href = newFavicon;
       }

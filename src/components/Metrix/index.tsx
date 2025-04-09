@@ -1,40 +1,58 @@
-import { Grid, Stack, Typography, TextField, Card } from "@mui/material";
+import { Grid, Stack, Typography, Card } from "@mui/material";
 import { DateTimePicker } from "@mui/x-date-pickers/DateTimePicker";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
+import { ru } from "date-fns/locale";
+import { useMetrixRange } from "hooks";
+import { useState } from "react";
 
 export const Metrix = () => {
+  const { data } = useMetrixRange();
+  const [startDate, setStartDate] = useState<string>(startDefaultDate);
+  const [endDate, setEndDate] = useState<string>(endDefaultDate);
+
   return (
     <Card variant="outlined" sx={{ width: "100%", p: 3 }}>
       <Typography variant="h6" sx={{ mb: 3 }}>
         Диапазон дат
       </Typography>
 
-      <Grid container spacing={2}>
-        <Grid item xs={12} sm={6}>
-          <LocalizationProvider dateAdapter={AdapterDateFns}>
+      <LocalizationProvider dateAdapter={AdapterDateFns} adapterLocale={ru}>
+        <Grid container spacing={2}>
+          <Grid component="div">
             <DateTimePicker
-              label="Начало"
-              value={null}
-              onChange={() => {}}
-              renderInput={(params) => <TextField {...params} fullWidth />}
+              label="Начальная дата"
               ampm={false}
+              format="dd.MM.yyyy HH:mm"
+              value={startDate}
+              onChange={(newValue) => setStartDate(newValue)}
+              minDate={earliestDate}
+              maxDate={endDate || maxDate}
+              slotProps={{
+                textField: {
+                  fullWidth: true,
+                },
+              }}
             />
-          </LocalizationProvider>
-        </Grid>
-
-        <Grid item xs={12} sm={6}>
-          <LocalizationProvider dateAdapter={AdapterDateFns}>
+          </Grid>
+          <Grid component="div">
             <DateTimePicker
-              label="Конец"
-              value={null}
-              onChange={() => {}}
-              renderInput={(params) => <TextField {...params} fullWidth />}
+              label="Конечная дата"
               ampm={false}
+              format="dd.MM.yyyy HH:mm"
+              value={endDate}
+              onChange={(newValue) => setEndDate(newValue)}
+              minDate={startDate || startDefaultDate}
+              maxDate={maxDate}
+              slotProps={{
+                textField: {
+                  fullWidth: true,
+                },
+              }}
             />
-          </LocalizationProvider>
+          </Grid>
         </Grid>
-      </Grid>
+      </LocalizationProvider>
 
       <Stack sx={{ mt: 4 }}>
         <div
