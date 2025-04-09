@@ -6,8 +6,9 @@ COPY package.json ./
 
 RUN npm cache clean --force && \
     rm -rf node_modules && \
-    rm package-lock.json && \
+    [ -f package-lock.json ] && rm package-lock.json || true && \
     npm install
+
 
 COPY . .
 
