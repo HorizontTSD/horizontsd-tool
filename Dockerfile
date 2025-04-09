@@ -1,11 +1,13 @@
-FROM
+FROM node:22-alpine
 
-WORKDIR
+WORKDIR /app
 
-ENV
+COPY package*.json ./
 
-COPY
+RUN npm install
 
-RUN
+COPY . .
 
-ENTRYPOINT []
+EXPOSE 5174
+
+CMD ["npm", "run", "dev"]

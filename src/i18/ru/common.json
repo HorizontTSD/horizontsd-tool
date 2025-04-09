@@ -1,0 +1,36 @@
+{
+  "sidebar": {
+    "menu": {
+      "data_forecast": "Прогноз данных",
+      "alert_settings": "Настройка оповещений",
+      "data_analysis": "Анализ данных",
+      "quick_forecast": "Быстрый прогноз",
+      "about": "Подробнее о нас"
+    }
+  },
+  "nav_bar": {
+    "path": {
+      "main_path": "Горизонт ТСД",
+      "home": "Прогноз данных"
+    }
+  },
+  "footer": {
+    "text": "Все права защищены. Horizon - это оригинальный проект.."
+  },
+  "ready_made_forecast_page" : {
+    "additional_info": "Дополнительная информация",
+    "forecast_chart": "График прогноза",
+    "sensor_name": "Имя датчика",
+    "sensor_id": "ID датчика",
+    "download_button": "Скачать"
+
+  },
+  "metrix_block" : {
+    "error_date_1": "Не удалось загрузить диапазон дат.",
+    "date_range_error": "Выберите дату в пределах допустимого диапазона. Допустимый диапазон ",
+    "sensor_name": "Имя датчика",
+    "sensor_id": "ID датчика",
+    "download_button": "Скачать"
+
+  }
+}
