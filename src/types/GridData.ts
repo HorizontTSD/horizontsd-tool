@@ -14,6 +14,6 @@ export interface MetricsTables {
 
 export interface CustomRow {
   id: number;
-  datetime: string;
+  Time: string;
   [key: string]: number | string;
 }

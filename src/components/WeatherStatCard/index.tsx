@@ -41,7 +41,7 @@ export const WeatherStatCard = () => {
 
   const { i18n } = useTranslation();
   const currentLanguage = i18n.language;
-  const lang = currentLanguage.toLowerCase();
+  const lang = currentLanguage.toLowerCase() as "en" | "ru";
 
   return (
     <>
@@ -65,7 +65,7 @@ export const WeatherStatCard = () => {
                   <Typography variant="caption" sx={{ color: "text.secondary" }}>
                     {stat.description[lang]}
                   </Typography>
-                  <Box sx={{ width: "100%", height: 50 }}>
+                  <Box sx={{ width: "100%", height: 50, overflow: "hidden" }}>
                     <SparkLineChart
                       colors={[colors[stat.percentages.mark]]}
                       data={stat.data.map((el) => Number(el.value.toFixed(2)))}
@@ -73,7 +73,7 @@ export const WeatherStatCard = () => {
                       showHighlight
                       showTooltip
                       xAxis={{
-                        scaleType: "band",
+                        scaleType: "point",
                         data: stat.data.map((el) => formatDate(el.datetime)),
                       }}
                       sx={{
