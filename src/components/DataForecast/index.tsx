@@ -13,9 +13,9 @@ import { useTranslation } from "react-i18next";
 import { Metrix } from "components/Metrix";
 
 export const DataForecast = () => {
-  const { i18n } = useTranslation();
-  const currentLanguage = i18n.language;
-  const lang = currentLanguage.toLowerCase();
+  // const { i18n } = useTranslation();
+  // const currentLanguage = i18n.language;
+  // const lang = currentLanguage.toLowerCase();
   const { t } = useTranslation();
 
   return (

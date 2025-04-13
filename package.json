@@ -24,7 +24,7 @@
     "@mui/x-tree-view": "^7.28.1",
     "@reduxjs/toolkit": "^2.6.1",
     "axios": "^1.8.4",
-    "date-fns": "^2.28.0",
+    "date-fns": "^4.1.0",
     "echarts": "^5.6.0",
     "echarts-for-react": "^3.0.2",
     "i18next": "^24.2.3",

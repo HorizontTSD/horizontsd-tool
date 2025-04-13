@@ -109,8 +109,10 @@ export const useForecastData = () => {
 
     const metricsResult: { [key: string]: ForecastMetrics[] } = {};
 
-    Object.keys(metrixTables).forEach((key) => {
-      metricsResult[key] = metrixTables[key]?.metrics_table || [];
+    Object.entries(metrixTables).forEach(([key, value]) => {
+      if (value?.metrics_table) {
+        metricsResult[key] = value.metrics_table;
+      }
     });
 
     return metricsResult;

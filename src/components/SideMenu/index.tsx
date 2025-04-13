@@ -2,7 +2,7 @@ import { styled, useColorScheme } from "@mui/material/styles";
 import MuiDrawer, { drawerClasses } from "@mui/material/Drawer";
 import Box from "@mui/material/Box";
 import Divider from "@mui/material/Divider";
-import { SelectContent, MenuContent } from "components";
+import { MenuContent } from "components";
 import { Stack } from "@mui/material";
 
 const drawerWidth = 260;
