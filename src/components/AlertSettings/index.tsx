@@ -2,20 +2,31 @@ import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
 import { useState } from "react";
+import { LoadForecastPureGraph } from "components/LoadForecastGraphBlock/LoadForecastPureGraph";
+import { useForecastData } from "hooks";
+import Divider from "@mui/material/Divider"; // Измененный импорт Grid
+import { Grid } from "@mui/material";
 
 export const AlertSettings = () => {
   const [showGraph, setShowGraph] = useState(false);
+  const { chartData } = useForecastData();
 
   const handleToggleGraph = () => {
     setShowGraph(!showGraph);
   };
 
   return (
-    <Box sx={{ width: "100%", maxWidth: { sm: "100%", md: "1700px" }, p: 3 }}>
+    <Box
+      sx={{
+        width: "100%",
+        maxWidth: { sm: "100%", md: "1700px" },
+        p: 3,
+        position: "relative",
+      }}
+    >
       <Typography variant="h5" gutterBottom>
         Создание Уведомления
       </Typography>
-
       <Button
         fullWidth
         variant="outlined"
@@ -33,22 +44,95 @@ export const AlertSettings = () => {
         {showGraph ? "Скрыть график" : "Показать график"}
       </Button>
 
-      {showGraph && (
+      {showGraph && chartData && (
         <Box
           sx={{
-            transition: "max-height 0.5s ease-out",
-            maxHeight: showGraph ? "1000px" : "0",
-            overflow: "hidden",
+            width: "100%",
+            height: 615,
+            position: "absolute", // Абсолютное позиционирование
+            top: 0,
+            left: 0,
+            zIndex: 1, // Чтобы график был поверх других элементов
+            backgroundColor: "background.paper", // Фон, чтобы перекрывать контент
+            mt: 8, // Отступ сверху, чтобы не перекрывать заголовок
             border: "1px solid",
             borderColor: "divider",
             borderRadius: 1,
-            p: 2,
-            mb: 3,
+            overflow: "hidden",
           }}
         >
-          ГРАФИК
+          <LoadForecastPureGraph
+            sensorId={chartData?.description?.sensor_id}
+            series={chartData?.series}
+          />
         </Box>
       )}
+
+      <Divider sx={{ my: 3 }} />
+
+      <Typography variant="h6" gutterBottom>
+        Настройки уведомления
+      </Typography>
+
+      <Grid container spacing={3} sx={{ mb: 3 }}>
+        <Grid xs={12} sm={6} md={3}>
+          <Typography variant="subtitle2" color="text.secondary">
+            Пороговое значение
+          </Typography>
+          <Typography variant="body1">101.00</Typography>
+        </Grid>
+
+        <Grid xs={12} sm={6} md={3}>
+          <Typography variant="subtitle2" color="text.secondary">
+            Схема оповещения
+          </Typography>
+          <Typography variant="body1">above</Typography>
+        </Grid>
+
+        <Grid xs={12} sm={6} md={3}>
+          <Typography variant="subtitle2" color="text.secondary">
+            Частота обновления
+          </Typography>
+          <Typography variant="body1">1d</Typography>
+        </Grid>
+
+        <Grid xs={12} sm={6} md={3}>
+          <Typography variant="subtitle2" color="text.secondary">
+            Интервал предупреждения (за минут)
+          </Typography>
+          <Typography variant="body1">60</Typography>
+        </Grid>
+      </Grid>
+
+      <Grid container spacing={3}>
+        <Grid xs={12} sm={6} md={3}>
+          <Typography variant="subtitle2" color="text.secondary">
+            Начало интервала
+          </Typography>
+          <Typography variant="body1">2025/04/13</Typography>
+        </Grid>
+
+        <Grid xs={12} sm={6} md={3}>
+          <Typography variant="subtitle2" color="text.secondary">
+            Конец интервала
+          </Typography>
+          <Typography variant="body1">2025/04/13</Typography>
+        </Grid>
+
+        <Grid xs={12} sm={6} md={3}>
+          <Typography variant="subtitle2" color="text.secondary">
+            Начало времени
+          </Typography>
+          <Typography variant="body1">00:00</Typography>
+        </Grid>
+
+        <Grid xs={12} sm={6} md={3}>
+          <Typography variant="subtitle2" color="text.secondary">
+            Окончание времени
+          </Typography>
+          <Typography variant="body1">23:59</Typography>
+        </Grid>
+      </Grid>
     </Box>
   );
 };

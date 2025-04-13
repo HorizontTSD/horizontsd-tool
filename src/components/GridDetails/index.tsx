@@ -19,80 +19,81 @@ export const CustomizedDataGrid: React.FC = () => {
   }, [metricsTables, selectedModel]);
 
   return (
-    <Box
-      style={{
-        height: 700,
-        width: "100%",
-        display: "flex",
-        flexDirection: "column",
-        alignItems: "start",
-        gap: "10px",
-      }}
-    >
-      <Box
+    <>
+      <Typography
+        variant="h5"
         sx={{
-          position: "relative",
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "space-between",
-          width: "100%",
+          fontWeight: "600",
           mb: 2,
         }}
       >
-        <GridDropdown selectedModel={selectedModel} onSelect={setSelectedModel} />
-
-        <Typography
-          variant="h5"
+        Таблица метрик по точкам
+      </Typography>
+      <Box
+        style={{
+          height: 700,
+          width: "100%",
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "start",
+          gap: "10px",
+        }}
+      >
+        <Box
           sx={{
-            position: "absolute",
-            left: "50%",
-            transform: "translateX(-50%)",
-            fontWeight: "medium",
+            position: "relative",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "space-between",
+            width: "100%",
+            mb: 2,
           }}
         >
-          Таблица метрик по точкам
-        </Typography>
-      </Box>
-      <DataGrid
-        sx={{
-          width: "100%",
-        }}
-        rows={rows}
-        columns={columns}
-        disableColumnResize
-        density="compact"
-        initialState={{
-          pagination: { paginationModel: { pageSize: 100 } },
-        }}
-        pageSizeOptions={[25, 50, 100]}
-        getRowClassName={(params) => (params.indexRelativeToCurrentPage % 2 === 0 ? "even" : "odd")}
-        slotProps={{
-          filterPanel: {
-            filterFormProps: {
-              logicOperatorInputProps: {
-                variant: "outlined",
-                size: "small",
-              },
-              columnInputProps: {
-                variant: "outlined",
-                size: "small",
-                sx: { mt: "auto" },
-              },
-              operatorInputProps: {
-                variant: "outlined",
-                size: "small",
-                sx: { mt: "auto" },
-              },
-              valueInputProps: {
-                InputComponentProps: {
+          <GridDropdown selectedModel={selectedModel} onSelect={setSelectedModel} />
+        </Box>
+        <DataGrid
+          sx={{
+            width: "100%",
+          }}
+          rows={rows}
+          columns={columns}
+          disableColumnResize
+          density="compact"
+          initialState={{
+            pagination: { paginationModel: { pageSize: 100 } },
+          }}
+          pageSizeOptions={[25, 50, 100]}
+          getRowClassName={(params) =>
+            params.indexRelativeToCurrentPage % 2 === 0 ? "even" : "odd"
+          }
+          slotProps={{
+            filterPanel: {
+              filterFormProps: {
+                logicOperatorInputProps: {
                   variant: "outlined",
                   size: "small",
                 },
+                columnInputProps: {
+                  variant: "outlined",
+                  size: "small",
+                  sx: { mt: "auto" },
+                },
+                operatorInputProps: {
+                  variant: "outlined",
+                  size: "small",
+                  sx: { mt: "auto" },
+                },
+                valueInputProps: {
+                  InputComponentProps: {
+                    variant: "outlined",
+                    size: "small",
+                  },
+                },
               },
             },
-          },
-        }}
-      />
-    </Box>
+          }}
+        />
+      </Box>
+    </>
   );
 };

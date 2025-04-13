@@ -1,4 +1,4 @@
-import { Grid, Typography, Card, Box, CircularProgress, Alert } from "@mui/material";
+import { Typography, Card, Box, CircularProgress, Alert, Grid } from "@mui/material";
 import { DateTimePicker } from "@mui/x-date-pickers/DateTimePicker";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
@@ -32,20 +32,28 @@ const ModelSection = ({ modelName, metrics }: { modelName: string; metrics: Metr
     <Typography variant="h6" sx={{ mb: 2, fontWeight: "medium" }}>
       {modelName}
     </Typography>
-    <Grid container spacing={2}>
-      <Box sx={{ flex: 1, minWidth: 280, height: 125 }}>
+    <Box
+      sx={{
+        display: "flex",
+        flexWrap: "wrap",
+        justifyContent: "center",
+        gap: 2,
+        maxWidth: "100%",
+      }}
+    >
+      <Box sx={{ minWidth: 280, height: 125 }}>
         <MetricCard title="Средняя абсолютная ошибка (MAE)" value={metrics.MAE} />
       </Box>
-      <Box sx={{ flex: 1, minWidth: 280, height: 125 }}>
+      <Box sx={{ minWidth: 280, height: 125 }}>
         <MetricCard title="Среднеквадратичная ошибка (RMSE)" value={metrics.RMSE} />
       </Box>
-      <Box sx={{ flex: 1, minWidth: 280, height: 125 }}>
+      <Box sx={{ minWidth: 280, height: 125 }}>
         <MetricCard title="Коэффициент детерминации (R²)" value={metrics.R2} />
       </Box>
-      <Box sx={{ flex: 1, minWidth: 280, height: 125 }}>
+      <Box sx={{ minWidth: 280, height: 125 }}>
         <MetricCard title="Средняя процентная ошибка (MAPE)" value={metrics.MAPE} unit="%" />
       </Box>
-    </Grid>
+    </Box>
   </Box>
 );
 

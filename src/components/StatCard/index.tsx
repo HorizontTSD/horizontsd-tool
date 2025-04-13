@@ -8,6 +8,14 @@ import Typography from "@mui/material/Typography";
 import { SparkLineChart } from "@mui/x-charts/SparkLineChart";
 import { areaElementClasses } from "@mui/x-charts/LineChart";
 
+interface StatCardProps {
+  title: string;
+  value: string | number;
+  interval: string;
+  trend: "up" | "down" | "neutral";
+  data: number[];
+}
+
 function getDaysInMonth(month: number, year: number) {
   const date = new Date(year, month, 0);
   const monthName = date.toLocaleDateString("en-US", {
