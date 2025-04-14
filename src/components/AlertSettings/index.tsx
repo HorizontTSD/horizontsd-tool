@@ -4,8 +4,7 @@ import Button from "@mui/material/Button";
 import { useState } from "react";
 import { LoadForecastPureGraph } from "components/LoadForecastGraphBlock/LoadForecastPureGraph";
 import { useForecastData } from "hooks";
-import Divider from "@mui/material/Divider"; // Измененный импорт Grid
-import { Grid } from "@mui/material";
+import Divider from "@mui/material/Divider";
 
 export const AlertSettings = () => {
   const [showGraph, setShowGraph] = useState(false);
@@ -49,12 +48,12 @@ export const AlertSettings = () => {
           sx={{
             width: "100%",
             height: 615,
-            position: "absolute", // Абсолютное позиционирование
+            position: "absolute",
             top: 0,
             left: 0,
-            zIndex: 1, // Чтобы график был поверх других элементов
-            backgroundColor: "background.paper", // Фон, чтобы перекрывать контент
-            mt: 8, // Отступ сверху, чтобы не перекрывать заголовок
+            zIndex: 1,
+            backgroundColor: "background.paper",
+            mt: 8,
             border: "1px solid",
             borderColor: "divider",
             borderRadius: 1,
@@ -74,65 +73,85 @@ export const AlertSettings = () => {
         Настройки уведомления
       </Typography>
 
-      <Grid container spacing={3} sx={{ mb: 3 }}>
-        <Grid xs={12} sm={6} md={3}>
+      <Box
+        sx={{
+          display: "flex",
+          flexWrap: "wrap",
+          gap: 3,
+          mb: 3,
+          "& > *": {
+            flex: "1 1 200px",
+            minWidth: 0,
+          },
+        }}
+      >
+        <Box>
           <Typography variant="subtitle2" color="text.secondary">
             Пороговое значение
           </Typography>
           <Typography variant="body1">101.00</Typography>
-        </Grid>
+        </Box>
 
-        <Grid xs={12} sm={6} md={3}>
+        <Box>
           <Typography variant="subtitle2" color="text.secondary">
             Схема оповещения
           </Typography>
           <Typography variant="body1">above</Typography>
-        </Grid>
+        </Box>
 
-        <Grid xs={12} sm={6} md={3}>
+        <Box>
           <Typography variant="subtitle2" color="text.secondary">
             Частота обновления
           </Typography>
           <Typography variant="body1">1d</Typography>
-        </Grid>
+        </Box>
 
-        <Grid xs={12} sm={6} md={3}>
+        <Box>
           <Typography variant="subtitle2" color="text.secondary">
             Интервал предупреждения (за минут)
           </Typography>
           <Typography variant="body1">60</Typography>
-        </Grid>
-      </Grid>
-
-      <Grid container spacing={3}>
-        <Grid xs={12} sm={6} md={3}>
+        </Box>
+      </Box>
+      <Box
+        sx={{
+          display: "flex",
+          flexWrap: "wrap",
+          gap: 3,
+          "& > *": {
+            flex: "1 1 200px",
+            minWidth: 0,
+          },
+        }}
+      >
+        <Box>
           <Typography variant="subtitle2" color="text.secondary">
             Начало интервала
           </Typography>
           <Typography variant="body1">2025/04/13</Typography>
-        </Grid>
+        </Box>
 
-        <Grid xs={12} sm={6} md={3}>
+        <Box>
           <Typography variant="subtitle2" color="text.secondary">
             Конец интервала
           </Typography>
           <Typography variant="body1">2025/04/13</Typography>
-        </Grid>
+        </Box>
 
-        <Grid xs={12} sm={6} md={3}>
+        <Box>
           <Typography variant="subtitle2" color="text.secondary">
             Начало времени
           </Typography>
           <Typography variant="body1">00:00</Typography>
-        </Grid>
+        </Box>
 
-        <Grid xs={12} sm={6} md={3}>
+        <Box>
           <Typography variant="subtitle2" color="text.secondary">
             Окончание времени
           </Typography>
           <Typography variant="body1">23:59</Typography>
-        </Grid>
-      </Grid>
+        </Box>
+      </Box>
     </Box>
   );
 };
