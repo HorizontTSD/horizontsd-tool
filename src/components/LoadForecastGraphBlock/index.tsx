@@ -73,9 +73,9 @@ export const LoadForecastGraphBlock = () => {
               {t("ready_made_forecast_page.sensor_name")} -{" "}
               <span
                 style={{
-                  backgroundColor: "rgba(0, 123, 255, 0.2)",
+                  backgroundColor: "rgba(34, 145, 255, 0.2)",
                   color: "inherit",
-                  border: "1px solid blue",
+                  border: "2px solid #2291FF",
                   borderRadius: "12px",
                   padding: "2px 8px",
                   fontWeight: "bold",
@@ -88,9 +88,9 @@ export const LoadForecastGraphBlock = () => {
                 {t("ready_made_forecast_page.sensor_id")} -{" "}
                 <span
                   style={{
-                    backgroundColor: "rgba(255, 0, 0, 0.2)",
+                    backgroundColor: "rgba(254, 76, 76, 0.2)",
                     color: "inherit",
-                    border: "1px solid red",
+                    border: "2px solid #FE4C4C",
                     borderRadius: "12px",
                     padding: "2px 8px",
                     fontWeight: "bold",
@@ -104,25 +104,25 @@ export const LoadForecastGraphBlock = () => {
             <Typography>Данные ещё загружаются...</Typography>
           )}
 
-          <Button
-            onClick={handleDownload}
-            disabled={!excelInfo?.data?.length}
-            sx={{
-              width: { xs: "100%", sm: "130px" },
-              maxWidth: "100%",
-              padding: "6px 12px",
-              fontSize: "clamp(8px, 1.5vw, 16px)",
-              backgroundColor: "rgb(129, 199, 132)",
-              color: "text.primary",
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-              "&:hover": {
-                backgroundColor: "rgb(70, 130, 180)",
-              },
-            }}
-          >
-            <DownloadIcon />
+            <Button
+              onClick={handleDownload}
+              disabled={!excelInfo?.data?.length}
+              sx={{
+                width: { xs: "100%", sm: "130px" },
+                maxWidth: "100%",
+                padding: "6px 12px",
+                fontSize: "clamp(8px, 1.5vw, 16px)",
+                backgroundColor: "#26AD50",
+                color: "text.primary",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                "&:hover": {
+                  backgroundColor: "#218B3D",
+                },
+              }}
+            >
+             <DownloadIcon />
             {t("ready_made_forecast_page.download_button")}
           </Button>
         </Box>
