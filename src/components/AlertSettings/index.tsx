@@ -73,7 +73,6 @@ export const AlertSettings = () => {
         Настройки уведомления
       </Typography>
 
-      {/* Первая строка настроек */}
       <Box
         sx={{
           display: "flex",
@@ -114,8 +113,6 @@ export const AlertSettings = () => {
           <Typography variant="body1">60</Typography>
         </Box>
       </Box>
-
-      {/* Вторая строка настроек */}
       <Box
         sx={{
           display: "flex",
