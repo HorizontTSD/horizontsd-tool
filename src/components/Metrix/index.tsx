@@ -159,10 +159,6 @@ export const Metrix = () => {
                 modelName={t("metrix_bloc.model_xgboost")}
                 metrics={metrics[0].XGBoost}
               />
-              <ModelSection
-                modelName={t("metrix_bloc.model_xgboost")}
-                metrics={metrics[0].XGBoost}
-              />
               <ModelSection modelName={t("metrix_bloc.model_lstm")} metrics={metrics[0].LSTM} />
             </>
           )}
