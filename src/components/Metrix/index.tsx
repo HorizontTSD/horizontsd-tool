@@ -7,15 +7,18 @@ import { useMetrixData, useMetrixRange } from "hooks";
 import { useEffect, useState } from "react";
 import { Metrics } from "types";
 import { useTranslation } from "react-i18next";
+import LatexEquation from "./LatexEquation";
 
 const MetricCard = ({
   title,
   value,
   unit = "",
+  equation = "",
 }: {
   title: string;
   value: number;
   unit?: string;
+  equation?: string;
 }) => (
   <Card variant="outlined" sx={{ height: "100%", p: 2 }}>
     <Typography variant="subtitle2" color="text.secondary">
@@ -25,6 +28,12 @@ const MetricCard = ({
       {value.toFixed(2)}
       {unit}
     </Typography>
+
+    {equation && (
+      <Box sx={{ mt: 2, wordWrap: "break-word", overflow: "hidden" }}>
+        <LatexEquation equation={equation} />
+      </Box>
+    )}
   </Card>
 );
 
@@ -126,7 +135,10 @@ export const Metrix = () => {
 
           {metrics && metrics.length > 0 && (
             <>
-              <ModelSection modelName={t("metrix_bloc.model_xgboost")} metrics={metrics[0].XGBoost} />
+              <ModelSection
+                modelName={t("metrix_bloc.model_xgboost")}
+                metrics={metrics[0].XGBoost}
+              />
               <ModelSection modelName={t("metrix_bloc.model_lstm")} metrics={metrics[0].LSTM} />
             </>
           )}
