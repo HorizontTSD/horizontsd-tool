@@ -6,6 +6,7 @@ import { ru } from "date-fns/locale";
 import { useMetrixData, useMetrixRange } from "hooks";
 import { useEffect, useState } from "react";
 import { Metrics } from "types";
+import { useTranslation } from "react-i18next";
 
 const MetricCard = ({
   title,
@@ -27,40 +28,45 @@ const MetricCard = ({
   </Card>
 );
 
-const ModelSection = ({ modelName, metrics }: { modelName: string; metrics: Metrics }) => (
-  <Box sx={{ mb: 4, display: "flex", flexDirection: "column", alignItems: "center" }}>
-    <Typography variant="h6" sx={{ mb: 2, fontWeight: "medium" }}>
-      {modelName}
-    </Typography>
-    <Box
-      sx={{
-        display: "flex",
-        flexWrap: "wrap",
-        justifyContent: "center",
-        gap: 2,
-        maxWidth: "100%",
-      }}
-    >
-      <Box sx={{ minWidth: 280, height: 125 }}>
-        <MetricCard title="Средняя абсолютная ошибка (MAE)" value={metrics.MAE} />
-      </Box>
-      <Box sx={{ minWidth: 280, height: 125 }}>
-        <MetricCard title="Среднеквадратичная ошибка (RMSE)" value={metrics.RMSE} />
-      </Box>
-      <Box sx={{ minWidth: 280, height: 125 }}>
-        <MetricCard title="Коэффициент детерминации (R²)" value={metrics.R2} />
-      </Box>
-      <Box sx={{ minWidth: 280, height: 125 }}>
-        <MetricCard title="Средняя процентная ошибка (MAPE)" value={metrics.MAPE} unit="%" />
+const ModelSection = ({ modelName, metrics }: { modelName: string; metrics: Metrics }) => {
+  const { t } = useTranslation();
+
+  return (
+    <Box sx={{ mb: 4, display: "flex", flexDirection: "column", alignItems: "center" }}>
+      <Typography variant="h6" sx={{ mb: 2, fontWeight: "medium" }}>
+        {modelName}
+      </Typography>
+      <Box
+        sx={{
+          display: "flex",
+          flexWrap: "wrap",
+          justifyContent: "center",
+          gap: 2,
+          maxWidth: "100%",
+        }}
+      >
+        <Box sx={{ minWidth: 280, height: 125 }}>
+          <MetricCard title={t("metrix_bloc.mae")} value={metrics.MAE} />
+        </Box>
+        <Box sx={{ minWidth: 280, height: 125 }}>
+          <MetricCard title={t("metrix_bloc.rmse")} value={metrics.RMSE} />
+        </Box>
+        <Box sx={{ minWidth: 280, height: 125 }}>
+          <MetricCard title={t("metrix_bloc.r2")} value={metrics.R2} />
+        </Box>
+        <Box sx={{ minWidth: 280, height: 125 }}>
+          <MetricCard title={t("metrix_bloc.mape")} value={metrics.MAPE} unit="%" />
+        </Box>
       </Box>
     </Box>
-  </Box>
-);
+  );
+};
 
 export const Metrix = () => {
   const { earliestDate, maxDate, startDefaultDate, endDefaultDate } = useMetrixRange();
   const [startDate, setStartDate] = useState<Date | null>(startDefaultDate);
   const [endDate, setEndDate] = useState<Date | null>(endDefaultDate);
+  const { t } = useTranslation();
 
   useEffect(() => {
     setStartDate(startDefaultDate);
@@ -70,17 +76,17 @@ export const Metrix = () => {
   const { metrics, loading, error } = useMetrixData(startDate, endDate);
   return (
     <>
-      <Typography variant="h5">Метрики моделей за выбранный период</Typography>
+      <Typography variant="h5">{t("metrix_bloc.title")}</Typography>
       <Card variant="outlined" sx={{ width: "100%", p: 3 }}>
         <Typography variant="h6" sx={{ mb: 3 }}>
-          Диапазон дат
+          {t("metrix_bloc.date_range")}
         </Typography>
 
         <LocalizationProvider dateAdapter={AdapterDateFns} adapterLocale={ru}>
           <Grid container spacing={2}>
             <Grid component="div">
               <DateTimePicker
-                label="Начальная дата"
+                label={t("metrix_bloc.start_date")}
                 ampm={false}
                 format="dd.MM.yyyy HH:mm"
                 value={startDate}
@@ -92,7 +98,7 @@ export const Metrix = () => {
             </Grid>
             <Grid component="div">
               <DateTimePicker
-                label="Конечная дата"
+                label={t("metrix_bloc.end_date")}
                 ampm={false}
                 format="dd.MM.yyyy HH:mm"
                 value={endDate}
@@ -114,20 +120,20 @@ export const Metrix = () => {
 
           {error && (
             <Alert severity="error" sx={{ mb: 3 }}>
-              Ошибка загрузки данных: {error}
+              {t("metrix_bloc.error_1")} {error}
             </Alert>
           )}
 
           {metrics && metrics.length > 0 && (
             <>
-              <ModelSection modelName="Модель XGBoost" metrics={metrics[0].XGBoost} />
-              <ModelSection modelName="Модель LSTM" metrics={metrics[0].LSTM} />
+              <ModelSection modelName={t("metrix_bloc.model_xgboost")} metrics={metrics[0].XGBoost} />
+              <ModelSection modelName={t("metrix_bloc.model_lstm")} metrics={metrics[0].LSTM} />
             </>
           )}
 
           {!loading && !metrics && !error && (
             <Alert severity="info" sx={{ mt: 2 }}>
-              Выберите диапазон дат для отображения метрик прогнозирования
+              {t("metrix_bloc.chose_alert")}
             </Alert>
           )}
         </Box>
