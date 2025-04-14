@@ -110,7 +110,11 @@ export const Metrix = () => {
         <Typography variant="h6" sx={{ mb: 3 }}>
           {t("metrix_bloc.date_range")}
         </Typography>
-
+        {loading && (
+          <Box sx={{ display: "flex", justifyContent: "center", p: 4 }}>
+            <CircularProgress />
+          </Box>
+        )}
         <LocalizationProvider dateAdapter={AdapterDateFns} adapterLocale={ru}>
           <Grid container spacing={2}>
             <Grid component="div">
@@ -141,12 +145,6 @@ export const Metrix = () => {
         </LocalizationProvider>
 
         <Box sx={{ mt: 2 }}>
-          {loading && (
-            <Box sx={{ display: "flex", justifyContent: "center", p: 4 }}>
-              <CircularProgress />
-            </Box>
-          )}
-
           {error && (
             <Alert severity="error" sx={{ mb: 3 }}>
               {t("metrix_bloc.error_1")} {error}
@@ -161,12 +159,6 @@ export const Metrix = () => {
               />
               <ModelSection modelName={t("metrix_bloc.model_lstm")} metrics={metrics[0].LSTM} />
             </>
-          )}
-
-          {!loading && !metrics && !error && (
-            <Alert severity="info" sx={{ mt: 2 }}>
-              {t("metrix_bloc.chose_alert")}
-            </Alert>
           )}
         </Box>
       </Card>
