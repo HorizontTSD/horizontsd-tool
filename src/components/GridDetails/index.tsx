@@ -3,11 +3,14 @@ import { DataGrid } from "@mui/x-data-grid";
 import { Box, Typography } from "@mui/material";
 import { GridDropdown } from "components/ui/GridDropdown";
 import { useForecastData, useGridData } from "hooks";
+import { useTranslation } from "react-i18next";
+
 
 export const CustomizedDataGrid: React.FC = () => {
   const { metricsTables } = useForecastData();
   const [selectedModel, setSelectedModel] = useState<string | null>(null);
   const { rows, columns } = useGridData(metricsTables, selectedModel);
+  const { t } = useTranslation();
 
   useEffect(() => {
     if (metricsTables && !selectedModel) {
@@ -27,7 +30,7 @@ export const CustomizedDataGrid: React.FC = () => {
           mb: 2,
         }}
       >
-        Таблица метрик по точкам
+        {t("metrix_table.title")}
       </Typography>
       <Box
         style={{
