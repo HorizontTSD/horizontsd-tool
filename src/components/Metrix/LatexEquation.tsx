@@ -1,18 +1,24 @@
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 import katex from "katex";
 import "katex/dist/katex.min.css";
 
 const LatexEquation = ({ equation }: { equation: string }) => {
+  const containerRef = useRef<HTMLDivElement>(null);
+
   useEffect(() => {
-    const element = document.getElementById(equation);
-    if (element) {
-      katex.render(equation, element, {
-        throwOnError: false,
-      });
+    if (containerRef.current && equation) {
+      try {
+        katex.render(equation, containerRef.current, {
+          throwOnError: false,
+          displayMode: true,
+        });
+      } catch (e) {
+        console.error("KaTeX rendering error:", e);
+      }
     }
   }, [equation]);
 
-  return <span id={equation}></span>;
+  return <div ref={containerRef} />;
 };
 
 export default LatexEquation;

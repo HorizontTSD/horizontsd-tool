@@ -9,6 +9,31 @@ import { Metrics } from "types";
 import { useTranslation } from "react-i18next";
 import LatexEquation from "./LatexEquation";
 
+type MetricConfig = { key: string; titleKey: string; equation: string; unit?: string };
+const METRIC_CONFIG: MetricConfig[] = [
+  {
+    key: "MAE",
+    titleKey: "metrix_bloc.mae",
+    equation: "MAE = (1/n) ∑|y_i - ŷ_i|",
+  },
+  {
+    key: "RMSE",
+    titleKey: "metrix_bloc.rmse",
+    equation: "RMSE = √(1/n ∑(y_i - ŷ_i)²)",
+  },
+  {
+    key: "R2",
+    titleKey: "metrix_bloc.r2",
+    equation: "R² = 1 - (∑(y_i - ŷ_i)²) / (∑(y_i - ȳ)²)",
+  },
+  {
+    key: "MAPE",
+    titleKey: "metrix_bloc.mape",
+    equation: "MAPE = (1/n) ∑ |(y_i - ŷ_i) / y_i| × 100",
+    unit: "%",
+  },
+];
+
 const MetricCard = ({
   title,
   value,
@@ -39,34 +64,23 @@ const MetricCard = ({
 
 const ModelSection = ({ modelName, metrics }: { modelName: string; metrics: Metrics }) => {
   const { t } = useTranslation();
-
   return (
     <Box sx={{ mb: 4, display: "flex", flexDirection: "column", alignItems: "center" }}>
       <Typography variant="h6" sx={{ mb: 2, fontWeight: "medium" }}>
         {modelName}
       </Typography>
-      <Box
-        sx={{
-          display: "flex",
-          flexWrap: "wrap",
-          justifyContent: "center",
-          gap: 2,
-          maxWidth: "100%",
-        }}
-      >
-        <Box sx={{ minWidth: 280, height: 125 }}>
-          <MetricCard title={t("metrix_bloc.mae")} value={metrics.MAE} />
-        </Box>
-        <Box sx={{ minWidth: 280, height: 125 }}>
-          <MetricCard title={t("metrix_bloc.rmse")} value={metrics.RMSE} />
-        </Box>
-        <Box sx={{ minWidth: 280, height: 125 }}>
-          <MetricCard title={t("metrix_bloc.r2")} value={metrics.R2} />
-        </Box>
-        <Box sx={{ minWidth: 280, height: 125 }}>
-          <MetricCard title={t("metrix_bloc.mape")} value={metrics.MAPE} unit="%" />
-        </Box>
-      </Box>
+      <Grid container spacing={3} justifyContent="center">
+        {METRIC_CONFIG.map(({ key, titleKey, equation, unit }) => (
+          <Box key={key} sx={{ minWidth: 330, height: 150 }}>
+            <MetricCard
+              title={t(titleKey)}
+              value={metrics[key as keyof Metrics] ?? 0}
+              equation={equation}
+              unit={unit}
+            />
+          </Box>
+        ))}
+      </Grid>
     </Box>
   );
 };
