@@ -59,34 +59,46 @@ const MetricCard = ({
         <LatexEquation equation={equation} />
       </Box>
     )}
-
-    {equation && (
-      <Box sx={{ mt: 2, wordWrap: "break-word", overflow: "hidden" }}>
-        <LatexEquation equation={equation} />
-      </Box>
-    )}
   </Card>
 );
 
 const ModelSection = ({ modelName, metrics }: { modelName: string; metrics: Metrics }) => {
   const { t } = useTranslation();
   return (
-    <Box sx={{ mb: 4, display: "flex", flexDirection: "column", alignItems: "center" }}>
-      <Typography variant="h6" sx={{ mb: 2, fontWeight: "medium" }}>
+    <Box
+      sx={{
+        mb: 4,
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "center",
+        width: "100%",
+      }}
+    >
+      <Typography variant="h6" sx={{ mb: 3, fontWeight: "medium" }}>
         {modelName}
       </Typography>
-      <Grid container spacing={3} justifyContent="center">
+      <Box
+        sx={{
+          display: "grid",
+          gridTemplateColumns: {
+            xs: "1fr",
+            sm: "repeat(2, 1fr)",
+            lg: "repeat(4, 1fr)",
+          },
+          gap: 3,
+          width: "100%",
+        }}
+      >
         {METRIC_CONFIG.map(({ key, titleKey, equation, unit }) => (
-          <Box key={key} sx={{ minWidth: 330, height: 150 }}>
-            <MetricCard
-              title={t(titleKey)}
-              value={metrics[key as keyof Metrics] ?? 0}
-              equation={equation}
-              unit={unit}
-            />
-          </Box>
+          <MetricCard
+            key={key}
+            title={t(titleKey)}
+            value={metrics[key as keyof Metrics] ?? 0}
+            equation={equation}
+            unit={unit}
+          />
         ))}
-      </Grid>
+      </Box>
     </Box>
   );
 };
