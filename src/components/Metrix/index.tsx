@@ -49,7 +49,6 @@ const MetricCard = ({
   <Card
     variant="outlined"
     sx={{
-      height: "100%",
       p: 2,
       overflowX: "auto",
       minWidth: 0,
@@ -104,7 +103,6 @@ const ModelSection = ({ modelName, metrics }: { modelName: string; metrics: Metr
           gap: 3,
           width: "100%",
           minWidth: 0,
-          alignItems: "stretch",
         }}
       >
         {METRIC_CONFIG.map(({ key, titleKey, equation, unit }) => (
