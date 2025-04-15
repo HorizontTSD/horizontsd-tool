@@ -10,6 +10,7 @@ import { useTranslation } from "react-i18next";
 import LatexEquation from "./LatexEquation";
 
 type MetricConfig = { key: string; titleKey: string; equation: string; unit?: string };
+
 const METRIC_CONFIG: MetricConfig[] = [
   {
     key: "MAE",
@@ -45,7 +46,7 @@ const MetricCard = ({
   unit?: string;
   equation?: string;
 }) => (
-  <Card variant="outlined" sx={{ height: "100%", p: 2 }}>
+  <Card variant="outlined" sx={{ height: "100%", p: 2, overflowX: "auto" }}>
     <Typography variant="subtitle2" color="text.secondary">
       {title}
     </Typography>
@@ -55,7 +56,7 @@ const MetricCard = ({
     </Typography>
 
     {equation && (
-      <Box sx={{ mt: 2, wordWrap: "break-word", overflow: "hidden" }}>
+      <Box sx={{ mt: 2 }}>
         <LatexEquation equation={equation} />
       </Box>
     )}
@@ -72,6 +73,7 @@ const ModelSection = ({ modelName, metrics }: { modelName: string; metrics: Metr
         flexDirection: "column",
         alignItems: "center",
         width: "100%",
+        justifyContent: "center",
       }}
     >
       <Typography variant="h6" sx={{ mb: 3, fontWeight: "medium" }}>
@@ -83,8 +85,10 @@ const ModelSection = ({ modelName, metrics }: { modelName: string; metrics: Metr
           display: "grid",
           gridTemplateColumns: {
             xs: "1fr",
-            sm: "repeat(2, 1fr)",
-            lg: "repeat(4, 1fr)",
+            sm: "repeat(1, 1fr)",
+            md: "repeat(2, 1fr)",
+            lg: "repeat(2, 1fr)",
+            xl: "repeat(4, 1fr)",
           },
           gap: 3,
           width: "100%",
