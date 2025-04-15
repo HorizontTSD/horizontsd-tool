@@ -59,12 +59,6 @@ const MetricCard = ({
         <LatexEquation equation={equation} />
       </Box>
     )}
-
-    {equation && (
-      <Box sx={{ mt: 2, wordWrap: "break-word", overflow: "hidden" }}>
-        <LatexEquation equation={equation} />
-      </Box>
-    )}
   </Card>
 );
 
@@ -106,7 +100,6 @@ const ModelSection = ({ modelName, metrics }: { modelName: string; metrics: Metr
           />
         ))}
       </Box>
-
     </Box>
   );
 };
@@ -173,10 +166,6 @@ export const Metrix = () => {
 
           {metrics && metrics.length > 0 && (
             <>
-              <ModelSection
-                modelName={t("metrix_bloc.model_xgboost")}
-                metrics={metrics[0].XGBoost}
-              />
               <ModelSection
                 modelName={t("metrix_bloc.model_xgboost")}
                 metrics={metrics[0].XGBoost}
