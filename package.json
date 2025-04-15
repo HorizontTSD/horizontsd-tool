@@ -6,7 +6,7 @@
   "scripts": {
     "dev": "vite",
     "build": "tsc -b && vite build",
-    "analyze": "vite build --mode analyze",
+    "analyze": "",
     "lint": "eslint . --ext ts,tsx --fix",
     "preview": "vite preview",
     "proxy": "http://77.37.136.11:7072"
