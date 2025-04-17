@@ -84,7 +84,7 @@ export const LoadForecastPureGraph = ({ series }: LoadForecastPureGraphProps) =>
       },
     },
     legend: {
-      data: series.map((s) => s.name),
+      data: series.map((s,i) => s?.name || i),
       orient: isMobile ? "horizontal" : "vertical",
       bottom: isMobile ? 10 : "auto",
       right: 0,
