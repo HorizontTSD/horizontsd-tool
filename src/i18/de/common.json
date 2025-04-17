@@ -1,0 +1,44 @@
+{
+  "sidebar": {
+    "menu": {
+      "data_forecast": "Datenvorhersage",
+      "alert_settings": "Alarmeinstellungen",
+      "data_analysis": "Datenanalyse",
+      "quick_forecast": "Schnelle Vorhersage",
+      "about": "Mehr über uns"
+    }
+  },
+  "nav_bar": {
+    "path": {
+      "main_path": "Horizon TSD",
+      "home": "Vorhersagedaten"
+    }
+  },
+  "footer": {
+    "text": "Alle Rechte vorbehalten. Horizon ist ein Originalprojekt."
+  },
+  "ready_made_forecast_page" : {
+    "additional_info": "Zusätzliche Informationen",
+    "forecast_chart": "Vorhersage-Diagramm",
+    "sensor_name": "Sensorname",
+    "sensor_id": "Sensor-ID",
+    "download_button": "Herunterladen"
+  },
+  "metrix_bloc": {
+    "title": "Modellmetriken für den ausgewählten Zeitraum",
+    "end_date": "Startdatum",
+    "start_date": "Enddatum",
+    "mae": "Mittlerer Absoluter Fehler (MAE)",
+    "mape": "Mittlerer Absoluter Prozentualer Fehler (MAPE)",
+    "r2": "Bestimmtheitsmaß (R²)",
+    "rmse": "Wurzel des Mittleren Quadratischen Fehlers (RMSE)",
+    "date_range": "Datumsbereich",
+    "error_1": "Fehler beim Laden der Daten:",
+    "model_xgboost": "Modell XGBoost",
+    "model_lstm": "Modell LSTM",
+    "chose_alert": "Wählen Sie einen Datumsbereich, um die Vorhersagemetriken anzuzeigen"
+  },
+  "metrix_table": {
+    "title": "Tabelle der Metriken nach Punkten"
+  }
+}

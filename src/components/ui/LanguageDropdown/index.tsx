@@ -8,10 +8,19 @@ import { useTranslation } from "react-i18next";
 
 import ukFlagUrl from "assets/svg/ukFlag.svg?url";
 import ruFlagUrl from "assets/svg/ruFlag.svg?url";
+import zhFlagUrl from "assets/svg/zhFlag.svg?url";
+import itFlagUrl from "assets/svg/itFlag.svg?url";
+import frFlagUrl from "assets/svg/frFlag.svg?url";
+import deFlagUrl from "assets/svg/deFlag.svg?url";
+
 
 const languages = [
   { code: "en", name: "English", flagUrl: ukFlagUrl },
   { code: "ru", name: "Русский", flagUrl: ruFlagUrl },
+  { code: "zh", name: "中文", flagUrl: zhFlagUrl },
+  { code: "it", name: "Italiano", flagUrl: itFlagUrl },
+  { code: "fr", name: "Français", flagUrl: frFlagUrl },
+  { code: "de", name: "Deutsch", flagUrl: deFlagUrl },
 ];
 
 export const LanguageDropdown = () => {
