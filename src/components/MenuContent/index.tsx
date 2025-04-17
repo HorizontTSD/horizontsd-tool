@@ -74,7 +74,7 @@ export const MenuContent = () => {
       </List>
 <Button
 //   variant="contained"
-  onClick={() => window.open("http://77.37.136.11:8601/ru", "_blank", "noopener noreferrer")}
+  // onClick={() => window.open("http://77.37.136.11:8601/ru", "_blank", "noopener noreferrer")}
   sx={{
     backgroundColor: "#1A7BD7",
     color: "white",

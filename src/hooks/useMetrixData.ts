@@ -18,7 +18,7 @@ export const useMetrixData = (dateStart: Date | null, dateEnd: Date | null) => {
       setError(null);
 
       try {
-        const response = await axios.post<MetricsResponse>("/backend/v1/metrix_by_period", {
+        const response = await axios.post<MetricsResponse>(`${import.meta.env.VITE_BACKEND}/backend/v1/metrix_by_period`, {
           sensor_ids: [sensorId],
           date_start: dateStart.toISOString(),
           date_end: dateEnd.toISOString(),

@@ -13,21 +13,6 @@ export default defineConfig({
       brotliSize: true,
     }),
   ],
-  server: {
-    host: true,
-    proxy: {
-      "/backend/v1": "http://77.37.136.11:7072",
-    },
-    port: 5174,
-    cors: true,
-    strictPort: true,
-    watch: {
-      usePolling: true,
-    },
-    hmr: {
-      clientPort: 5174,
-    },
-  },
   build: {
     chunkSizeWarningLimit: 800,
     rollupOptions: {
@@ -37,9 +22,7 @@ export default defineConfig({
           mui: ["@mui/material", "@mui/icons-material", "@emotion/react", "@emotion/styled"],
           muiX: [
             "@mui/x-data-grid",
-            "@mui/x-data-grid-pro",
             "@mui/x-date-pickers",
-            "@mui/x-date-pickers-pro",
             "@mui/x-charts",
             "@mui/x-tree-view",
           ],

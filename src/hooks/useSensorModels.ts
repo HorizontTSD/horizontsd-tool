@@ -22,7 +22,7 @@ export const useSensorModels = (): SensorModelHook => {
     if (isFetched) return;
 
     try {
-      const response = await axios.get<string[]>("/backend/v1/get_sensor_id_list");
+      const response = await axios.get<string[]>(`${import.meta.env.VITE_BACKEND}/backend/v1/get_sensor_id_list`);
       dispatch(setModels(response.data));
     } catch (error) {
       console.error("Ошибка при загрузке моделей:", error);
