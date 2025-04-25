@@ -72,25 +72,22 @@ export const MenuContent = () => {
           </ListItem>
         ))}
       </List>
-<Button
-//   variant="contained"
-  // onClick={() => window.open("http://77.37.136.11:8601/ru", "_blank", "noopener noreferrer")}
-  sx={{
-    backgroundColor: "#1A7BD7",
-    color: "white",
-    "&:hover": {
-      backgroundColor: "#2291FF",
-    },
-    "&.MuiButton-contained": {
-      backgroundColor: "#2291FF",
-    },
-  }}
->
-  {t("sidebar.menu.about")}
-</Button>
 
-
-
+      <Button
+        onClick={() => window.open("http://horizontsd.ru", "_blank", "noopener noreferrer")}
+        sx={{
+          backgroundColor: "#1A7BD7",
+          color: "white",
+          "&:hover": {
+            backgroundColor: "#2291FF",
+          },
+          "&.MuiButton-contained": {
+            backgroundColor: "#2291FF",
+          },
+        }}
+      >
+        {t("sidebar.menu.about")}
+      </Button>
 
     </Stack>
   );

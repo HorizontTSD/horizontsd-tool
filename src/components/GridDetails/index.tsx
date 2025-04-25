@@ -5,7 +5,6 @@ import { GridDropdown } from "components/ui/GridDropdown";
 import { useForecastData, useGridData } from "hooks";
 import { useTranslation } from "react-i18next";
 
-
 export const CustomizedDataGrid: React.FC = () => {
   const { metricsTables } = useForecastData();
   const [selectedModel, setSelectedModel] = useState<string | null>(null);
