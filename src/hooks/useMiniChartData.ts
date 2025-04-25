@@ -9,7 +9,7 @@ export const useMiniChartData = () => {
 
   const fetchMiniCharts = useCallback(async () => {
     try {
-      const response = await axios.get("/backend/v1/get_mini_charts_data");
+      const response = await axios.get(`${import.meta.env.VITE_BACKEND}/backend/v1/get_mini_charts_data`);
       dispatch(setMiniCharts(response.data));
     } catch (err) {
       console.error("Ошибка при получении мини-графиков:", err);

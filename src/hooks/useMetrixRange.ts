@@ -32,8 +32,7 @@ export const useMetrixRange = () => {
       try {
         if (!sensorId) return;
 
-        const response = await axios.post<ResponseData>(
-          "/backend/v1/fetch_possible_date_for_metrix",
+        const response = await axios.post<ResponseData>(`${import.meta.env.VITE_BACKEND}/backend/v1/fetch_possible_date_for_metrix`,
           { sensor_ids: [sensorId] }
         );
 

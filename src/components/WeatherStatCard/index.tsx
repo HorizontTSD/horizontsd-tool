@@ -41,8 +41,8 @@ export const WeatherStatCard = () => {
 
   const { i18n } = useTranslation();
   const currentLanguage = i18n.language;
-  const lang = currentLanguage.toLowerCase() as "en" | "ru";
-
+  const lang = currentLanguage.split(`-`)[0] as "en" | "ru";
+  
   return (
     <>
       {charts.map((stat) => (

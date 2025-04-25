@@ -4,8 +4,6 @@ import { Provider } from "react-redux";
 import { DynamicFavicon } from "components";
 import {
   chartsCustomizations,
-  dataGridCustomizations,
-  datePickersCustomizations,
   treeViewCustomizations,
   loaderCustomizations,
   AppTheme,
@@ -17,8 +15,6 @@ import { store } from "store";
 
 const xThemeComponents = {
   ...chartsCustomizations,
-  ...dataGridCustomizations,
-  ...datePickersCustomizations,
   ...treeViewCustomizations,
   ...loaderCustomizations,
 };

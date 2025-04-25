@@ -121,8 +121,7 @@ export const useForecastData = () => {
   const fetchData = useCallback(async (): Promise<SensorData | null> => {
     try {
       if (!selectedModel) return null;
-
-      const response = await axios.post<NewForecastResponse>("/backend/v1/get_forecast_data", {
+      const response = await axios.post<NewForecastResponse>(`${import.meta.env.VITE_BACKEND}/backend/v1/get_forecast_data`, {
         sensor_ids: [selectedModel],
       });
 

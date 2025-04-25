@@ -1,3 +1,21 @@
+### DEVELOPMENT
+```
+npm i
+npm run dev
+```
+
+<br/>
+
+### CONFIGURATION
+
+Put backend `IP` as value of `VITE_BACKEND` into `.env`. \
+Example:
+```txt
+VITE_BACKEND=http://0.0.0.0:1234
+```
+
+<br/>
+
 <!-- markdownlint-disable first-line-h1 -->
 <!-- markdownlint-disable html -->
 <!-- markdownlint-disable no-duplicate-header -->

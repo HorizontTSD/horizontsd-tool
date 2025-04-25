@@ -1,15 +1,13 @@
 {
-  "name": "1",
+  "name": "horizontsd-tool",
   "private": true,
-  "version": "0.0.0",
+  "version": "170425",
   "type": "module",
   "scripts": {
     "dev": "vite",
     "build": "tsc -b && vite build",
-    "analyze": "",
     "lint": "eslint . --ext ts,tsx --fix",
-    "preview": "vite preview",
-    "proxy": "http://77.37.136.11:7072"
+    "preview": "vite preview"
   },
   "dependencies": {
     "@emotion/react": "^11.0.0-rc.0",
@@ -18,9 +16,7 @@
     "@mui/material": "7.0.0",
     "@mui/x-charts": "^7.28.0",
     "@mui/x-data-grid": "^7.28.3",
-    "@mui/x-data-grid-pro": "^7.28.2",
     "@mui/x-date-pickers": "^7.28.3",
-    "@mui/x-date-pickers-pro": "^7.28.2",
     "@mui/x-tree-view": "^7.28.1",
     "@reduxjs/toolkit": "^2.6.1",
     "axios": "^1.8.4",

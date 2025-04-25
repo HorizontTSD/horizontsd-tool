@@ -72,6 +72,7 @@ export const MenuContent = () => {
           </ListItem>
         ))}
       </List>
+
       <Button
         onClick={() => window.open("http://horizontsd.ru", "_blank", "noopener noreferrer")}
         sx={{
@@ -87,6 +88,7 @@ export const MenuContent = () => {
       >
         {t("sidebar.menu.about")}
       </Button>
+
     </Stack>
   );
 };
