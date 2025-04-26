@@ -1,4 +1,15 @@
 # syntax=docker/dockerfile:1
+FROM node:23-alpine AS lockfile-generator
+RUN apk update
+RUN apk upgrade
+RUN apk add --no-cache libc6-compat 
+RUN npm install -g corepack 
+RUN corepack enable
+RUN corepack prepare yarn@4.9.1 --activate
+WORKDIR /app
+COPY package.json .yarnrc.yml ./
+RUN yarn install
+
 FROM node:23-alpine AS builder
 RUN apk update
 RUN apk upgrade
@@ -7,14 +18,19 @@ RUN npm install -g corepack
 RUN corepack enable
 RUN corepack prepare yarn@4.9.1 --activate
 WORKDIR /app
-COPY . .
-ARG VITE_APP_BACKEND_ADDRESS
+ARG VITE_BACKEND_URL
 ARG VITE_BACKEND
-ENV VITE_APP_BACKEND_ADDRESS $VITE_APP_BACKEND_ADDRESS
-ENV VITE_BACKEND $VITE_BACKEND
+ENV VITE_BACKEND_URL="0.0.0.0:3000"
+ENV PORT=3000
+ENV VITE_BACKEND=$VITE_BACKEND
+COPY package.json .yarnrc.yml ./
+COPY --from=lockfile-generator /app/yarn.lock .
+RUN yarn install --immutable
+COPY . .
+RUN yarn build
 
 FROM nginx:stable-alpine-slim AS prod
 COPY --from=builder /app/dist /usr/share/nginx/html
 COPY nginx.conf  /etc/nginx/conf.d
-EXPOSE 3000
+EXPOSE ${PORT}
 CMD ["nginx", "-g", "daemon off;"]
