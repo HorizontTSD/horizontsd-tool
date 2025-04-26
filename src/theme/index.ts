@@ -6,6 +6,5 @@ export { feedbackCustomizations } from "./customizations/feedback";
 export { inputsCustomizations } from "./customizations/inputs";
 export { navigationCustomizations } from "./customizations/navigation";
 export { chartsCustomizations } from "./customizations/chart";
-export { datePickersCustomizations } from "./customizations/datePickers";
 export { treeViewCustomizations } from "./customizations/treeView";
 export { loaderCustomizations } from "./customizations/loaderCustomizations";

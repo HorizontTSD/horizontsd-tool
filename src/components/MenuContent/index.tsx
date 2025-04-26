@@ -10,7 +10,7 @@ import AnalyticsIcon from "@mui/icons-material/Analytics";
 import RocketLaunchIcon from "@mui/icons-material/RocketLaunch";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
-import { setActiveDashboardComponent } from "store";
+import { setActiveDashboardComponent } from "@/store";
 import { useState } from "react";
 import { Button } from "@mui/material";
 

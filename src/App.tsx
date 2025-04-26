@@ -1,17 +1,17 @@
 import { RouterProvider } from "react-router";
 import { CssBaseline } from "@mui/material";
 import { Provider } from "react-redux";
-import { DynamicFavicon } from "components";
+import { DynamicFavicon } from "@/components";
 import {
   chartsCustomizations,
   treeViewCustomizations,
   loaderCustomizations,
   AppTheme,
-} from "theme";
-import "i18/index";
+} from "@/theme";
+import "@/i18/index";
 
-import { router } from "router";
-import { store } from "store";
+import { router } from "@/router";
+import { store } from "@/store";
 
 const xThemeComponents = {
   ...chartsCustomizations,

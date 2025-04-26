@@ -1,5 +1,5 @@
 import * as XLSX from "xlsx";
-import { ExcelInfo } from "types";
+import { ExcelInfo } from "@/types";
 
 export const exportForecastToExcel = (excelInfo: ExcelInfo) => {
   if (!excelInfo?.data?.length) {

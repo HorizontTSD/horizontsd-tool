@@ -1,9 +1,9 @@
 import { alpha, Theme } from "@mui/material/styles";
 import type { TreeViewComponents } from "@mui/x-tree-view/themeAugmentation";
-import { gray, brand } from "theme/themePrimitives";
+import { gray, brand } from "@/theme/themePrimitives";
 
 export const treeViewCustomizations: TreeViewComponents<Theme> = {
-  MuiTreeItem2: {
+  MuiTreeItem: {
     styleOverrides: {
       root: ({ theme }: { theme: Theme }) => ({
         position: "relative",

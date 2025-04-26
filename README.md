@@ -1,18 +1,32 @@
-### DEVELOPMENT
-```
-npm i
-npm run dev
-```
+# `.env`
 
-<br/>
-
-### CONFIGURATION
-
-Put backend `IP` as value of `VITE_BACKEND` into `.env`. \
 Example:
 ```txt
-VITE_BACKEND=http://0.0.0.0:1234
+# .env
+VITE_EMAIL_SERVICE_URL="http://0.0.0.0:8080"
+VITE_PUBLIC_YANDEX_ANALYTICS_ID="000000000"
+VITE_PUBLIC_EMAIL_LEGAL="legal@domain.com"
 ```
+
+# DEVELOPMENT
+```
+yarn install # install dependencies
+yarn dev # run development server
+yarn build # run production build
+yarn preview # preview production build
+```
+
+# DEPLOY
+http://X.X.X.X:XXXX = backend data enpoint
+YYYY = for local 3000, prod 80?
+```cmd
+docker build --pull --rm -f Dockerfile -t horizontsdtool:latest . --progress=plain
+docker run -d -p 3000:80 -e VITE_APP_BACKEND_ADDRESS="0.0.0.0:YYYY" -e VITE_BACKEND="http://X.X.X.X:XXXX" --name horizontsdtool-container-cli horizontsdtool:latest
+```
+
+> map 3000 to 80 port
+
+<br/>
 
 <br/>
 

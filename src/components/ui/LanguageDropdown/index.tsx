@@ -6,12 +6,12 @@ import MenuItem from "@mui/material/MenuItem";
 import Typography from "@mui/material/Typography";
 import { useTranslation } from "react-i18next";
 
-import ukFlagUrl from "assets/svg/ukFlag.svg?url";
-import ruFlagUrl from "assets/svg/ruFlag.svg?url";
-import zhFlagUrl from "assets/svg/zhFlag.svg?url";
-import itFlagUrl from "assets/svg/itFlag.svg?url";
-import frFlagUrl from "assets/svg/frFlag.svg?url";
-import deFlagUrl from "assets/svg/deFlag.svg?url";
+import ukFlagUrl from "@/assets/svg/ukFlag.svg?url";
+import ruFlagUrl from "@/assets/svg/ruFlag.svg?url";
+import zhFlagUrl from "@/assets/svg/zhFlag.svg?url";
+import itFlagUrl from "@/assets/svg/itFlag.svg?url";
+import frFlagUrl from "@/assets/svg/frFlag.svg?url";
+import deFlagUrl from "@/assets/svg/deFlag.svg?url";
 
 
 const languages = [

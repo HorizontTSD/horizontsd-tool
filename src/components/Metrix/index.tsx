@@ -3,9 +3,9 @@ import { DateTimePicker } from "@mui/x-date-pickers/DateTimePicker";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
 import { ru } from "date-fns/locale";
-import { useMetrixData, useMetrixRange } from "hooks";
+import { useMetrixData, useMetrixRange } from "@/hooks";
 import { useEffect, useState } from "react";
-import { Metrics } from "types";
+import { Metrics } from "@/types";
 import { useTranslation } from "react-i18next";
 import LatexEquation from "./LatexEquation";
 

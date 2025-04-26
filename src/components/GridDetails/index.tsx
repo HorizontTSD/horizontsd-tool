@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
 import { DataGrid } from "@mui/x-data-grid";
 import { Box, Typography } from "@mui/material";
-import { GridDropdown } from "components/ui/GridDropdown";
-import { useForecastData, useGridData } from "hooks";
+import { GridDropdown } from "@/components/ui/GridDropdown";
+import { useForecastData, useGridData } from "@/hooks";
 import { useTranslation } from "react-i18next";
 
 export const CustomizedDataGrid: React.FC = () => {

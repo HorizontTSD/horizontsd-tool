@@ -1,8 +1,8 @@
 import { useCallback } from "react";
 import axios from "axios";
 import { useDispatch } from "react-redux";
-import { setMiniCharts } from "store";
-import { usePolling } from "./usePoling";
+import { setMiniCharts } from "@/store";
+import { usePolling } from "@/hooks/usePoling";
 
 export const useMiniChartData = () => {
   const dispatch = useDispatch();
