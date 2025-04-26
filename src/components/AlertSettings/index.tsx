@@ -1,10 +1,11 @@
+import * as React from "react";
+import { useState } from "react";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
-import { useState } from "react";
-import { LoadForecastPureGraph } from "components/LoadForecastGraphBlock/LoadForecastPureGraph";
-import { useForecastData } from "hooks";
 import Divider from "@mui/material/Divider";
+import { LoadForecastPureGraph } from "@/components/LoadForecastGraphBlock/LoadForecastPureGraph";
+import { useForecastData } from "@/hooks";
 
 export const AlertSettings = () => {
   const [showGraph, setShowGraph] = useState(false);

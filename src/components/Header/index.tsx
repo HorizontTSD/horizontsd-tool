@@ -1,5 +1,5 @@
 import Stack from "@mui/material/Stack";
-import { ColorModeIconDropdown, LanguageDropdown } from "components";
+import { ColorModeIconDropdown, LanguageDropdown } from "@/components";
 // import NotificationsRoundedIcon from "@mui/icons-material/NotificationsRounded";
 // import CustomDatePicker from './CustomDatePicker';
 // import NavbarBreadcrumbs from './NavbarBreadcrumbs';

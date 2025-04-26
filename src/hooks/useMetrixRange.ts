@@ -1,8 +1,8 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
 import { useSelector } from "react-redux";
-import { RootState } from "store/store";
 import { parseISO } from "date-fns";
+import { RootState } from "@/store/store";
 
 type DateInfo = {
   earliest_date: string;

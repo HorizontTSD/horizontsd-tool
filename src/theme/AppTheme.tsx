@@ -2,12 +2,12 @@ import { useMemo } from "react";
 import { ThemeProvider, createTheme } from "@mui/material/styles";
 import type { ThemeOptions } from "@mui/material/styles";
 import { colorSchemes, shadows, shape, typography } from "./themePrimitives";
-import { useChangeTheme } from "hooks";
-import { dataDisplayCustomizations } from "./customizations/dataDisplay";
-import { feedbackCustomizations } from "./customizations/feedback";
-import { inputsCustomizations } from "./customizations/inputs";
-import { navigationCustomizations } from "./customizations/navigation";
-import { surfacesCustomizations } from "./customizations/surfaces";
+import { useChangeTheme } from "@/hooks";
+import { dataDisplayCustomizations } from "@/theme/customizations/dataDisplay";
+import { feedbackCustomizations } from "@/theme/customizations/feedback";
+import { inputsCustomizations } from "@/theme/customizations/inputs";
+import { navigationCustomizations } from "@/theme/customizations/navigation";
+import { surfacesCustomizations } from "@/theme/customizations/surfaces";
 
 interface AppThemeProps {
   children: React.ReactNode;

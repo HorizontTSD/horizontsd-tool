@@ -4,7 +4,7 @@ import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
 import Typography from "@mui/material/Typography";
 import { ArrowDropDown as ArrowDropDownIcon } from "@mui/icons-material";
-import { useForecastData } from "hooks/useForecastData";
+import { useForecastData } from "@/hooks/useForecastData";
 
 interface GridDropdownProps {
   selectedModel: string | null;
@@ -71,7 +71,7 @@ export const GridDropdown = ({ selectedModel, onSelect }: GridDropdownProps) => 
           },
         }}
       >
-        {availableModels.map((model) => (
+        {[...availableModels].map((model) => (
           <MenuItem
             key={model}
             selected={model === selectedModel}
