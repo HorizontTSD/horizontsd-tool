@@ -2,15 +2,15 @@ import { styled, useColorScheme } from "@mui/material/styles";
 import MuiDrawer, { drawerClasses } from "@mui/material/Drawer";
 import Box from "@mui/material/Box";
 import Divider from "@mui/material/Divider";
-import { MenuContent } from "components";
+import { MenuContent } from "@/components";
 import { Stack } from "@mui/material";
 
 const drawerWidth = 260;
 
-import macosLightUrl from "assets/svg/logoMacosx/white.svg?url";
-import macosDarkUrl from "assets/svg/logoMacosx/dark.svg?url";
-import windowsLightUrl from "assets/svg/logoPc/white.svg?url";
-import windowsDarkUrl from "assets/svg/logoPc/dark.svg?url";
+import macosLightUrl from "@/assets/svg/logoMacosx/white.svg?url";
+import macosDarkUrl from "@/assets/svg/logoMacosx/dark.svg?url";
+import windowsLightUrl from "@/assets/svg/logoPc/white.svg?url";
+import windowsDarkUrl from "@/assets/svg/logoPc/dark.svg?url";
 import { useState } from "react";
 
 const LOGO_THEMES = [

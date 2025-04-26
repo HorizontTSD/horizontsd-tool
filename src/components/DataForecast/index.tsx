@@ -1,7 +1,7 @@
 import Grid from "@mui/material/Grid";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
-import { WeatherStatCard, CustomizedDataGrid, LoadForecastGraphBlock } from "components";
+import { WeatherStatCard, CustomizedDataGrid, LoadForecastGraphBlock } from "@/components";
 // import CustomizedTreeView from "./CustomizedTreeView";
 // import CustomizedDataGrid from "./CustomizedDataGrid";
 // import HighlightedCard from "./HighlightedCard";
@@ -10,7 +10,7 @@ import { WeatherStatCard, CustomizedDataGrid, LoadForecastGraphBlock } from "com
 // import { StatCard } from "components";
 import { useTranslation } from "react-i18next";
 
-import { Metrix } from "components/Metrix";
+import { Metrix } from "@/components/Metrix";
 
 export const DataForecast = () => {
   // const { i18n } = useTranslation();

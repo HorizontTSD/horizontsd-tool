@@ -1,9 +1,9 @@
 import { useCallback } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import axios from "axios";
-import { setForecastData, RootState } from "store";
-import { SensorData, TimeSeriesPoint, ExcelInfo, ForecastMetrics } from "types";
-import { usePolling } from "./usePoling";
+import { setForecastData, RootState } from "@/store";
+import { SensorData, TimeSeriesPoint, ExcelInfo, ForecastMetrics } from "@/types";
+import { usePolling } from "@/hooks/usePoling";
 import { useTranslation } from "react-i18next";
 
 interface TextLocale {

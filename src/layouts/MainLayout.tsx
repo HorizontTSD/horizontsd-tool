@@ -1,6 +1,6 @@
 import { Outlet } from "react-router";
 import { Box } from "@mui/material";
-import { SideMenu } from "components";
+import { SideMenu } from "@/components";
 
 export const MainLayout = () => {
   return (

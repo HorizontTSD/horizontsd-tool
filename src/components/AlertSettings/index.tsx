@@ -1,25 +1,11 @@
+import * as React from "react";
+import { useState } from "react";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
-import { useState } from "react";
-import { LoadForecastPureGraph } from "components/LoadForecastGraphBlock/LoadForecastPureGraph";
-import { useForecastData } from "hooks";
 import Divider from "@mui/material/Divider";
-import Collapse from "@mui/material/Collapse";
-import TextField from "@mui/material/TextField";
-import { DatePicker } from "@mui/x-date-pickers/DatePicker";
-import { TimePicker } from "@mui/x-date-pickers/TimePicker";
-import IconButton from "@mui/material/IconButton";
-import AddIcon from "@mui/icons-material/Add";
-import RemoveIcon from "@mui/icons-material/Remove";
-import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
-import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
-import ruLocale from "date-fns/locale/ru";
-import MenuItem from "@mui/material/MenuItem";
-import Select from "@mui/material/Select";
-import InputLabel from "@mui/material/InputLabel";
-import FormControl from "@mui/material/FormControl";
-import Link from "@mui/material/Link";
+import { LoadForecastPureGraph } from "@/components/LoadForecastGraphBlock/LoadForecastPureGraph";
+import { useForecastData } from "@/hooks";
 
 export const AlertSettings = () => {
   const [showGraph, setShowGraph] = useState(false);

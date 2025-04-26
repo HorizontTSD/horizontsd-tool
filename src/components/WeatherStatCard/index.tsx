@@ -8,10 +8,10 @@ import Typography from "@mui/material/Typography";
 import { SparkLineChart } from "@mui/x-charts/SparkLineChart";
 import { areaElementClasses } from "@mui/x-charts/LineChart";
 import Grid from "@mui/material/Grid";
-import { RootState } from "store/store";
 import { useSelector } from "react-redux";
-import { useMiniChartData } from "hooks";
 import { useTranslation } from "react-i18next";
+import { RootState } from "@/store/store";
+import { useMiniChartData } from "@/hooks";
 
 const trendColors = (theme: Theme) => ({
   positive: theme.palette.success.main,
@@ -67,7 +67,7 @@ export const WeatherStatCard = () => {
                   </Typography>
                   <Box sx={{ width: "100%", height: 50, overflow: "hidden" }}>
                     <SparkLineChart
-                      colors={[colors[stat.percentages.mark]]}
+                      color={colors[stat.percentages.mark]}
                       data={stat.data.map((el) => Number(el.value.toFixed(2)))}
                       area
                       showHighlight

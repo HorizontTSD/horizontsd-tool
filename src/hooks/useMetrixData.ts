@@ -1,8 +1,8 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
 import { useSelector } from "react-redux";
-import { RootState } from "store/store";
-import { MetricsResponse } from "types";
+import { RootState } from "@/store/store";
+import { MetricsResponse } from "@/types";
 
 export const useMetrixData = (dateStart: Date | null, dateEnd: Date | null) => {
   const sensorId = useSelector((state: RootState) => state.sensor.selectedModel);

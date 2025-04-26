@@ -1,6 +1,6 @@
 import { useMemo } from "react";
 import { GridColDef, GridRowsProp } from "@mui/x-data-grid";
-import { CustomRow, MetricsTables } from "types";
+import { CustomRow, MetricsTables } from "@/types";
 
 export const useGridData = (metricsTables: MetricsTables | null, selectedModel: string | null) => {
   const rows: GridRowsProp<CustomRow> = useMemo(() => {

@@ -1,12 +1,12 @@
 import { Box, Button, Card, CircularProgress, Typography } from "@mui/material";
 import DownloadIcon from "@mui/icons-material/Download";
-import { ModelSelectorDropdown } from "components/ui/ModelSelectorDropdown";
-import { LoadForecastPureGraph } from "./LoadForecastPureGraph";
-import { useForecastData, useSensorModels } from "hooks";
+import { ModelSelectorDropdown } from "@/components/ui/ModelSelectorDropdown";
+import { LoadForecastPureGraph } from "@/components/LoadForecastGraphBlock/LoadForecastPureGraph";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
-import { RootState, setSelectedModel } from "store";
-import { exportForecastToExcel } from "utils";
+import { useForecastData, useSensorModels } from "@/hooks";
+import { RootState, setSelectedModel } from "@/store";
+import { exportForecastToExcel } from "@/utils";
 
 export const LoadForecastGraphBlock = () => {
   const dispatch = useDispatch();
