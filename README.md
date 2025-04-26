@@ -17,11 +17,10 @@ yarn preview # preview production build
 ```
 
 # DEPLOY
-http://X.X.X.X:XXXX = backend data enpoint
-YYYY = for local 3000, prod 80?
+VITE_BACKEND="http://XX.XX.XX.XX:XXXX" - backend data enpoint
 ```cmd
-docker build --pull --rm -f Dockerfile -t horizontsdtool:latest . --progress=plain
-docker run -d -p 3000:80 -e VITE_APP_BACKEND_ADDRESS="0.0.0.0:YYYY" -e VITE_BACKEND="http://X.X.X.X:XXXX" --name horizontsdtool-container-cli horizontsdtool:latest
+docker build --pull --rm -f Dockerfile -t horizontsdtool:latest . --progress=plain --build-arg VITE_BACKEND="http://XX.XX.XX.XX:XXXX"
+docker run -d -p 3000:80 -e --name horizontsdtool:latest
 ```
 
 > map 3000 to 80 port
