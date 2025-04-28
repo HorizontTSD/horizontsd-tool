@@ -26,7 +26,7 @@ const languages = [
 export const LanguageDropdown = () => {
   const { i18n } = useTranslation();
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
-  const currentLanguage = i18n.language;
+  const currentLanguage = 'en-US' //i18n.language;
 
   const currentLangData = languages.find(
     (lang) => lang.code === currentLanguage || lang.code === currentLanguage.split("-")[0]

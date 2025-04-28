@@ -29,7 +29,7 @@ export const useForecastData = () => {
   const forecastData = useSelector((state: RootState) => state.forecast.data);
   const selectedModel = useSelector((state: RootState) => state.sensor.selectedModel);
   const { i18n } = useTranslation();
-  const currentLanguage = i18n.language;
+  const currentLanguage = 'en-US' // i18n.language;
   const lang = currentLanguage.toLowerCase() as keyof TextLocale;
 
   const parseSeriesData = useCallback((data: unknown): [number, number][] => {

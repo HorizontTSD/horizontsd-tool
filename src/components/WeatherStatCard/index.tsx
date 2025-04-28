@@ -40,9 +40,9 @@ export const WeatherStatCard = () => {
   const charts = useSelector((state: RootState) => state.miniCharts.charts);
 
   const { i18n } = useTranslation();
-  const currentLanguage = i18n.language;
+  const currentLanguage = 'en-US' //i18n.language;
   const lang = currentLanguage.split(`-`)[0] as "en" | "ru";
-  
+
   return (
     <>
       {charts.map((stat) => (

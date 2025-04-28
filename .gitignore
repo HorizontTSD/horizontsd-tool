@@ -40,3 +40,4 @@ yarn-error.log*
 .netlify
 
 yarn.lock
+*storybook.log
