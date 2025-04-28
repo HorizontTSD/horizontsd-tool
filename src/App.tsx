@@ -21,14 +21,12 @@ const xThemeComponents = {
 
 export function App() {
   return (
-    <>
-      <Provider store={store}>
-        <AppTheme themeComponents={xThemeComponents}>
-          <DynamicFavicon />
-          <CssBaseline enableColorScheme />
-          <RouterProvider router={router} />
-        </AppTheme>
-      </Provider>
-    </>
+    <Provider store={store}>
+      <AppTheme themeComponents={xThemeComponents}>
+        <DynamicFavicon />
+        <CssBaseline enableColorScheme />
+        <RouterProvider router={router} />
+      </AppTheme>
+    </Provider>
   );
 }
