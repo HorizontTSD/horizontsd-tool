@@ -17,6 +17,7 @@ const xThemeComponents = {
   ...loaderCustomizations,
 };
 
+
 const meta = {
   title: 'Example/Page',
   component: HomePage,

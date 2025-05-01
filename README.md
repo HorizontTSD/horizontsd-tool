@@ -63,3 +63,25 @@ docker run -d -p 3000:80 -e --name horizontsdtool:latest
 <br/>
 
 ![alt text](/readme_materials/storybook_smoke.png "Title")
+
+
+<br/>
+<br/>
+<br/>
+
+
+### Design:
+
+![alt text](/_design/palette.png "Title")
+
+<br/>
+<br/>
+<br/>
+
+![alt text](/_design/1920w_dark.png "Title")
+
+<br/>
+<br/>
+<br/>
+
+![alt text](/_design/1920w_light.png "Title")
