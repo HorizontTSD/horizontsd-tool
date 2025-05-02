@@ -104,25 +104,25 @@ export const LoadForecastGraphBlock = () => {
             <Typography>Данные ещё загружаются...</Typography>
           )}
 
-            <Button
-              onClick={handleDownload}
-              disabled={!excelInfo?.data?.length}
-              sx={{
-                width: { xs: "100%", sm: "130px" },
-                maxWidth: "100%",
-                padding: "6px 12px",
-                fontSize: "clamp(8px, 1.5vw, 16px)",
-                backgroundColor: "#26AD50",
-                color: "text.primary",
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
-                "&:hover": {
-                  backgroundColor: "#218B3D",
-                },
-              }}
-            >
-             <DownloadIcon />
+          <Button
+            onClick={handleDownload}
+            disabled={!excelInfo?.data?.length}
+            sx={{
+              width: { xs: "100%", sm: "130px" },
+              maxWidth: "100%",
+              padding: "6px 12px",
+              fontSize: "clamp(8px, 1.5vw, 16px)",
+              backgroundColor: "#26AD50",
+              color: "text.primary",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              "&:hover": {
+                backgroundColor: "#218B3D",
+              },
+            }}
+          >
+            <DownloadIcon />
             {t("ready_made_forecast_page.download_button")}
           </Button>
         </Box>
@@ -152,8 +152,7 @@ export const LoadForecastGraphBlock = () => {
             </Box>
           ) : (
             <LoadForecastPureGraph
-              sensorId={chartData?.description?.sensor_id}
-              series={chartData?.series}
+              initialData={chartData}
             />
           )}
         </Box>
