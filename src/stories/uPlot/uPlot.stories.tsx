@@ -10,6 +10,9 @@ import { boxMullerRandom } from "@/components/UPlotChart/lib/randomWalk"
 import { stats } from '@/components/UPlotChart/lib/stats';
 import "uplot/dist/uPlot.min.css"
 
+// 
+import { useForecastData } from "@/hooks";
+
 import {
   annotationsPlugin,
   axisIndicsPlugin,
@@ -23,6 +26,8 @@ import {
   candlestickPlugin,
   tooltipPlugin
 } from '@/components/UPlotChart/plugins';
+import axios from 'axios';
+import { NewForecastResponse } from '@/hooks/useForecastData';
 
 // https://storybook.js.org/docs/api/csf
 const meta: Meta<typeof UPlotChart> = {
@@ -1957,7 +1962,7 @@ function populate({
       return clamp(func(v), amp[0], amp[1])
     }
 
-    if (offset) {
+    if (offset > 0) {
       result.push(point)
       amount--
     }
@@ -1968,9 +1973,9 @@ function populate({
     }
 
     for (let i = 0; i < amount; i++) {
-      result.push(gen_val(result[result.length - 1]))
       amp[0] -= 0.6
       amp[1] += 0.6
+      result.push(gen_val(result[result.length - 1]))
     }
 
   }
@@ -1978,113 +1983,133 @@ function populate({
   return result
 }
 
-export const ForecstStream: Story = {
-  render: () => {
+export const ForecastStream: Story = {
+  loaders: [
+    async () => ({
+      initialData: (async () => {
+        const { data: sensor_id_list } = await axios.get<string[]>(`${import.meta.env.VITE_BACKEND}/backend/v1/get_sensor_id_list`);
+        const { data: forecast_data } = await axios.post(`${import.meta.env.VITE_BACKEND}/backend/v1/get_forecast_data`, {
+          sensor_ids: sensor_id_list,
+        });
+        return forecast_data
+      })()
+    }),
+  ],
+  render: (local, global) => {
     // global setup
-    const total_hours = 47;
-    const forecast_hrs = 24
+    const total_hours = 24;
     const past_offset = Math.floor(total_hours / 2)
-    const now_offset = total_hours - Math.floor(total_hours / 2)
-    const refresh_time = 1000 // 1000ms
+    const now_offset = total_hours - past_offset
+    const plugin_refresh_rate = 1000  // 1000ms
 
+    // 
+    const [data, setData] = React.useState()
     const plotRef = React.useRef<uPlot | null>(null);
     const animFrame = React.useRef<number>();
-    const now = React.useRef(Date.now() / refresh_time);
+    const now = React.useRef(Date.now() / plugin_refresh_rate);
+    const [globalData, setGlobalData] = useState(null);
 
-    // Initial data setup
-    const [data, setData] = React.useState(() => {
-      const past = Array.from({ length: past_offset }, (v, i) => now.current - (i * refresh_time));
-      const future = Array.from({ length: now_offset }, (v, i) => now.current + (i * refresh_time));
-      const xs = past.sort().slice(1).concat(future) // timestamps
-      const sin = xs.map((v) => Math.sin(v)); //
+    useEffect(() => {
+      /*updates each 5 min?*/
+      global.loaded.initialData.then(result => {
+        let [selected] = Object.entries(result[0])
+        let [key, value] = selected
+        let { map_data } = value
+        let { data, legend } = map_data
+        let { last_real_data, actual_prediction_lstm, actual_prediction_xgboost, ensemble } = data
 
-      let last_half_of_sin = sin.slice(0, forecast_hrs)
+        const date_now = Date.now()
+        now.current = date_now / plugin_refresh_rate
 
-      // fill with nulls, to not overlap data
-      const past_forecast = [
-        ...populate({ offset: past_offset })
-      ];
+        let real_data = [...last_real_data.reverse()]
+        let prediction_lstm = [...actual_prediction_lstm.reverse()]
+        let prediction_xgboost = [...actual_prediction_xgboost.reverse()]
+        let prediction_ensemble = [...ensemble.reverse()]
 
+        let min_ts = real_data[0].datetime
+        let max_ts = real_data[0].datetime
+        let max_timeline_length = real_data.length + Math.max(prediction_lstm.length, prediction_xgboost.length, prediction_ensemble.length)
 
-
-      const future_forecast = () => populate({ point: last_half_of_sin[last_half_of_sin.length - 1], amount: now_offset })
-
-      return [
-        xs, // timeline, generated timestamps for X axis
-        last_half_of_sin, // actual data (fact)
-        past_forecast.concat(// stub forecast
-          future_forecast()
-        ),
-        past_forecast.concat(// stub forecast
-          future_forecast()
-        ),
-        past_forecast.concat(// stub forecast
-          future_forecast()
-        ),
-        past_forecast.concat(// stub forecast
-          future_forecast()
-        ),
-        past_forecast.concat(// stub forecast
-          future_forecast()
-        ),
-
-      ]
-    });
-
-    const updateData = React.useCallback(async () => {
-      await new Promise(ok => setTimeout(ok, 50)) // 50 ms refresh rate of chart
-      now.current = Date.now() / refresh_time
-
-      const past = Array.from({ length: past_offset }, (v, i) => now.current - (i * refresh_time));  // centered layout of data at plot
-      const future = Array.from({ length: now_offset }, (v, i) => now.current + (i * refresh_time)); // centered layout of data at plot
-      const xs = past.sort().slice(1).concat(future) // timestamps
-      const sin = xs.map((v) => Math.sin(v)); // data[0].map((v) => Math.sin(v)); // for static data
-
-      let last_half_of_sin = sin.slice(0, forecast_hrs)
-
-      // fill with nulls, to not overlap data
-      const past_forecast = [
-        ...populate({ offset: past_offset })
-      ];
-
-      // populated last value
-      const future_forecast = () => populate({ point: last_half_of_sin[last_half_of_sin.length - 1], amount: now_offset })
-
-      setData(
-        [
-          xs, // timeline, generated timestamps for X axis
-          last_half_of_sin, // actual data (fact)
-          past_forecast.concat(// stub forecast
-            future_forecast()
-          ),
-          past_forecast.concat(// stub forecast
-            future_forecast()
-          ),
-          past_forecast.concat(// stub forecast
-            future_forecast()
-          ),
-          past_forecast.concat(// stub forecast
-            future_forecast()
-          ),
-          past_forecast.concat(// stub forecast
-            future_forecast()
-          ),
-
-        ]
-      )
-
-
-      animFrame.current = requestAnimationFrame(updateData);
-    }, []);
-
-    React.useEffect(() => {
-      animFrame.current = requestAnimationFrame(updateData);
-      return () => {
-        if (animFrame.current) {
-          cancelAnimationFrame(animFrame.current);
+        for (let i = 0; i < real_data.length; i++) {
+          min_ts = Math.min(min_ts, real_data[i].datetime)
+          max_ts = Math.max(min_ts, real_data[i].datetime)
         }
-      };
-    }, [updateData]);
+        for (let i = 0; i < prediction_lstm.length; i++) {
+          min_ts = Math.min(min_ts, prediction_lstm[i].datetime)
+          max_ts = Math.max(min_ts, prediction_lstm[i].datetime)
+        }
+        for (let i = 0; i < prediction_xgboost.length; i++) {
+          min_ts = Math.min(min_ts, prediction_xgboost[i].datetime)
+          max_ts = Math.max(min_ts, prediction_xgboost[i].datetime)
+        }
+        for (let i = 0; i < prediction_ensemble.length; i++) {
+          min_ts = Math.min(min_ts, prediction_ensemble[i].datetime)
+          max_ts = Math.max(min_ts, prediction_ensemble[i].datetime)
+        }
+
+        let timestep_size = Math.floor((max_ts - min_ts) / max_timeline_length)
+
+        const xs = Array.from({ length: max_timeline_length }, (v, i) => (min_ts + timestep_size * i) / plugin_refresh_rate) // past.slice(1).concat(future).sort() // timestamps 
+        const load_consumption = [null, ...real_data].map(e => e?.load_consumption); //
+
+        setData([
+          xs, // timeline, generated timestamps for X axis
+          load_consumption, // actual data (fact)
+          populate({ offset: xs.length - prediction_lstm.length }).concat(prediction_lstm.map(e => e.load_consumption)),
+          populate({ offset: xs.length - prediction_xgboost.length }).concat(prediction_xgboost.map(e => e.load_consumption)),
+          populate({ offset: xs.length - prediction_ensemble.length }).concat(prediction_ensemble.map(e => e.load_consumption)),
+        ])
+        setGlobalData(result);
+
+      })
+    }, [])
+
+    // const updateData = React.useCallback(async () => {
+    //   const animation_refresh_rate = 100// 50 ms refresh rate of chart
+    //   await new Promise(ok => setTimeout(ok, animation_refresh_rate))
+    //   now.current = Date.now() / plugin_refresh_rate
+    //   const past = Array.from({ length: past_offset }, (v, i) => i == 0 ? now.current : now.current - (i * plugin_refresh_rate));
+    //   const future = Array.from({ length: now_offset }, (v, i) => i == 0 ? now.current : now.current + (i * plugin_refresh_rate));
+    //   const xs = past.slice(1).concat(future).sort() // timestamps 
+    //   // console.log(xs.lastIndexOf(now.current), now.current, xs.filter((e, i) => xs.lastIndexOf(e) != i))
+    //   const sin = xs.map((v) => Math.sin(v)); //
+
+    //   let last_half_of_sin = sin.slice(0, past_offset)
+
+    //   // fill with nulls, to not overlap data
+    //   const past_forecast = populate({ offset: past_offset - 1 })
+
+    //   const future_forecast = () => populate({ point: sin[past_offset - 1], amount: now_offset })
+
+    //   const a = past_forecast.concat(future_forecast())
+    //   const b = past_forecast.concat(future_forecast())
+    //   const c = past_forecast.concat(future_forecast())
+    //   const d = past_forecast.concat(future_forecast())
+    //   const e = past_forecast.concat(future_forecast())
+
+    //   setData(
+    //     [
+    //       xs, // timeline, generated timestamps for X axis
+    //       last_half_of_sin, // actual data (fact)
+    //       a,
+    //       b,
+    //       c,
+    //       d,
+    //       e
+    //     ]
+    //   )
+
+    //   animFrame.current = requestAnimationFrame(updateData);
+    // }, []);
+
+    // React.useEffect(() => {
+    //   animFrame.current = requestAnimationFrame(updateData);
+    //   return () => {
+    //     if (animFrame.current) {
+    //       cancelAnimationFrame(animFrame.current);
+    //     }
+    //   };
+    // }, [updateData]);
 
     const opts: Options = {
       title: "forecast stream @ 60fps",
@@ -2096,8 +2121,8 @@ export const ForecstStream: Story = {
           time: true,
         },
         y: {
-          min: -6,
-          max: 6,
+          // min: -6,
+          // max: 6,
         },
       },
       series: [
@@ -2106,17 +2131,26 @@ export const ForecstStream: Story = {
         { label: "Model A", stroke: "green", },
         { label: "Model B", stroke: "blue", },
         { label: "Model C", stroke: "red", },
-        { label: "Model D", stroke: "cyan", },
-        { label: "Model E", stroke: "black", },
+        // { label: "Model D", stroke: "cyan", },
+        // { label: "Model E", stroke: "black", },
+      ],
+      axes: [
+        {
+          label: "X Axis (Time)",
+        },
+        {
+          side: 1,
+          label: "Y Axis (Amount)",
+        }
       ],
     };
 
     return (
       <div>
         <UPlotChart
-          data={data}
+          data={data as unknown as number[][]}
           opts={opts}
-          callback={(u) => {
+          callback={(u: uPlot) => {
             plotRef.current = u;
           }}
         />

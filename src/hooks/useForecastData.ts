@@ -46,44 +46,16 @@ export const useForecastData = () => {
 
   const prepareChartData = useCallback(
     (data: SensorData) => {
-      if (!data || !selectedModel || !data[selectedModel]) return null;
-
+      if (!data || !selectedModel || !data[selectedModel]) {
+        return null;
+      }
       const sensorData = data[selectedModel];
 
       if (!sensorData?.map_data?.data || !sensorData?.description) {
         return null;
       }
 
-      const { last_real_data, actual_prediction_lstm, actual_prediction_xgboost, ensemble } =
-        sensorData.map_data.data;
-
-      return {
-        description: sensorData.description,
-        legend: sensorData.map_data.legend,
-        series: [
-          {
-            name: sensorData.map_data.legend.real_data_line.text[lang],
-            data: parseSeriesData(last_real_data),
-            color: sensorData.map_data.legend.real_data_line.color,
-          },
-          {
-            name: sensorData.map_data.legend.LSTM_data_line.text[lang],
-            data: parseSeriesData(actual_prediction_lstm),
-            color: sensorData.map_data.legend.LSTM_data_line.color,
-          },
-          {
-            name: sensorData.map_data.legend.XGBoost_data_line.text[lang],
-            data: parseSeriesData(actual_prediction_xgboost),
-            color: sensorData.map_data.legend.XGBoost_data_line.color,
-          },
-          {
-            name: sensorData.map_data.legend.Ensemble_data_line.text[lang],
-            data: parseSeriesData(ensemble),
-            color: sensorData.map_data.legend.Ensemble_data_line.color,
-            lineWidth: 3,
-          },
-        ],
-      };
+      return sensorData
     },
     [lang, parseSeriesData, selectedModel]
   );
