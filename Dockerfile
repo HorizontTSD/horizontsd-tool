@@ -1,11 +1,15 @@
-FROM
+FROM node:22-alpine
 
-WORKDIR
+WORKDIR /app
 
-ENV
+COPY package*.json ./
 
-COPY
+RUN npm install
 
-RUN
+COPY . .
 
-ENTRYPOINT []
+RUN npm run build
+
+EXPOSE 4173
+
+CMD ["npm", "run", "preview"]

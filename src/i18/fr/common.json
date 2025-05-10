@@ -1,0 +1,44 @@
+{
+  "sidebar": {
+    "menu": {
+      "data_forecast": "Prévision des données",
+      "alert_settings": "Paramètres d'alerte",
+      "data_analysis": "Analyse des données",
+      "quick_forecast": "Prévision rapide",
+      "about": "En savoir plus sur nous"
+    }
+  },
+  "nav_bar": {
+    "path": {
+      "main_path": "Horizon TSD",
+      "home": "Données de prévision"
+    }
+  },
+  "footer": {
+    "text": "Tous droits réservés. Horizon est un projet original."
+  },
+  "ready_made_forecast_page" : {
+    "additional_info": "Informations supplémentaires",
+    "forecast_chart": "Graphique de prévision",
+    "sensor_name": "Nom du capteur",
+    "sensor_id": "ID du capteur",
+    "download_button": "Télécharger"
+  },
+  "metrix_bloc": {
+    "title": "Métriques du modèle pour la période sélectionnée",
+    "end_date": "Date de début",
+    "start_date": "Date de fin",
+    "mae": "Erreur Absolue Moyenne (MAE)",
+    "mape": "Erreur Absolue Moyenne en pourcentage (MAPE)",
+    "r2": "Coefficient de Détermination (R²)",
+    "rmse": "Erreur Quadratique Moyenne Racine (RMSE)",
+    "date_range": "Plage de dates",
+    "error_1": "Erreur de chargement des données :",
+    "model_xgboost": "Modèle XGBoost",
+    "model_lstm": "Modèle LSTM",
+    "chose_alert": "Sélectionnez une plage de dates pour afficher les métriques de prévision"
+  },
+  "metrix_table": {
+    "title": "Tableau des métriques par points"
+  }
+}

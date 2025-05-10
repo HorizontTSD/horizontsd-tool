@@ -1,0 +1,53 @@
+{
+  "name": "horizontsd-tool",
+  "private": true,
+  "version": "170425",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc -b && vite build",
+    "lint": "eslint . --ext ts,tsx --fix",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "@emotion/react": "^11.0.0-rc.0",
+    "@emotion/styled": "11.14.0",
+    "@mui/icons-material": "7.0.0",
+    "@mui/material": "7.0.0",
+    "@mui/x-charts": "^7.28.0",
+    "@mui/x-data-grid": "^7.28.3",
+    "@mui/x-date-pickers": "^7.28.3",
+    "@mui/x-tree-view": "^7.28.1",
+    "@reduxjs/toolkit": "^2.6.1",
+    "axios": "^1.8.4",
+    "date-fns": "^2.29.3",
+    "echarts": "^5.6.0",
+    "echarts-for-react": "^3.0.2",
+    "i18next": "^24.2.3",
+    "i18next-browser-languagedetector": "^8.0.4",
+    "katex": "^0.16.22",
+    "react": "19.0.0",
+    "react-dom": "19.0.0",
+    "react-i18next": "^15.4.1",
+    "react-redux": "^9.2.0",
+    "react-router": "7.4.0",
+    "sass": "1.86.0",
+    "xlsx": "^0.18.5"
+  },
+  "devDependencies": {
+    "@eslint/js": "9.21.0",
+    "@types/node": "^22.13.14",
+    "@types/react": "19.0.12",
+    "@types/react-dom": "19.0.4",
+    "@types/xlsx": "^0.0.35",
+    "@vitejs/plugin-react-swc": "3.8.0",
+    "eslint": "9.21.0",
+    "eslint-plugin-react-hooks": "5.1.0",
+    "eslint-plugin-react-refresh": "0.4.19",
+    "globals": "15.15.0",
+    "rollup-plugin-visualizer": "^5.14.0",
+    "typescript": "~5.7.2",
+    "typescript-eslint": "8.24.1",
+    "vite": "6.2.0"
+  }
+}
