@@ -14,3 +14,12 @@ README.md
 .pnp.loader.mjs
 .vscode
 .dist
+
+readme_materials
+
+.storybook
+*.mdx
+*.stories.@(js|jsx|ts|tsx)
+*.story.@(js|jsx|ts|tsx)
+
+src/mocks

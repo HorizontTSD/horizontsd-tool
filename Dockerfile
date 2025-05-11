@@ -27,6 +27,8 @@ COPY package.json .yarnrc.yml ./
 COPY --from=lockfile-generator /app/yarn.lock .
 RUN yarn install --immutable
 COPY . .
+# TODO
+RUN VITE_BACKEND=https://XX.XX.XX.XX:XXXX npx @rtk-query/codegen-openapi ./openapi-config.ts
 RUN yarn build
 
 FROM nginx:stable-alpine-slim AS prod
