@@ -15,19 +15,26 @@ VITE_FIGMA_URL=https://www.figma.com/design/DIRECT_LINK_TO_FIGMA
 <br/>
 
 # DEVELOPMENT
-```
-yarn install # install dependencies
-yarn dev # run development server
-yarn build # run production build
-yarn storybook # launch for components preview and testing
-yarn preview # preview production build
+```bash
+# install dependencies
+yarn install 
+# Generate OpenAPI schema:
+VITE_BACKEND=https://XX.XX.XX.XX:XXXX npx @rtk-query/codegen-openapi ./openapi-config.ts
+# run development server
+yarn dev 
+# launch for components preview and testing
+yarn storybook 
+# run production build
+yarn build 
+# preview production build
+yarn preview 
 ```
 
 <br/>
 
 # DEPLOY
 VITE_BACKEND="https://XX.XX.XX.XX:XXXX" - backend data enpoint
-```cmd
+```bash
 docker build --pull --rm -f Dockerfile -t horizontsdtool:latest . --progress=plain --build-arg VITE_BACKEND="https://XX.XX.XX.XX:XXXX"
 docker run -d -p 3000:80 -e --name horizontsdtool:latest
 ```
@@ -37,7 +44,11 @@ docker run -d -p 3000:80 -e --name horizontsdtool:latest
 <br/>
 <br/>
 <br/>
-<br/>
+
+---
+
+
+# [<span style="color:orange"> Git Workflow & Contribution Guidelines </span>]("./readme_materials/Git_Workflow_and_Contribution_Guidelines.md") 
 
 ---
 
@@ -46,8 +57,6 @@ docker run -d -p 3000:80 -e --name horizontsdtool:latest
 <br/>
 
 ## Development details:
-
-
 
 
 ![alt text](/readme_materials/storybook_figma.png "Title")
