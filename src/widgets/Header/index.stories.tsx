@@ -39,12 +39,6 @@ const meta: Meta<typeof Header> = {
       description: "Width breakpoint",
       defaultValue: "xl",
     },
-    height: {
-      control: "select",
-      options: ["xs", "sm", "md", "lg", "xl"],
-      description: "Height breakpoint",
-      defaultValue: "md",
-    },
   },
 };
 
@@ -58,7 +52,6 @@ export const Default: Story = {
     theme: "light",
     language: "ru",
     width: "xl",
-    height: "md",
   },
   decorators: [
     (Story, context) => {
@@ -76,7 +69,6 @@ export const ExtraSmall: Story = {
   args: {
     ...Default.args,
     width: "xs",
-    height: "xs",
   },
   decorators: Default.decorators,
 };
@@ -85,7 +77,6 @@ export const Small: Story = {
   args: {
     ...Default.args,
     width: "sm",
-    height: "sm",
   },
   decorators: Default.decorators,
 };
@@ -94,7 +85,6 @@ export const Medium: Story = {
   args: {
     ...Default.args,
     width: "md",
-    height: "md",
   },
   decorators: Default.decorators,
 };
@@ -103,7 +93,6 @@ export const Large: Story = {
   args: {
     ...Default.args,
     width: "lg",
-    height: "lg",
   },
   decorators: Default.decorators,
 };
@@ -112,7 +101,6 @@ export const ExtraLarge: Story = {
   args: {
     ...Default.args,
     width: "xl",
-    height: "xl",
   },
   decorators: Default.decorators,
 };

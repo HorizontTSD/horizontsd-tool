@@ -5,13 +5,13 @@ import { LanguageDropdown } from "../dropdowns/LanguageDropdown";
 import { ColorModeIconDropdown } from "../ColorModeIconDropdown";
 import React from "react";
 import { useTheme } from "@mui/material/styles";
+import useMediaQuery from "@mui/material/useMediaQuery";
 
 interface HeaderProps {
   copyright?: string;
   theme?: "light" | "dark";
   language?: "ru" | "en" | "it";
   width?: "xs" | "sm" | "md" | "lg" | "xl";
-  height?: "xs" | "sm" | "md" | "lg" | "xl";
   title?: string;
 }
 
@@ -20,7 +20,6 @@ export function Header({
   theme,
   language,
   width,
-  height,
   title = "FORECAST",
 }: HeaderProps) {
   const { mode, setMode } = useColorScheme();
@@ -28,6 +27,8 @@ export function Header({
   const isDark = mode === "dark";
   const bgPalette = ["var(--mui-palette-secondary-dark)", "var(--mui-palette-secondary-main)"];
   const bg = bgPalette[~~!isDark];
+
+  const isLessThanMd = useMediaQuery(themeMUI.breakpoints.down("md"));
 
   const getWidthStyles = () => {
     if (!width) return { width: "100%" };
@@ -47,22 +48,6 @@ export function Header({
     };
   };
 
-  const getHeightStyles = () => {
-    if (!height) return { height: "60px" };
-
-    const breakpoints = {
-      xs: { height: "40px" },
-      sm: { height: "50px" },
-      md: { height: "60px" },
-      lg: { height: "70px" },
-      xl: { height: "80px" },
-    };
-
-    return {
-      height: breakpoints[height].height,
-    };
-  };
-
   React.useEffect(() => {
     if (theme) {
       setMode(theme);
@@ -79,8 +64,8 @@ export function Header({
         justifyContent: "center",
         padding: `1rem`,
         margin: "0 auto",
+        height: isLessThanMd ? "40px" : "60px",
         ...getWidthStyles(),
-        ...getHeightStyles(),
       }}
     >
       <Stack
