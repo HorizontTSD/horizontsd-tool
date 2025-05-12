@@ -9,7 +9,8 @@
     "preview": "vite preview",
     "storybook": "storybook dev -p 6006",
     "build-storybook": "storybook build",
-    "test:ui": "test-storybook"
+    "test:ui": "test-storybook",
+    "playwright:install": "playwright install"
   },
   "dependencies": {
     "@emotion/react": "^11.14.0",
@@ -21,6 +22,7 @@
     "@mui/x-data-grid": "^8.1.0",
     "@mui/x-date-pickers": "^8.1.0",
     "@mui/x-tree-view": "^8.1.0",
+    "@playwright/test": "^1.52.0",
     "@popperjs/core": "^2.11.8",
     "@reduxjs/toolkit": "^2.7.0",
     "@vitejs/plugin-react": "^4.4.1",
@@ -49,7 +51,6 @@
     "@rtk-query/codegen-openapi": "^2.0.0",
     "@storybook/addon-designs": "^8.2.1",
     "@storybook/addon-essentials": "^8.6.12",
-    "@storybook/addon-mdx-gfm": "^8.6.12",
     "@storybook/experimental-addon-test": "^8.6.12",
     "@storybook/react": "^8.6.12",
     "@storybook/react-vite": "^8.6.12",
