@@ -40,7 +40,7 @@ export const ColorModeIconDropdown = (props: IconButtonOwnProps) => {
   }
   const resolvedMode = (systemMode || mode) as "light" | "dark";
   const icon = {
-    light: <LightModeIcon sx={{ color: 'var(--mui-palette-warning-light)' }} />,
+    light: <LightModeIcon sx={{ color: "var(--mui-palette-warning-light)" }} />,
     dark: <DarkModeIcon sx={{ color: `var(--mui-palette-warning-dark)` }} />,
   }[resolvedMode];
   return (

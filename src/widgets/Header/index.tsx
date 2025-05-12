@@ -3,12 +3,32 @@ import Typography from "@mui/material/Typography";
 import Stack from "@mui/material/Stack";
 import { LanguageDropdown } from "../dropdowns/LanguageDropdown";
 import { ColorModeIconDropdown } from "../ColorModeIconDropdown";
+import React from "react";
 
-export function Header() {
-  const { mode } = useColorScheme();
+interface HeaderProps {
+  title?: string;
+  copyright?: string;
+  theme?: "light" | "dark";
+  language?: "ru" | "en" | "it";
+}
+
+export function Header({
+  title = "FORECAST",
+  copyright = "© 2025 Horizon TSD",
+  theme,
+  language,
+}: HeaderProps) {
+  const { mode, setMode } = useColorScheme();
   const isDark = mode === "dark";
-  const bgPalette = ['var(--mui-palette-secondary-dark)', 'var(--mui-palette-secondary-main)']
-  const bg = bgPalette[~~(!isDark)]
+  const bgPalette = ["var(--mui-palette-secondary-dark)", "var(--mui-palette-secondary-main)"];
+  const bg = bgPalette[~~!isDark];
+
+  React.useEffect(() => {
+    if (theme) {
+      setMode(theme);
+    }
+  }, [theme, setMode]);
+
   return (
     <Stack
       sx={{
@@ -19,25 +39,35 @@ export function Header() {
         justifyContent: "center",
         minHeight: `60px`,
         width: `100%`,
-        padding: `1rem`
+        padding: `1rem`,
       }}
     >
-      <Stack direction={"row"} justifyContent={"start"} alignItems={"baseline"} sx={{ width: `100%` }}>
-        <Typography variant="h5" sx={{ color: `var(--mui-palette-common-white)` }}>FORECAST</Typography>
-        <Typography variant="caption" sx={{ color: `var(--mui-palette-common-white)` }}>© 2025 Horizon TSD</Typography>
+      <Stack
+        direction={"row"}
+        justifyContent={"start"}
+        alignItems={"baseline"}
+        sx={{ width: `100%` }}
+      >
+        <Typography variant="h5" sx={{ color: `var(--mui-palette-common-white)` }}>
+          {title}
+        </Typography>
+        <Typography variant="caption" sx={{ color: `var(--mui-palette-common-white)` }}>
+          {copyright}
+        </Typography>
       </Stack>
       <Stack
         direction="row"
         justifySelf="end"
         spacing={1}
         sx={{
-          width: '100%',
-          justifyContent: 'end',
-          alignItems: 'center',
-        }}>
+          width: "100%",
+          justifyContent: "end",
+          alignItems: "center",
+        }}
+      >
         <LanguageDropdown />
         <ColorModeIconDropdown />
       </Stack>
     </Stack>
-  )
+  );
 }

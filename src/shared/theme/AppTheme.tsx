@@ -1,6 +1,8 @@
 import { ThemeProvider, createTheme } from "@mui/material/styles";
 import type { ThemeOptions } from "@mui/material/styles";
 import { lightBlue, blue, grey, blueGrey, indigo } from "@mui/material/colors";
+import { useColorScheme } from "@mui/material/styles";
+import React from "react";
 
 const bg = {
   50: "#dddee0",
@@ -13,14 +15,14 @@ const bg = {
   700: "#0E0F10",
   800: "#0C0D0E",
   900: "#090A0B",
-}
+};
 
 const theme = createTheme({
   cssVariables: {
     colorSchemeSelector: "class",
   },
   shape: {
-    borderRadius: 18
+    borderRadius: 18,
   },
   colorSchemes: {
     light: {
@@ -40,7 +42,7 @@ const theme = createTheme({
         },
         text: {
           primary: grey[900],
-          secondary: grey[700]
+          secondary: grey[700],
         },
       },
     },
@@ -61,23 +63,29 @@ const theme = createTheme({
         },
         text: {
           primary: grey[100],
-          secondary: grey[400]
+          secondary: grey[400],
         },
       },
     },
   },
 });
 
-
-
 interface AppThemeProps {
   children: React.ReactNode;
   disableCustomTheme?: boolean;
   themeComponents?: ThemeOptions["components"];
+  initialMode?: "light" | "dark";
 }
 
 export const AppTheme = (props: AppThemeProps) => {
-  const { children, disableCustomTheme } = props;
+  const { children, disableCustomTheme, initialMode } = props;
+  const { setMode } = useColorScheme();
+
+  React.useEffect(() => {
+    if (initialMode) {
+      setMode(initialMode);
+    }
+  }, [initialMode, setMode]);
 
   if (disableCustomTheme) {
     return <>{children}</>;
