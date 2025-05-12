@@ -5,27 +5,46 @@
 
 Example:
 ```txt
-# .env
-VITE_EMAIL_SERVICE_URL="https://0.0.0.0:8080"
-VITE_PUBLIC_YANDEX_ANALYTICS_ID="000000000"
-VITE_PUBLIC_EMAIL_LEGAL="legal@domain.com"
-VITE_FIGMA_URL=https://www.figma.com/design/DIRECT_LINK_TO_FIGMA
+# .env.development
+VITE_BACKEND_URL=0.0.0.0
+VITE_BACKEND=http://localhost:3000
+VITE_FIGMA_URL=https://www.figma.com/design/XXXXXXXXXXXXXXXXX/XXXXXXXXXXXXXXXXX?node-id=XXX-XXX
+```
+
+```txt
+# .storybook/.env.development
+VITE_BACKEND_URL=0.0.0.0
+VITE_BACKEND=http://localhost:6006
 ```
 
 <br/>
 
 # DEVELOPMENT
 ```bash
+# pull
+git clone https://github.com/HorizontTSD/horizontsd-tool.git --branch ...
+
+# setup .env.development at root 
+...
+# setup .storybook/.env.development
+...
+
+
 # install dependencies
 yarn install 
+
 # Generate OpenAPI schema:
 VITE_BACKEND=https://XX.XX.XX.XX:XXXX npx @rtk-query/codegen-openapi ./openapi-config.ts
+
 # run development server
 yarn dev 
+
 # launch for components preview and testing
 yarn storybook 
+
 # run production build
 yarn build 
+
 # preview production build
 yarn preview 
 ```

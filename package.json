@@ -67,6 +67,7 @@
     "msw-storybook-addon": "^2.0.4",
     "sass": "^1.87.0",
     "storybook": "^8.6.12",
+    "ts-node": "^10.9.2",
     "typescript": "^5.8.3",
     "vite": "^6.3.3",
     "vite-tsconfig-paths": "^5.1.4",

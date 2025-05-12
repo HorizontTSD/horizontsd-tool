@@ -1,4 +1,5 @@
 import type { StorybookConfig } from '@storybook/react-vite';
+import { mergeConfig, loadEnv } from 'vite';
 
 const config: StorybookConfig = {
   "stories": [
@@ -18,9 +19,13 @@ const config: StorybookConfig = {
   "framework": {
     "name": "@storybook/react-vite",
     "options": {
-      strictMode: false
+      strictMode: false,
     }
   },
+  env: (config) => ({
+    ...config,
+    VITE_BACKEND: `http://localhost:6006`,
+  }),
 
   docs: {
     autodocs: true

@@ -8,6 +8,8 @@ import {
 	useFuncGetForecastDataBackendV1GetForecastDataPostMutation
 } from "@/shared/api/backend"
 
+import { handlers } from '@/mocks/handlers';
+
 const meta: Meta<typeof LoadForecastPureGraph> = {
 	title: 'Components/LoadForecastPureGraph',
 	component: LoadForecastPureGraph,
@@ -18,6 +20,11 @@ export default meta;
 type Story = StoryObj<typeof LoadForecastPureGraph>;
 
 export const LoadForecastPureGraphStory: Story = {
+	parameters: {
+		msw: {
+			handlers
+		}
+	},
 	decorators: [
 		(Story) => {
 			return (

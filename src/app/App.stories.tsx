@@ -3,6 +3,8 @@ import { http, HttpResponse, delay } from 'msw';
 import { AppProvider } from '@/app/providers';
 import { App } from '@/app'
 
+import { handlers } from '@/mocks/handlers';
+
 const meta = {
   title: 'Application/App',
   component: App,
@@ -20,16 +22,8 @@ export const Default: Story = {
       url: `${import.meta.env.VITE_FIGMA_URL}`,
     },
     msw: {
-      handlers: [
-        http.get('/backend/v1/get_mini_charts_data', () => {
-          return HttpResponse.json({
-            // TODO: \src\mocks\handlers.ts
-            // TODO: http.get /backend/v1/get_mini_charts_data
-            testKey: 'testValue'
-          });
-        }),
-      ],
-    },
+      handlers
+    }
   },
   loaders: [
     async () => ({

@@ -1,7 +1,9 @@
 import { http, HttpResponse } from 'msw'
 
+const API_URL = import.meta.env.VITE_BACKEND;
+
 export const handlers = [
-	http.get(`/backend/v1/get_mini_charts_data`, () => {
+	http.get(`${API_URL}/backend/v1/get_mini_charts_data`, () => {
 		const now = Date.now()
 		const yesterday = now - (24 * 60 * 60 * 1000)
 		return HttpResponse.json([
@@ -125,7 +127,7 @@ export const handlers = [
 		])
 	}),
 
-	http.get(`/backend/v1/get_sensor_id_list`, () => {
+	http.get(`${API_URL}/backend/v1/get_sensor_id_list`, () => {
 		return HttpResponse.json([
 			"arithmetic_1464947681",
 			"arithmetic_1464947681_2"
@@ -133,7 +135,7 @@ export const handlers = [
 	}),
 
 	http.post<{ sensor_ids: string[] }>(
-		'/backend/v1/fetch_possible_date_for_metrix',
+		'${API_URL}/backend/v1/fetch_possible_date_for_metrix',
 		async ({ request }) => {
 			const { sensor_ids } = await request.json();
 
@@ -170,7 +172,7 @@ export const handlers = [
 	),
 
 	http.post<{ sensor_ids: string[] }>(
-		`/backend/v1/get_forecast_data`,
+		`${API_URL}/backend/v1/get_forecast_data`,
 		async ({ request }) => {
 			const { sensor_ids } = await request.json();
 
@@ -359,7 +361,7 @@ export const handlers = [
 	),
 
 	http.post<{ sensor_ids: string[] }>(
-		`/backend/v1/metrix_by_period`,
+		`${API_URL}/backend/v1/metrix_by_period`,
 		async ({ request }) => {
 			const {
 				sensor_ids,
