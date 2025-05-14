@@ -1,45 +1,44 @@
 {
-  "sidebar": {
-    "menu": {
-      "data_forecast": "Data forecast",
-      "alert_settings": "Alert settings",
-      "data_analysis": "Data analysis",
-      "quick_forecast": "Quick forecast",
-      "about": "More about us"
+    "sidebar": {
+        "menu": {
+            "data_forecast": "Data forecast",
+            "alert_settings": "Alert settings",
+            "data_analysis": "Data analysis",
+            "quick_forecast": "Quick forecast",
+            "about": "More about us"
+        }
+    },
+    "nav_bar": {
+        "path": {
+            "main_path": "Horizon TSD",
+            "home": "Forecast data"
+        }
+    },
+    "footer": {
+        "text": "All rights reserved. Horizon is an original project."
+    },
+    "ready_made_forecast_page": {
+        "additional_info": "Additional information",
+        "forecast_chart": "Forecast chart",
+        "sensor_name": "Sensor name",
+        "sensor_id": "Sensor ID",
+        "download_button": "Download"
+    },
+    "metrix_bloc": {
+        "title": "Model metrics for the selected period",
+        "end_date": "Start date",
+        "start_date": "End date",
+        "mae": "Mean Absolute Error (MAE)",
+        "mape": "Mean Absolute Percentage Error (MAPE)",
+        "r2": "Coefficient of Determination (R²)",
+        "rmse": "Root Mean Square Error (RMSE)",
+        "date_range": "Date range",
+        "error_1": "Data loading error:",
+        "model_xgboost": "Model XGBoost",
+        "model_lstm": "Model LSTM",
+        "chose_alert": "Select a date range to display forecast metrics"
+    },
+    "metrix_table": {
+        "title": "Table of metrics by points"
     }
-  },
-  "nav_bar": {
-    "path": {
-      "main_path": "Horizon TSD",
-      "home": "Forecast data"
-    }
-  },
-  "footer": {
-    "text": "All rights reserved. Horizon is an original project."
-  },
-  "ready_made_forecast_page" : {
-    "additional_info": "Additional information",
-    "forecast_chart": "Forecast chart",
-    "sensor_name": "Sensor name",
-    "sensor_id": "Sensor ID",
-    "download_button": "Download"
-
-  },
-  "metrix_bloc": {
-    "title": "Model metrics for the selected period",
-    "end_date": "Start date",
-    "start_date": "End date",
-    "mae": "Mean Absolute Error (MAE)",
-    "mape": "Mean Absolute Percentage Error (MAPE)",
-    "r2": "Coefficient of Determination (R²)",
-    "rmse": "Root Mean Square Error (RMSE)",
-    "date_range": "Date range",
-    "error_1": "Data loading error:",
-    "model_xgboost": "Model XGBoost",
-    "model_lstm": "Model LSTM",
-    "chose_alert": "Select a date range to display forecast metrics"
-  },
-  "metrix_table": {
-    "title": "Table of metrics by points"
-  }
 }

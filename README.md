@@ -1,9 +1,9 @@
 ![alt text](/readme_materials/logo_line_white.svg "Title")
 
-
 # `.env`
 
 Example:
+
 ```txt
 # .env.development
 VITE_BACKEND_URL=0.0.0.0
@@ -20,39 +20,42 @@ VITE_BACKEND=http://localhost:6006
 <br/>
 
 # DEVELOPMENT
+
 ```bash
 # pull
 git clone https://github.com/HorizontTSD/horizontsd-tool.git --branch ...
 
-# setup .env.development at root 
+# setup .env.development at root
 ...
 # setup .storybook/.env.development
 ...
 
 
 # install dependencies
-yarn install 
+yarn install
 
 # Generate OpenAPI schema:
 VITE_BACKEND=https://XX.XX.XX.XX:XXXX npx @rtk-query/codegen-openapi ./openapi-config.ts
 
 # run development server
-yarn dev 
+yarn dev
 
 # launch for components preview and testing
-yarn storybook 
+yarn storybook
 
 # run production build
-yarn build 
+yarn build
 
 # preview production build
-yarn preview 
+yarn preview
 ```
 
 <br/>
 
 # DEPLOY
+
 VITE_BACKEND="https://XX.XX.XX.XX:XXXX" - backend data enpoint
+
 ```bash
 docker build --pull --rm -f Dockerfile -t horizontsdtool:latest . --progress=plain --build-arg VITE_BACKEND="https://XX.XX.XX.XX:XXXX"
 docker run -d -p 3000:80 -e --name horizontsdtool:latest
@@ -66,8 +69,7 @@ docker run -d -p 3000:80 -e --name horizontsdtool:latest
 
 ---
 
-
-# [<span style="color:orange"> Git Workflow & Contribution Guidelines </span>]("./readme_materials/Git_Workflow_and_Contribution_Guidelines.md") 
+# [<span style="color:orange"> Git Workflow & Contribution Guidelines </span>]("./readme_materials/Git_Workflow_and_Contribution_Guidelines.md")
 
 ---
 
@@ -76,7 +78,6 @@ docker run -d -p 3000:80 -e --name horizontsdtool:latest
 <br/>
 
 ## Development details:
-
 
 ![alt text](/readme_materials/storybook_figma.png "Title")
 
@@ -92,11 +93,9 @@ docker run -d -p 3000:80 -e --name horizontsdtool:latest
 
 ![alt text](/readme_materials/storybook_smoke.png "Title")
 
-
 <br/>
 <br/>
 <br/>
-
 
 ### Design:
 
