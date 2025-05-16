@@ -40,5 +40,14 @@
     },
     "metrix_table": {
         "title": "Table of metrics by points"
+    },
+    "metrics": {
+        "data": "Data",
+        "select_data_range": "Select data range",
+        "sensor_selection": "Sensor Selection",
+        "model_selection": "Model Selection",
+        "start_date": "Start date",
+        "end_date": "End date",
+        "metric_title": "METRIC_CONFIG TITLE"
     }
 }

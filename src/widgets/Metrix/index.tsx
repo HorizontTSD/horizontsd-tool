@@ -6,6 +6,7 @@ import { ru } from "date-fns/locale"
 import { useEffect, useRef, useState } from "react"
 import { Metrics } from "@/shared/types"
 import LatexEquation from "./LatexEquation"
+import { useTranslation } from "react-i18next"
 import {
     useFuncMetrixByPeriodBackendV1MetrixByPeriodPostMutation,
     useReadRootGetQuery,
@@ -131,6 +132,7 @@ const ModelSection = ({ modelName, metrics }: { modelName: string; metrics: Metr
 }
 
 export const Metrix = () => {
+    const { t } = useTranslation()
     // Data fetching hooks
     const { data: rootData, isLoading: isRootLoading } = useReadRootGetQuery()
     const { data: sensors, isLoading: isSensorsLoading } = useFuncGetSensorIdListBackendV1GetSensorIdListGetQuery()
@@ -211,11 +213,11 @@ export const Metrix = () => {
     return (
         <Stack direction={"column"} sx={{ margin: `1rem 0` }}>
             <Stack direction={"column"} sx={{ margin: `1rem 0` }}>
-                <Typography variant="h4">Data</Typography>
+                <Typography variant="h4">{t("metrics.data")}</Typography>
             </Stack>
             <Card variant="outlined" sx={{ width: "100%", p: 2, minHeight: `400px` }}>
                 <Typography variant="h6" sx={{ mb: 3 }}>
-                    {`select data range`}
+                    {t("metrics.select_data_range")}
                 </Typography>
 
                 {isLoading && (
@@ -234,7 +236,7 @@ export const Metrix = () => {
                     }}
                 >
                     <Stack>
-                        <Typography>Sensor Selection</Typography>
+                        <Typography>{t("metrics.sensor_selection")}</Typography>
                         <GridDropdown
                             list={sensors || []}
                             selected={selectedSensor || ""}
@@ -244,7 +246,7 @@ export const Metrix = () => {
                     </Stack>
 
                     <Stack>
-                        <Typography>Model Selection</Typography>
+                        <Typography>{t("metrics.model_selection")}</Typography>
                         <GridDropdown
                             list={availableModels}
                             selected={selectedModel || ""}
@@ -258,7 +260,7 @@ export const Metrix = () => {
                     <Grid container spacing={2}>
                         <Grid component="div">
                             <DateTimePicker
-                                label={`start date`}
+                                label={t("metrics.start_date")}
                                 ampm={false}
                                 format="dd.MM.yyyy HH:mm"
                                 value={startDate}
@@ -273,7 +275,7 @@ export const Metrix = () => {
                         </Grid>
                         <Grid component="div">
                             <DateTimePicker
-                                label={`end date`}
+                                label={t("metrics.end_date")}
                                 ampm={false}
                                 format="dd.MM.yyyy HH:mm"
                                 value={endDate}
@@ -292,7 +294,7 @@ export const Metrix = () => {
                 <Box sx={{ mt: 2 }}>
                     {error && (
                         <Alert severity="error" sx={{ mb: 3 }}>
-                            metrix_bloc.error_1: {error.toString()}
+                            {t("metrix_bloc.error_1")}: {error.toString()}
                         </Alert>
                     )}
 

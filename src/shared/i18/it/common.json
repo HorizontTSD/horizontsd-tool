@@ -1,17 +1,17 @@
 {
     "sidebar": {
         "menu": {
-            "data_forecast": "Previsione dei dati",
-            "alert_settings": "Impostazioni degli avvisi",
-            "data_analysis": "Analisi dei dati",
+            "data_forecast": "Previsione dati",
+            "alert_settings": "Impostazioni avvisi",
+            "data_analysis": "Analisi dati",
             "quick_forecast": "Previsione rapida",
-            "about": "Ulteriori informazioni su di noi"
+            "about": "Maggiori informazioni"
         }
     },
     "nav_bar": {
         "path": {
             "main_path": "Horizon TSD",
-            "home": "Dati di previsione"
+            "home": "Previsione dati"
         }
     },
     "footer": {
@@ -19,9 +19,9 @@
     },
     "ready_made_forecast_page": {
         "additional_info": "Informazioni aggiuntive",
-        "forecast_chart": "Grafico delle previsioni",
-        "sensor_name": "Nome del sensore",
-        "sensor_id": "ID del sensore",
+        "forecast_chart": "Grafico previsione",
+        "sensor_name": "Nome sensore",
+        "sensor_id": "ID sensore",
         "download_button": "Scarica"
     },
     "metrix_bloc": {
@@ -32,13 +32,22 @@
         "mape": "Errore percentuale assoluto medio (MAPE)",
         "r2": "Coefficiente di determinazione (R²)",
         "rmse": "Errore quadratico medio (RMSE)",
-        "date_range": "Intervallo di date",
-        "error_1": "Errore nel caricamento dei dati:",
+        "date_range": "Intervallo date",
+        "error_1": "Errore di caricamento dati:",
         "model_xgboost": "Modello XGBoost",
         "model_lstm": "Modello LSTM",
         "chose_alert": "Seleziona un intervallo di date per visualizzare le metriche di previsione"
     },
     "metrix_table": {
         "title": "Tabella delle metriche per punti"
+    },
+    "metrics": {
+        "data": "Dati",
+        "select_data_range": "Seleziona intervallo dati",
+        "sensor_selection": "Selezione sensore",
+        "model_selection": "Selezione modello",
+        "start_date": "Data di inizio",
+        "end_date": "Data di fine",
+        "metric_title": "TITOLO METRICA"
     }
 }

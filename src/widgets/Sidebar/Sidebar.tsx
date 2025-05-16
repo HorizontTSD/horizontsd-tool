@@ -1,10 +1,12 @@
 import { useColorScheme } from "@mui/material/styles"
 import Box from "@mui/material/Box"
 import { Stack, Typography } from "@mui/material"
+import { useTranslation } from "react-i18next"
 
 import Icon from "./Icon"
 
 export const Sidebar = () => {
+    const { t } = useTranslation()
     const { mode } = useColorScheme()
     const isDark = mode === "dark"
     const bgPalette = ["var(--mui-palette-secondary-dark)", "var(--mui-palette-secondary-main)"]
@@ -44,7 +46,7 @@ export const Sidebar = () => {
                         marginBottom: `-3px`,
                     }}
                 >
-                    HorizonTSD
+                    {t("nav_bar.path.main_path")}
                 </Typography>
             </Box>
             <Stack

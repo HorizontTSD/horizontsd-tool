@@ -15,11 +15,11 @@ const languages = [
 export const LanguageDropdown = () => {
     const { i18n } = useTranslation()
     const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null)
-    const currentLanguage = "en-US" //i18n.language;
+    const currentLanguage = i18n.language
 
-    // const currentLangData = languages.find(
-    //     (lang) => lang.code === currentLanguage || lang.code === currentLanguage.split("-")[0]
-    // )
+    const currentLangData = languages.find(
+        (lang) => lang.code === currentLanguage || lang.code === currentLanguage.split("-")[0]
+    )
 
     const handleLanguageChange = (langCode: string) => {
         i18n.changeLanguage(langCode).then(() => {
@@ -27,21 +27,12 @@ export const LanguageDropdown = () => {
         })
         setAnchorEl(null)
     }
+
     return (
         <>
             <IconButton onClick={(e) => setAnchorEl(e.currentTarget)} size="small" sx={{ minWidth: 64 }}>
-                {/* {currentLangData?.flagUrl &&
-          <img
-            src={currentLangData?.flagUrl}
-            width={20}
-            height={15}
-            alt=""
-            style={{ display: "block" }}
-          />
-        } */}
-
                 <Box component="span" sx={{ ml: 0.5, fontSize: "0.75rem" }}>
-                    {currentLanguage.toUpperCase()}
+                    {currentLangData?.code.toUpperCase() || currentLanguage.toUpperCase()}
                 </Box>
             </IconButton>
 
@@ -62,7 +53,6 @@ export const LanguageDropdown = () => {
                             },
                         }}
                     >
-                        {/* <img src={lang.flagUrl} width={20} height={15} alt="" style={{ marginRight: 12 }} /> */}
                         <Typography>{lang.name}</Typography>
                     </MenuItem>
                 ))}

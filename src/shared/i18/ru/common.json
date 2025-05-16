@@ -40,5 +40,14 @@
     },
     "metrix_table": {
         "title": "Таблица метрик по точкам"
+    },
+    "metrics": {
+        "data": "Данные",
+        "select_data_range": "Выберите диапазон данных",
+        "sensor_selection": "Выбор датчика",
+        "model_selection": "Выбор модели",
+        "start_date": "Начальная дата",
+        "end_date": "Конечная дата",
+        "metric_title": "ЗАГОЛОВОК МЕТРИКИ"
     }
 }
