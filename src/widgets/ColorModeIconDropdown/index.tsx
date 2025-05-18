@@ -84,12 +84,9 @@ export default function ColorModeIconDropdown() {
     return (
         <div
             style={{
-                padding: 48,
                 display: "flex",
                 justifyContent: "center",
                 alignItems: "center",
-                minWidth: 200,
-                minHeight: 120,
             }}
         >
             <MaterialUISwitch checked={safeMode === "dark"} onChange={handleChange} modeProp={safeMode} />

@@ -38,7 +38,9 @@ export const WithControls: Story = {
                     style={{
                         padding: 64,
                         background: mode === "dark" ? "#222" : "#f5f5f5",
-                        minHeight: 240,
+                        minWidth: 120,
+                        minHeight: 80,
+                        zIndex: 1000,
                         display: "flex",
                         alignItems: "center",
                         justifyContent: "center",

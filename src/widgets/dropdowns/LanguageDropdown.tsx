@@ -17,14 +17,19 @@ const languages = [
     { code: "it", name: "Italiano", flag: "it" },
 ]
 
-export const LanguageDropdown = () => {
+interface LanguageDropdownProps {
+    selectedLanguage?: "en" | "ru" | "it"
+    onChange?: (lang: "en" | "ru" | "it") => void
+}
+
+export const LanguageDropdown = ({ selectedLanguage, onChange }: LanguageDropdownProps) => {
     const { i18n } = useTranslation()
     const [open, setOpen] = React.useState(false)
     const anchorRef = React.useRef<HTMLDivElement>(null)
     const { mode } = useColorScheme()
     const isDark = mode === "dark"
 
-    const currentLanguage = i18n.language
+    const currentLanguage = selectedLanguage || i18n.language
     const currentLangData = languages.find(
         (lang) => lang.code === currentLanguage || lang.code === currentLanguage.split("-")[0]
     )
@@ -35,10 +40,14 @@ export const LanguageDropdown = () => {
             setOpen(false)
             return
         }
-        const newLang = languages[index].code
-        i18n.changeLanguage(newLang).then(() => {
-            localStorage.setItem("i18nextLng", newLang)
-        })
+        const newLang = languages[index].code as "en" | "ru" | "it"
+        if (onChange) {
+            onChange(newLang)
+        } else {
+            i18n.changeLanguage(newLang).then(() => {
+                localStorage.setItem("i18nextLng", newLang)
+            })
+        }
         setOpen(false)
     }
 
