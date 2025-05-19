@@ -64,7 +64,7 @@ export const CustomizedDataGrid: React.FC = () => {
 
         return columnKeys.map((key) => ({
             field: key,
-            headerName: key === "Time" ? "Дата и время" : key,
+            headerName: key === "Time" ? "Date & time" : key,
             flex: 1,
             minWidth: 120,
             sortable: true,

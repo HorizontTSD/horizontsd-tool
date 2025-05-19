@@ -359,4 +359,38 @@ export const handlers = [
             })
         )
     }),
+
+    http.get(`${API_URL}/backend/v1/alerts`, () => {
+        return HttpResponse.json(
+            Array.from(new Array(24)).map((_, index) => {
+                return index % 2 == 0
+                    ? {
+                          state: {
+                              label: `firing`,
+                              evaluate: 1000 * 60,
+                              last_evaluation: Date.now() - 1000 * 59,
+                              labels: [`telegram`, `email`, `info`],
+                              id: crypto.randomUUID(),
+                          },
+                          name: `Some long alert name thats trigger multiline`,
+                          health: `ok`,
+                          summary: `Some long alert summary thats trigger multiline`,
+                          next: Date.now() + 1000 * 59,
+                      }
+                    : {
+                          state: {
+                              label: `normal`,
+                              evaluate: 1000 * 60 * 5000,
+                              last_evaluation: Date.now() - 1000 * 59 * 2,
+                              labels: [`telegram`, `email`, `info`],
+                              id: crypto.randomUUID(),
+                          },
+                          name: `Some long alert name thats trigger multiline`,
+                          health: `ok`,
+                          summary: `Some long alert summary thats trigger multiline`,
+                          next: Date.now() + 1000 * 59 * 2,
+                      }
+            })
+        )
+    }),
 ]

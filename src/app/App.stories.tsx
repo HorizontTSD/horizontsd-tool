@@ -1,5 +1,4 @@
 import type { Meta, StoryObj } from "@storybook/react"
-// import { http, HttpResponse, delay } from "msw"
 import { AppProvider } from "@/app/providers"
 import { App } from "@/app"
 
@@ -30,12 +29,7 @@ export const Default: Story = {
         }),
     ],
     decorators: [
-        (Story, Globals) => {
-            // mocked server
-            console.log(`Globals.loaded.mocked: `, Globals.loaded.mocked)
-            fetch("/backend/v1/get_mini_charts_data")
-                .then((e) => e.json())
-                .then((e) => console.log(`fetch: `, e))
+        () => {
             return (
                 <AppProvider>
                     <App />
