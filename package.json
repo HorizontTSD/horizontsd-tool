@@ -38,6 +38,7 @@
         "katex": "^0.16.22",
         "moment": "^2.30.1",
         "react": "^19.1.0",
+        "react-custom-scrollbars-2": "^4.5.0",
         "react-dom": "^19.1.0",
         "react-i18next": "^15.5.1",
         "react-redux": "^9.2.0",

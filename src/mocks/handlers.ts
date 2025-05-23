@@ -3,6 +3,35 @@ import { http, HttpResponse } from "msw"
 
 const API_URL = import.meta.env.VITE_BACKEND
 
+const mockAlerts = [
+    {
+        id: "000000000000",
+        state: "normal",
+        name: "CPU usage low",
+        health: "ok",
+        summary: "CPU usage is within normal range.",
+        nextEval: "in a few seconds",
+        evaluateEvery: "1m",
+        keepFiringFor: "0s",
+        lastEvaluation: "a minute ago",
+        labels: ["telegram", "email"],
+        eventId: "0000000000000000",
+    },
+    {
+        id: "000000000001",
+        state: "firing",
+        name: "Memory usage high",
+        health: "error",
+        summary: "Memory usage is above threshold.",
+        nextEval: "in 30 seconds",
+        evaluateEvery: "1m",
+        keepFiringFor: "5m",
+        lastEvaluation: "30 seconds ago",
+        labels: ["email"],
+        eventId: "0000000000000001",
+    },
+]
+
 export const handlers = [
     http.get(`${API_URL}/backend/v1/get_mini_charts_data`, () => {
         const now = Date.now()
@@ -361,36 +390,42 @@ export const handlers = [
     }),
 
     http.get(`${API_URL}/backend/v1/alerts`, () => {
-        return HttpResponse.json(
-            Array.from(new Array(24)).map((_, index) => {
-                return index % 2 == 0
-                    ? {
-                          state: {
-                              label: `firing`,
-                              evaluate: 1000 * 60,
-                              last_evaluation: Date.now() - 1000 * 59,
-                              labels: [`telegram`, `email`, `info`],
-                              id: crypto.randomUUID(),
-                          },
-                          name: `Some long alert name thats trigger multiline`,
-                          health: `ok`,
-                          summary: `Some long alert summary thats trigger multiline`,
-                          next: Date.now() + 1000 * 59,
-                      }
-                    : {
-                          state: {
-                              label: `normal`,
-                              evaluate: 1000 * 60 * 5000,
-                              last_evaluation: Date.now() - 1000 * 59 * 2,
-                              labels: [`telegram`, `email`, `info`],
-                              id: crypto.randomUUID(),
-                          },
-                          name: `Some long alert name thats trigger multiline`,
-                          health: `ok`,
-                          summary: `Some long alert summary thats trigger multiline`,
-                          next: Date.now() + 1000 * 59 * 2,
-                      }
-            })
-        )
+        return HttpResponse.json(mockAlerts)
+    }),
+
+    http.post(`${API_URL}/backend/v1/alerts`, async ({ request }) => {
+        const newAlert = await request.json()
+        const alert = {
+            ...newAlert,
+            id: crypto.randomUUID(),
+            eventId: crypto.randomUUID(),
+        }
+        mockAlerts.push(alert)
+        return HttpResponse.json(alert)
+    }),
+
+    http.put(`${API_URL}/backend/v1/alerts/:id`, async ({ params, request }) => {
+        const { id } = params
+        const updatedAlert = await request.json()
+        const index = mockAlerts.findIndex((alert) => alert.id === id)
+
+        if (index === -1) {
+            return new HttpResponse(null, { status: 404 })
+        }
+
+        mockAlerts[index] = { ...mockAlerts[index], ...updatedAlert }
+        return HttpResponse.json(mockAlerts[index])
+    }),
+
+    http.delete(`${API_URL}/backend/v1/alerts/:id`, async ({ params }) => {
+        const { id } = params
+        const index = mockAlerts.findIndex((alert) => alert.id === id)
+
+        if (index === -1) {
+            return new HttpResponse(null, { status: 404 })
+        }
+
+        mockAlerts.splice(index, 1)
+        return new HttpResponse(null, { status: 204 })
     }),
 ]

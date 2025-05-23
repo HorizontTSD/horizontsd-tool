@@ -1,15 +1,16 @@
-export interface AlertState {
-    label: string
-    evaluate: number
-    last_evaluation: number
-    labels: string[]
-    id: string
-}
+export type AlertState = "normal" | "firing"
+export type AlertHealth = "ok" | "error"
 
 export interface Alert {
+    id: string
     state: AlertState
     name: string
-    health: string
+    health: AlertHealth
     summary: string
-    next: number
+    nextEval: string
+    evaluateEvery?: string
+    keepFiringFor?: string
+    lastEvaluation?: string
+    labels?: string[]
+    eventId?: string
 }

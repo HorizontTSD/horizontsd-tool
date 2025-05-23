@@ -4,7 +4,7 @@ import { Sidebar } from "@/widgets/Sidebar"
 import { Header } from "@/widgets/Header"
 import { DataForecast } from "@/widgets/DataForecast"
 
-export const MainLayout = () => {
+export const MainLayout = ({ children }: { children: React.ReactNode }) => {
     return (
         <Stack
             direction={"row"}
@@ -23,7 +23,7 @@ export const MainLayout = () => {
                 }}
             >
                 <Header />
-                <DataForecast />
+                {children}
             </Stack>
         </Stack>
     )
