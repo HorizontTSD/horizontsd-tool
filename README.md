@@ -34,8 +34,10 @@ git clone https://github.com/HorizontTSD/horizontsd-tool.git --branch ...
 # install dependencies
 yarn install
 
-# Generate OpenAPI schema:
-VITE_BACKEND=https://XX.XX.XX.XX:XXXX npx @rtk-query/codegen-openapi ./openapi-config.ts
+# Generate OpenAPI schemas:
+VITE_MODEL_FAST_API_ENDPOINT=https://1X.XX.XX.XX:XXXX npx @rtk-query/codegen-openapi ./openapi-config-model_fast_api.ts
+VITE_ALERT_ENDPOINT=http://2X.XX.XX.XX:XXXX npx @rtk-query/codegen-openapi ./openapi-config-alerts.ts
+VITE_BACKEND_ENDPOINT=http://3X.XX.XX.XX:XXXX npx @rtk-query/codegen-openapi ./openapi-config-model_fast_api.ts
 
 # run development server
 yarn dev
