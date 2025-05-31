@@ -1,44 +1,48 @@
-import { Box, Stack, Typography, Button, Menu, MenuItem } from "@mui/material"
+import { Box, Stack, Typography, Button, Menu, MenuItem, useColorScheme } from "@mui/material"
 import VisibilityIcon from "@mui/icons-material/Visibility"
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown"
 import React, { useState } from "react"
-
-const StateLabel = ({ state }: { state: "normal" | "firing" }) => (
-    <Box
-        sx={{
-            width: 124,
-            height: 27,
-            borderRadius: 999,
-            fontWeight: 600,
-            fontSize: 16,
-            color: "white",
-            background: state === "normal" ? "#00E600" : "#C30052",
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-            textAlign: "center",
-        }}
-    >
-        {state === "normal" ? "Normal" : "Firing"}
-    </Box>
-)
+import { useTranslation } from "react-i18next"
 
 const AlertBlock = ({
-    state,
     name,
-    health,
-    summary,
-    nextEval,
+    threshold,
+    scheme,
+    trigger_frequency,
+    message,
+    notifications: {
+        email,
+        telegram
+    },
+    include_graph,
+    time_interval: { start_date, end_date },
+    start_warning_interval,
+    sensor_id,
+    model,
+    // 
     expanded,
     onToggle,
     onEdit,
     onDelete,
 }: {
-    state: "normal" | "firing"
-    name: string
-    health: string
-    summary: string
-    nextEval: string
+    name: string,
+    threshold: string,
+    scheme: string,
+    trigger_frequency: string,
+    message: string,
+    notifications: {
+        email: string[],
+        telegram: string[]
+    },
+    include_graph: boolean,
+    time_interval: {
+        end_date: string,
+        start_date: string
+    }
+    start_warning_interval: string,
+    sensor_id: string,
+    model: string,
+    // 
     expanded: boolean
     onToggle: () => void
     onEdit?: () => void
@@ -58,65 +62,64 @@ const AlertBlock = ({
         handleMenuClose()
         if (onDelete) onDelete()
     }
+
+    const { mode, setMode } = useColorScheme()
+    const isDark = mode === "dark"
+    const bgPalett_exp = ["var(--mui-palette-secondary-main)", "var(--mui-palette-primary-main)"]
+    const bgPalette = ["var(--mui-palette-primary-light)", "var(--mui-palette-primary-light)"]
+    const bg = bgPalette[~~isDark]
+    const bg_exp = bgPalett_exp[~~isDark]
+
+    const colorPalette = ["var(--mui-palette-text-primary)", "var(--mui-palette-secondary-dark)"]
+    const colorPalette_exp = ["var(--mui-palette-secondary-light)", "var(--mui-palette-secondary-light)"]
+
+    const color = colorPalette[~~isDark]
+    const color_exp = colorPalette_exp[~~isDark]
+
+    const { t } = useTranslation()
+
     return (
         <Box
             sx={{
-                background: expanded ? "#21384B" : "#e3ecf5",
-                borderRadius: "8px",
-                p: 2,
-                mb: 2,
+                background: expanded ? bg_exp : bg,
+                borderRadius: `var(--mui-shape-borderRadius)`,
+                padding: `1rem`,
+                margin: `0.5rem 0`,
                 cursor: "pointer",
-                boxShadow: expanded ? "0 2px 12px 0 rgba(0,0,0,0.10)" : "none",
+                boxShadow: expanded ? isDark ? "0 2px 12px 0 rgba(0, 51, 190, 0.25)" : "0 2px 12px 0 rgba(0,0,0,0.10)" : "none",
                 overflow: "hidden",
-                color: expanded ? "white" : "#21384B",
+                color: expanded ? color_exp : color,
             }}
             onClick={onToggle}
         >
             {!expanded && (
-                <Stack direction="row" alignItems="center" spacing={4}>
-                    <Stack direction="row" alignItems="center" spacing={1} minWidth={120}>
-                        <Typography fontSize={18} color={expanded ? "white" : "#21384B"}>
-                            State
-                        </Typography>
-                        <StateLabel state={state} />
+                <Stack direction="row" alignItems="start" spacing={1}>
+                    <Stack direction="column">
+                        <Typography variant="caption">{t('widgets.alertsContent.alert_block_name')}</Typography>
+                        <Typography variant="body2" color="info">{name}</Typography>
+                        <Typography variant="caption">{t('widgets.alertsContent.alert_block_trigger_frequency')}</Typography>
+                        <Typography variant="body2" >{trigger_frequency}</Typography>
                     </Stack>
-                    <Stack direction="row" alignItems="center" spacing={1} minWidth={200}>
-                        <Typography fontSize={18} color={expanded ? "white" : "#21384B"}>
-                            Name
-                        </Typography>
-                        <Typography
-                            fontSize={16}
-                            color={expanded ? "#73BF69" : "#1976d2"}
-                            sx={{
-                                width: 180,
-                                overflow: "hidden",
-                                textOverflow: "ellipsis",
-                                whiteSpace: "nowrap",
-                            }}
-                        >
-                            {name}
-                        </Typography>
+                    <Stack direction="column">
+                        <Typography variant="caption">{t('widgets.alertsContent.alert_block_message')}</Typography>
+                        <Typography variant="body2" >{message}</Typography>
                     </Stack>
-                    <Stack direction="row" alignItems="center" spacing={1} minWidth={120}>
-                        <Typography fontSize={18} color={expanded ? "white" : "#21384B"}>
-                            Health
-                        </Typography>
-                        <Box sx={{ display: "flex", alignItems: "center" }}>
-                            <Box component="span" sx={{ color: "#FF6B00", fontSize: 22, mr: 0.5 }}>
-                                ⚠️
-                            </Box>
-                            <Typography fontSize={16} color="#FF6B00">
-                                error
-                            </Typography>
-                        </Box>
+                    <Stack direction="column">
+                        <Typography variant="caption">{t('widgets.alertsContent.alert_block_start_date')}</Typography>
+                        <Typography variant="body2" >{new Date(start_date).toUTCString()}</Typography>
+                        <Typography variant="caption">{t('widgets.alertsContent.alert_block_end_date')}</Typography>
+                        <Typography variant="body2" >{new Date(start_date).toUTCString()}</Typography>
                     </Stack>
-                    <Stack direction="row" alignItems="center" spacing={1} minWidth={200}>
-                        <Typography fontSize={18} color={expanded ? "white" : "#21384B"}>
-                            Next Evaluation
-                        </Typography>
-                        <Typography fontSize={16} color={expanded ? "#73BF69" : "#1976d2"}>
-                            {nextEval}
-                        </Typography>
+                    <Stack direction="column">
+                        <Typography variant="caption">{t('widgets.alertsContent.alert_block_start_warning_interval')}</Typography>
+                        <Typography variant="body2" >{start_warning_interval}</Typography>
+                        <Typography variant="caption">{t('widgets.alertsContent.alert_block_sensor_id')}</Typography>
+                        <Typography variant="body2" >{sensor_id}</Typography>
+
+                    </Stack>
+                    <Stack direction="column">
+                        <Typography variant="caption">{t('widgets.alertsContent.alert_block_model')}</Typography>
+                        <Typography variant="body2" >{model}</Typography>
                     </Stack>
                 </Stack>
             )}
@@ -130,116 +133,44 @@ const AlertBlock = ({
                 }}
             >
                 {expanded && (
-                    <Stack direction="row" spacing={6} mt={2}>
+                    <Stack direction="row" alignItems="start" spacing={1}>
+                        <Stack direction="column">
+                            <Typography variant="caption" >{t('widgets.alertsContent.alert_block_name')}</Typography>
+                            <Typography variant="body2" >{name}</Typography>
+                            <Typography variant="caption">{t('widgets.alertsContent.alert_block_threshold_value')}</Typography>
+                            <Typography variant="body2" >{threshold}</Typography>
+                            <Typography variant="caption">{t('widgets.alertsContent.alert_block_scheme')}</Typography>
+                            <Typography variant="body2" >{scheme}</Typography>
+                            <Typography variant="caption">{t('widgets.alertsContent.alert_block_trigger_frequency')}</Typography>
+                            <Typography variant="body2" >{trigger_frequency}</Typography>
+                        </Stack>
+                        <Stack direction="column">
+                            <Typography variant="caption">{t('widgets.alertsContent.alert_block_message')}</Typography>
+                            <Typography variant="body2" >{message}</Typography>
+                            <Typography variant="caption">{t('widgets.alertsContent.alert_block_telegram')}</Typography>
+                            <Typography variant="body2" >{telegram.join(' ')}</Typography>
+                            <Typography variant="caption">{t('widgets.alertsContent.alert_block_email')}</Typography>
+                            <Typography variant="body2" >{email.join(' ')}</Typography>
+                            <Typography variant="caption">{t('widgets.alertsContent.alert_block_include_graph')}</Typography>
+                            {include_graph}
+                        </Stack>
+                        <Stack direction="column">
+                            <Typography variant="caption">{t('widgets.alertsContent.alert_block_start_date')}</Typography>
+                            <Typography variant="body2" >{new Date(start_date).toUTCString()}</Typography>
+                            <Typography variant="caption">{t('widgets.alertsContent.alert_block_end_date')}</Typography>
+                            <Typography variant="body2" >{new Date(end_date).toUTCString()}</Typography>
+                        </Stack>
+                        <Stack direction="column">
+                            <Typography variant="caption">{t('widgets.alertsContent.alert_block_start_warning_interval')}</Typography>
+                            <Typography variant="body2" >{start_warning_interval}</Typography>
+                            <Typography variant="caption">{t('widgets.alertsContent.alert_block_sensor_id')}</Typography>
+                            <Typography variant="body2" >{sensor_id}</Typography>
+                            <Typography variant="caption">{t('widgets.alertsContent.alert_block_model')}</Typography>
+                            <Typography variant="body2" >{model}</Typography>
+                        </Stack>
                         <Box>
                             <Typography fontWeight={700} fontSize={28} color="white">
-                                State
-                            </Typography>
-                            <Stack spacing={2} mt={2}>
-                                <Stack direction="row" spacing={1}>
-                                    <Typography fontSize={16}>Evaluate</Typography>
-                                    <Typography fontSize={16} color="#b0b0b0">
-                                        Every 1m
-                                    </Typography>
-                                </Stack>
-                                <Stack direction="row" spacing={1}>
-                                    <Typography fontSize={16}>Keep firing for</Typography>
-                                    <Typography fontSize={16} color="#b0b0b0">
-                                        0s
-                                    </Typography>
-                                </Stack>
-                                <Stack direction="row" spacing={1}>
-                                    <Typography fontSize={16}>Last evaluation</Typography>
-                                    <Typography fontSize={16} color="#b0b0b0">
-                                        a minute ago
-                                    </Typography>
-                                </Stack>
-                                <Stack direction="row" spacing={1} alignItems="center">
-                                    <Typography fontSize={16}>Labels</Typography>
-                                    <Box
-                                        sx={{
-                                            background: "#01579B",
-                                            borderRadius: 999,
-                                            px: 2,
-                                            py: 0.5,
-                                            color: "white",
-                                            fontWeight: 400,
-                                            width: "100px",
-                                            height: "28px",
-                                            display: "flex",
-                                            alignItems: "center",
-                                            justifyContent: "center",
-                                        }}
-                                    >
-                                        telegram
-                                    </Box>
-                                    <Box
-                                        sx={{
-                                            background: "#01579B",
-                                            borderRadius: 999,
-                                            px: 2,
-                                            py: 0.5,
-                                            color: "white",
-                                            fontWeight: 400,
-                                            width: "100px",
-                                            height: "28px",
-                                            display: "flex",
-                                            alignItems: "center",
-                                            justifyContent: "center",
-                                        }}
-                                    >
-                                        email
-                                    </Box>
-                                </Stack>
-                                <Stack direction="row" spacing={1}>
-                                    <Typography fontSize={16}>Alert ID</Typography>
-                                    <Typography fontSize={16} color="#b0b0b0">
-                                        0000000000000000
-                                    </Typography>
-                                </Stack>
-                                <Stack direction="row" spacing={1}>
-                                    <Typography fontSize={16}>Event ID</Typography>
-                                    <Typography fontSize={16} color="#b0b0b0">
-                                        0000000000000000
-                                    </Typography>
-                                </Stack>
-                            </Stack>
-                        </Box>
-                        <Box>
-                            <Typography fontWeight={700} fontSize={28} color="white">
-                                Name
-                            </Typography>
-                            <Typography fontSize={16} color="#b0b0b0" mt={2}>
-                                {name}
-                            </Typography>
-                        </Box>
-                        <Box>
-                            <Typography fontWeight={700} fontSize={28} color="white">
-                                Health
-                            </Typography>
-                            <Typography fontSize={16} color="#00E600" mt={2}>
-                                ok
-                            </Typography>
-                        </Box>
-                        <Box>
-                            <Typography fontWeight={700} fontSize={28} color="white">
-                                Summary
-                            </Typography>
-                            <Typography fontSize={16} color="#b0b0b0" mt={2}>
-                                {summary}
-                            </Typography>
-                        </Box>
-                        <Box>
-                            <Typography fontWeight={700} fontSize={28} color="white">
-                                Next Evaluation
-                            </Typography>
-                            <Typography fontSize={16} color="#b0b0b0" mt={2}>
-                                {nextEval}
-                            </Typography>
-                        </Box>
-                        <Box>
-                            <Typography fontWeight={700} fontSize={28} color="white">
-                                Actions
+                                {t('widgets.alertsContent.alert_block_actions')}
                             </Typography>
                             <Stack direction="row" spacing={1} mt={2} alignItems="center">
                                 <Button
@@ -255,7 +186,7 @@ const AlertBlock = ({
                                     }}
                                     startIcon={<VisibilityIcon sx={{ color: "#F5F5F5" }} />}
                                 >
-                                    view
+                                    {t('widgets.alertsContent.alert_block_view_button')}
                                 </Button>
                                 <Button
                                     size="small"
@@ -271,7 +202,7 @@ const AlertBlock = ({
                                     endIcon={<KeyboardArrowDownIcon sx={{ color: "#F5F5F5" }} />}
                                     onClick={handleMenuOpen}
                                 >
-                                    More
+                                    {t('widgets.alertsContent.alert_block_more_button')}
                                 </Button>
                                 <Menu
                                     anchorEl={anchorEl}
@@ -281,9 +212,9 @@ const AlertBlock = ({
                                     transformOrigin={{ vertical: "top", horizontal: "center" }}
                                     slotProps={{ paper: { sx: { mt: 0.5, width: "93px" } } }}
                                 >
-                                    <MenuItem onClick={handleEdit}>Edit</MenuItem>
+                                    <MenuItem onClick={handleEdit}>{t('widgets.alertsContent.alert_block_edit_menu_item')}</MenuItem>
                                     <MenuItem onClick={handleDelete} sx={{ color: "error.main" }}>
-                                        Delete
+                                        {t('widgets.alertsContent.alert_block_delete_menu_item')}
                                     </MenuItem>
                                 </Menu>
                             </Stack>
@@ -291,7 +222,7 @@ const AlertBlock = ({
                     </Stack>
                 )}
             </Box>
-        </Box>
+        </Box >
     )
 }
 

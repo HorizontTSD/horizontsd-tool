@@ -17,7 +17,7 @@ interface HeaderProps {
 }
 
 // eslint-disable-next-line
-export function Header({ copyright = "© 2025 Horizon TSD", theme, language, width, title = "FORECAST" }: HeaderProps) {
+export function Header({ copyright = "local", theme, language, width, title = "FORECAST" }: HeaderProps) {
     const { mode, setMode } = useColorScheme()
     const themeMUI = useTheme()
     const isDark = mode === "dark"
@@ -47,10 +47,10 @@ export function Header({ copyright = "© 2025 Horizon TSD", theme, language, wid
             }}
         >
             <Stack direction={"row"} justifyContent={"start"} alignItems={"baseline"} sx={{ width: `100%` }}>
-                <Typography variant="h5" sx={{ color: `var(--mui-palette-common-white)` }}>
+                <Typography variant="h6" sx={{ color: `var(--mui-palette-common-white)` }}>
                     {title}
                 </Typography>
-                <Typography variant="caption" sx={{ color: `var(--mui-palette-common-white)` }}>
+                <Typography variant="caption" sx={{ fontSize: `0.6rem`, color: `var(--mui-palette-text-secondary)` }}>
                     {copyright}
                 </Typography>
             </Stack>

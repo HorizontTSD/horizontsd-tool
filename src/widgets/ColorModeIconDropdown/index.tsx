@@ -1,6 +1,7 @@
 import * as React from "react"
 import { styled, Theme, useColorScheme } from "@mui/material/styles"
 import Switch from "@mui/material/Switch"
+import { Box } from "@mui/material"
 
 const getColors = (mode: "light" | "dark", theme: Theme) => {
     const isDark = mode === "dark"
@@ -77,7 +78,7 @@ export default function ColorModeIconDropdown() {
         setMode(event.target.checked ? "dark" : "light")
     }
     return (
-        <div
+        <Box
             style={{
                 display: "flex",
                 justifyContent: "center",
@@ -85,6 +86,6 @@ export default function ColorModeIconDropdown() {
             }}
         >
             <MaterialUISwitch checked={safeMode === "dark"} onChange={handleChange} modeProp={safeMode} />
-        </div>
+        </Box>
     )
 }

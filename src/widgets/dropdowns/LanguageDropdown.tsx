@@ -2,7 +2,7 @@ import * as React from "react"
 import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown"
 import ClickAwayListener from "@mui/material/ClickAwayListener"
 import ButtonGroup from "@mui/material/ButtonGroup"
-import { Typography, useColorScheme } from "@mui/material"
+import { Box, Typography, useColorScheme } from "@mui/material"
 import MenuItem from "@mui/material/MenuItem"
 import MenuList from "@mui/material/MenuList"
 import Button from "@mui/material/Button"
@@ -63,7 +63,9 @@ export const LanguageDropdown = ({ selectedLanguage, onChange }: LanguageDropdow
     }
 
     return (
-        <React.Fragment>
+        <Box sx={{
+             zIndex: 9999,
+        }}>
             <ButtonGroup
                 variant="contained"
                 ref={anchorRef}
@@ -158,6 +160,6 @@ export const LanguageDropdown = ({ selectedLanguage, onChange }: LanguageDropdow
                     </Grow>
                 )}
             </Popper>
-        </React.Fragment>
+        </Box>
     )
 }

@@ -3,7 +3,7 @@ import { LoadForecastPureGraph } from "@/widgets/LoadForecastGraphBlock/LoadFore
 import {
     useFuncGetForecastDataBackendV1GetForecastDataPostMutation,
     useFuncGetSensorIdListBackendV1GetSensorIdListGetQuery,
-} from "@/shared/api/backend"
+} from "@/shared/api/model_fast_api"
 
 interface ForecastGraphPanelProps {
     selectedSensor: string | null

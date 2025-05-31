@@ -11,7 +11,8 @@ import {
     useFuncMetrixByPeriodBackendV1MetrixByPeriodPostMutation,
     useReadRootGetQuery,
     useFuncGetSensorIdListBackendV1GetSensorIdListGetQuery,
-} from "@/shared/api/backend"
+} from "@/shared/api/model_fast_api"
+
 import { GridDropdown } from "@/widgets/GridDropdown"
 
 type MetricConfig = {
@@ -24,22 +25,22 @@ type MetricConfig = {
 const METRIC_CONFIG: MetricConfig[] = [
     {
         key: "MAE",
-        titleKey: "metrix_bloc.mae",
+        titleKey: "widgets.metrix_bloc.mae",
         equation: "MAE = (1/n) ∑|y_i - ŷ_i|",
     },
     {
         key: "RMSE",
-        titleKey: "metrix_bloc.rmse",
+        titleKey: "widgets.metrix_bloc.rmse",
         equation: "RMSE = √(1/n ∑(y_i - ŷ_i)²)",
     },
     {
         key: "R2",
-        titleKey: "metrix_bloc.r2",
+        titleKey: "widgets.metrix_bloc.r2",
         equation: "R² = 1 - (∑(y_i - ŷ_i)²) / (∑(y_i - ȳ)²)",
     },
     {
         key: "MAPE",
-        titleKey: "metrix_bloc.mape",
+        titleKey: "widgets.metrix_bloc.mape",
         equation: "MAPE = (1/n) ∑ |(y_i - ŷ_i) / y_i| × 100",
         unit: "%",
     },
@@ -84,6 +85,7 @@ const MetricCard = ({
 )
 
 const ModelSection = ({ modelName, metrics }: { modelName: string; metrics: Metrics }) => {
+    const { t } = useTranslation();
     return (
         <Box
             sx={{
@@ -119,7 +121,7 @@ const ModelSection = ({ modelName, metrics }: { modelName: string; metrics: Metr
                     METRIC_CONFIG.map(({ key, titleKey, equation, unit }) => (
                         <MetricCard
                             key={key}
-                            title={`METRIC_CONFIG TITLE`}
+                            title={t(titleKey)}
                             value={metrics[key as keyof Metrics] ?? 0}
                             equation={equation}
                             unit={unit}
@@ -136,8 +138,7 @@ export const Metrix = () => {
     // Data fetching hooks
     const { data: rootData, isLoading: isRootLoading } = useReadRootGetQuery()
     const { data: sensors, isLoading: isSensorsLoading } = useFuncGetSensorIdListBackendV1GetSensorIdListGetQuery()
-    const [triggerMetrix, { data: metricsData, isLoading: isMetricsLoading, error }] =
-        useFuncMetrixByPeriodBackendV1MetrixByPeriodPostMutation()
+    const [triggerMetrix, { data: metricsData, isLoading: isMetricsLoading, error }] = useFuncMetrixByPeriodBackendV1MetrixByPeriodPostMutation()
 
     // State for selections
     const [selectedSensor, setSelectedSensor] = useState<string | null>(null)
@@ -153,8 +154,8 @@ export const Metrix = () => {
     )
     const endDefaultDate = useRef(rootData?.end_default_date ? new Date(rootData.end_default_date) : new Date())
 
-    const [startDate, setStartDate] = useState<Date | null>(startDefaultDate)
-    const [endDate, setEndDate] = useState<Date | null>(endDefaultDate)
+    const [startDate, setStartDate] = useState<Date | null>(startDefaultDate.current)
+    const [endDate, setEndDate] = useState<Date | null>(endDefaultDate.current)
     const [pickerOpen, setPickerOpen] = useState<boolean>(false)
 
     // Initialize sensor selection
@@ -213,12 +214,9 @@ export const Metrix = () => {
     return (
         <Stack direction={"column"} sx={{ margin: `1rem 0` }}>
             <Stack direction={"column"} sx={{ margin: `1rem 0` }}>
-                <Typography variant="h4">{t("metrics.data")}</Typography>
+                <Typography variant="h4">{t("widgets.Metrix.data")}</Typography>
             </Stack>
             <Card variant="outlined" sx={{ width: "100%", p: 2, minHeight: `400px` }}>
-                <Typography variant="h6" sx={{ mb: 3 }}>
-                    {t("metrics.select_data_range")}
-                </Typography>
 
                 {isLoading && (
                     <Box sx={{ display: "flex", justifyContent: "center", p: 4 }}>
@@ -236,31 +234,33 @@ export const Metrix = () => {
                     }}
                 >
                     <Stack>
-                        <Typography>{t("metrics.sensor_selection")}</Typography>
+                        <Typography>{t("widgets.Metrix.sensor_selection")}</Typography>
                         <GridDropdown
                             list={sensors || []}
                             selected={selectedSensor || ""}
                             onSelect={handleSensorChange}
-                            disabled={isSensorsLoading}
                         />
                     </Stack>
 
                     <Stack>
-                        <Typography>{t("metrics.model_selection")}</Typography>
+                        <Typography>{t("widgets.Metrix.model_selection")}</Typography>
                         <GridDropdown
                             list={availableModels}
                             selected={selectedModel || ""}
                             onSelect={handleModelChange}
-                            disabled={!selectedSensor || availableModels.length === 0}
                         />
                     </Stack>
                 </Box>
+
+                <Typography variant="h6" sx={{ mb: 3 }}>
+                    {t("widgets.Metrix.select_data_range")}
+                </Typography>
 
                 <LocalizationProvider dateAdapter={AdapterDateFns} adapterLocale={ru}>
                     <Grid container spacing={2}>
                         <Grid component="div">
                             <DateTimePicker
-                                label={t("metrics.start_date")}
+                                label={t("widgets.Metrix.start_date")}
                                 ampm={false}
                                 format="dd.MM.yyyy HH:mm"
                                 value={startDate}
@@ -270,22 +270,20 @@ export const Metrix = () => {
                                 minDate={earliestDate || undefined}
                                 maxDate={endDate || maxDate || undefined}
                                 slotProps={{ textField: { fullWidth: true } }}
-                                disabled={!selectedSensor}
                             />
                         </Grid>
                         <Grid component="div">
                             <DateTimePicker
-                                label={t("metrics.end_date")}
+                                label={t("widgets.Metrix.end_date")}
                                 ampm={false}
                                 format="dd.MM.yyyy HH:mm"
                                 value={endDate}
                                 onChange={setEndDate}
                                 onClose={() => setPickerOpen(false)}
                                 onOpen={() => setPickerOpen(true)}
-                                minDate={startDate || startDefaultDate || undefined}
+                                minDate={startDate ?? startDefaultDate.current ?? undefined}
                                 maxDate={maxDate || undefined}
                                 slotProps={{ textField: { fullWidth: true } }}
-                                disabled={!selectedSensor}
                             />
                         </Grid>
                     </Grid>
@@ -294,7 +292,7 @@ export const Metrix = () => {
                 <Box sx={{ mt: 2 }}>
                     {error && (
                         <Alert severity="error" sx={{ mb: 3 }}>
-                            {t("metrix_bloc.error_1")}: {error.toString()}
+                            {t("widgets.metrix_bloc.error_1")}: {error.toString()}
                         </Alert>
                     )}
 

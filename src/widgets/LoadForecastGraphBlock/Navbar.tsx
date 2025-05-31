@@ -27,6 +27,7 @@ import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs"
 import { DateCalendar } from "@mui/x-date-pickers/DateCalendar"
 import Menu from "@mui/material/Menu"
 import MenuItem from "@mui/material/MenuItem"
+import { useTranslation } from "react-i18next"
 
 // Style helpers
 // eslint-disable-next-line
@@ -66,17 +67,19 @@ export function BasicDateCalendar() {
 }
 
 export function DisabledOptions() {
+    const { t } = useTranslation()
     return (
         <Autocomplete
             options={timeSlots}
             getOptionDisabled={(option) => option === timeSlots[0] || option === timeSlots[2]}
             sx={{ width: 300 }}
-            renderInput={(params) => <TextField {...params} label="Disabled options" />}
+            renderInput={(params) => <TextField {...params} label={t("widgets.LoadForecastGraphBlock.navbar.disabled_options_label")} />}
         />
     )
 }
 
 export function PinnedSubheaderList() {
+    const { t } = useTranslation()
     return (
         <List
             sx={{
@@ -94,11 +97,11 @@ export function PinnedSubheaderList() {
                 <li key={`section-${index}`}>
                     <ul>
                         <ListSubheader sx={{ bgcolor: "background.paper" }}>
-                            {`${sectionId}:`.toUpperCase()}
+                            {`${t(`widgets.LoadForecastGraphBlock.navbar.time_units.${sectionId}`)}:`.toUpperCase()}
                         </ListSubheader>
                         {[0, 1, 2, 3, 4].map((item) => (
                             <ListItem key={`item-${index}-${item}`}>
-                                <ListItemText primary={`Last: ${item + 1} ${sectionId}`} />
+                                <ListItemText primary={t("widgets.LoadForecastGraphBlock.navbar.last_time_unit", { count: item + 1, unit: t(`widgets.LoadForecastGraphBlock.navbar.time_units.${sectionId}`) })} />
                             </ListItem>
                         ))}
                     </ul>
@@ -110,6 +113,7 @@ export function PinnedSubheaderList() {
 
 export function SplitButton() {
     const options = ["now-1d to now+1d", "yesterday", "tommorow"]
+    const { t } = useTranslation()
     const [open, setOpen] = React.useState(false)
     const anchorRef = React.useRef<HTMLDivElement>(null)
     const [selectedIndex, setSelectedIndex] = React.useState(0)
@@ -171,8 +175,8 @@ export function SplitButton() {
                 <Tooltip
                     title={
                         <React.Fragment>
-                            <Typography color="inherit">from: {new Date().toUTCString()}</Typography>
-                            <Typography color="inherit">to: {new Date().toUTCString()}</Typography>
+                            <Typography color="inherit">{t("widgets.LoadForecastGraphBlock.navbar.from_label")}: {new Date().toUTCString()}</Typography>
+                            <Typography color="inherit">{t("widgets.LoadForecastGraphBlock.navbar.to_label")}: {new Date().toUTCString()}</Typography>
                             <Typography color="warning">UTC</Typography>
                         </React.Fragment>
                     }
@@ -221,17 +225,17 @@ export function SplitButton() {
                                             sx={{ marginBottom: `1rem` }}
                                         >
                                             <Box>
-                                                <Typography variant="h6">Absolute time range</Typography>
+                                                <Typography variant="h6">{t("widgets.LoadForecastGraphBlock.navbar.absolute_time_range_heading")}</Typography>
                                                 <Box>
-                                                    <Typography>from:</Typography>
+                                                    <Typography>{t("widgets.LoadForecastGraphBlock.navbar.from_label")}:</Typography>
                                                     <DisabledOptions />
                                                 </Box>
                                                 <Box>
-                                                    <Typography>to:</Typography>
+                                                    <Typography>{t("widgets.LoadForecastGraphBlock.navbar.to_label")}:</Typography>
                                                     <DisabledOptions />
                                                 </Box>
                                             </Box>
-                                            <Button variant="contained">Apply time range</Button>
+                                            <Button variant="contained">{t("widgets.LoadForecastGraphBlock.navbar.apply_time_range_button")}</Button>
                                         </Stack>
                                         <Divider />
                                         <Stack>
@@ -241,7 +245,7 @@ export function SplitButton() {
                                     <Divider />
                                     <Stack sx={{ padding: `1rem` }}>
                                         <Typography variant="caption">
-                                            Coordinated Universal Time UTC, GMT UTC+00:00
+                                            {t("widgets.LoadForecastGraphBlock.navbar.timezone_caption")}
                                         </Typography>
                                         <Stack direction={"row"} sx={{ alignItems: `center` }}>
                                             <Typography
@@ -249,7 +253,7 @@ export function SplitButton() {
                                                 color="textPrimary"
                                                 sx={{ marginRight: `1rem` }}
                                             >
-                                                timezone:
+                                                {t("widgets.LoadForecastGraphBlock.navbar.timezone_label")}:
                                             </Typography>
                                             <IconButton
                                                 onClick={handleClick2}
@@ -262,7 +266,7 @@ export function SplitButton() {
                                                 }}
                                             >
                                                 <Typography variant="button" color="textPrimary">
-                                                    {timezone_list[0] || "Select period"}
+                                                    {timezone_list[0] || t("widgets.LoadForecastGraphBlock.navbar.select_period_placeholder")}
                                                 </Typography>
                                                 <ArrowDropDownIcon />
                                             </IconButton>
@@ -316,10 +320,12 @@ interface ModelSelectorDropdownProps {
     availableModels: string[]
     selectedModel: string | null
     onSelect: (model: string) => void
+    onRefreshSelect: (period: string) => void;
 }
 
-export function Navbar({ availableModels, selectedModel, onSelect }: ModelSelectorDropdownProps) {
-    const refreshAt = [`5m`, `1h`, `12h`]
+export function Navbar({ availableModels, selectedModel, onSelect, onRefreshSelect }: ModelSelectorDropdownProps) {
+    const refreshAt = [`1m`, `5m`, `1h`]
+    const { t } = useTranslation()
     const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null)
     const [anchorEl2, setAnchorEl2] = useState<null | HTMLElement>(null)
     const handleClick = (event: React.MouseEvent<HTMLElement>) => {
@@ -343,9 +349,8 @@ export function Navbar({ availableModels, selectedModel, onSelect }: ModelSelect
         setAnchorEl2(null)
     }
 
-    // eslint-disable-next-line
-    const handleModelSelect2 = (model: string) => {
-        // onSelect(model);
+    const handleRefreshSelect = (period: string) => {
+        onRefreshSelect(period);
         handleClose2()
     }
 
@@ -368,13 +373,13 @@ export function Navbar({ availableModels, selectedModel, onSelect }: ModelSelect
                 background: bg,
             }}
         >
-            <Stack direction={"row"} sx={{ alignItems: `center` }}>
+            {/* <Stack direction={"row"} sx={{ alignItems: `center` }}>
                 <Typography variant="button" color="textPrimary">
                     range:
                 </Typography>
                 <SplitButton />
-            </Stack>
-            <Button
+            </Stack> */}
+            {/* <Button
                 variant="outlined"
                 sx={{
                     color: textColor,
@@ -383,8 +388,8 @@ export function Navbar({ availableModels, selectedModel, onSelect }: ModelSelect
                 }}
             >
                 Reset zoom
-            </Button>
-            <Button
+            </Button> */}
+            {/* <Button
                 color="primary"
                 variant="outlined"
                 sx={{
@@ -394,8 +399,8 @@ export function Navbar({ availableModels, selectedModel, onSelect }: ModelSelect
                 }}
             >
                 Update
-            </Button>
-            <Button
+            </Button> */}
+            {/* <Button
                 color="primary"
                 variant="outlined"
                 sx={{
@@ -405,8 +410,8 @@ export function Navbar({ availableModels, selectedModel, onSelect }: ModelSelect
                 }}
             >
                 View Alerts
-            </Button>
-            <Button
+            </Button> */}
+            {/* <Button
                 color="primary"
                 variant="outlined"
                 sx={{
@@ -416,8 +421,8 @@ export function Navbar({ availableModels, selectedModel, onSelect }: ModelSelect
                 }}
             >
                 Create Alert
-            </Button>
-            <Button
+            </Button> */}
+            {/* <Button
                 color="primary"
                 variant="outlined"
                 sx={{
@@ -427,10 +432,10 @@ export function Navbar({ availableModels, selectedModel, onSelect }: ModelSelect
                 }}
             >
                 Details
-            </Button>
-            <Stack direction={"row"} sx={{ alignItems: `center` }}>
+            </Button> */}
+            <Stack direction={"row"} sx={{ alignItems: `center` }} spacing={1}>
                 <Typography variant="button" color="textPrimary">
-                    sensor:
+                    {t("widgets.LoadForecastGraphBlock.navbar.sensor_label")}:
                 </Typography>
                 <IconButton
                     onClick={handleClick}
@@ -444,7 +449,7 @@ export function Navbar({ availableModels, selectedModel, onSelect }: ModelSelect
                     }}
                 >
                     <Typography variant="button" color="textPrimary" sx={{ color: textColor }}>
-                        {selectedModel || "Select sensor"}
+                        {selectedModel || t("widgets.LoadForecastGraphBlock.navbar.select_sensor_placeholder")}
                     </Typography>
                     <ArrowDropDownIcon sx={{ color: textColor }} />
                 </IconButton>
@@ -486,9 +491,10 @@ export function Navbar({ availableModels, selectedModel, onSelect }: ModelSelect
                 </Menu>
             </Stack>
 
-            <Stack direction={"row"} sx={{ alignItems: `center` }}>
+            <Stack direction={"row"} sx={{ alignItems: `center` }} spacing={1}>
+
                 <Typography variant="button" color="textPrimary" sx={{ marginRight: `1rem` }}>
-                    refresh at
+                    {t("widgets.LoadForecastGraphBlock.navbar.refresh_at_label")}:
                 </Typography>
                 <IconButton
                     onClick={handleClick2}
@@ -503,7 +509,7 @@ export function Navbar({ availableModels, selectedModel, onSelect }: ModelSelect
                     }}
                 >
                     <Typography variant="button" sx={{ color: textColor }}>
-                        {refreshAt[0] || "Select period"}
+                        {refreshAt[0] || t("widgets.LoadForecastGraphBlock.navbar.select_period_placeholder")}
                     </Typography>
                     <ArrowDropDownIcon sx={{ color: textColor }} />
                 </IconButton>
@@ -525,7 +531,7 @@ export function Navbar({ availableModels, selectedModel, onSelect }: ModelSelect
                         <MenuItem
                             key={item}
                             selected={item === selectedModel}
-                            onClick={() => handleModelSelect2(item)}
+                            onClick={() => handleRefreshSelect(item)}
                             sx={{
                                 "&.Mui-selected": {
                                     backgroundColor: "action.selected",

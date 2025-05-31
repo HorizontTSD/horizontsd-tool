@@ -6,10 +6,12 @@ import { GridDropdown } from "@/widgets/GridDropdown"
 import {
     useFuncGetForecastDataBackendV1GetForecastDataPostMutation,
     useFuncGetSensorIdListBackendV1GetSensorIdListGetQuery,
-} from "@/shared/api/backend"
+} from "@/shared/api/model_fast_api"
 import { CustomRow } from "@/shared/types"
+import { useTranslation } from "react-i18next"
 
 export const CustomizedDataGrid: React.FC = () => {
+    const { t } = useTranslation("common")
     const {
         data: sensors,
         isLoading: sensorsLoading,
@@ -47,7 +49,7 @@ export const CustomizedDataGrid: React.FC = () => {
     const rows: GridRowsProp<CustomRow> = useMemo(() => {
         if (!selectedModel || !metricsTables || !metricsTables[selectedModel]?.metrics_table) return []
 
-        return metricsTables[selectedModel].metrics_table.map((item, index) => {
+        return metricsTables[selectedModel].metrics_table.map((item: any, index: number) => {
             const { Time, ...otherFields } = item
             return {
                 id: index,
@@ -64,7 +66,7 @@ export const CustomizedDataGrid: React.FC = () => {
 
         return columnKeys.map((key) => ({
             field: key,
-            headerName: key === "Time" ? "Date & time" : key,
+            headerName: key === "Time" ? t("widgets.GridDetails.date_time_header") : key,
             flex: 1,
             minWidth: 120,
             sortable: true,
@@ -74,7 +76,7 @@ export const CustomizedDataGrid: React.FC = () => {
                 },
             }),
         }))
-    }, [selectedModel, metricsTables])
+    }, [selectedModel, metricsTables, t])
 
     const handleSubmit = async (selected: string) => {
         if (selectedSensor == selected) return
@@ -101,9 +103,8 @@ export const CustomizedDataGrid: React.FC = () => {
     return (
         <Stack direction={"column"} sx={{ margin: `1rem 0` }}>
             <Stack direction={"column"} sx={{ margin: `1rem 0` }}>
-                <Typography variant="h4">Table</Typography>
+                <Typography variant="h4">{t("widgets.GridDetails.table_title")}</Typography>
             </Stack>
-
             <Box
                 sx={{
                     height: 700,
@@ -121,12 +122,12 @@ export const CustomizedDataGrid: React.FC = () => {
                     }}
                 >
                     <Stack>
-                        <Typography>Sensor Selection</Typography>
+                        <Typography>{t("widgets.GridDetails.sensor_selection_label")}</Typography>
                         <GridDropdown list={sensors || []} selected={selectedSensor || ""} onSelect={handleSubmit} />
                     </Stack>
 
                     <Stack>
-                        <Typography>Model Selection</Typography>
+                        <Typography>{t("widgets.GridDetails.model_selection_label")}</Typography>
                         {selectedSensor && (
                             <GridDropdown
                                 list={Object.keys(metricsTables) || []}
@@ -138,11 +139,11 @@ export const CustomizedDataGrid: React.FC = () => {
                 </Box>
 
                 {/* Loading and Error States */}
-                {sensorsError && <Typography color="error">errors.sensor_fetch</Typography>}
+                {sensorsError && <Typography color="error">{t("widgets.GridDetails.sensor_fetch_error")}</Typography>}
                 {forecastError && (
-                    <Typography color="error">errors.forecast_fetch: {JSON.stringify(forecastError)}</Typography>
+                    <Typography color="error">{`${t("widgets.GridDetails.forecast_fetch_error_prefix")} ${JSON.stringify(forecastError)}`}</Typography>
                 )}
-                {(sensorsLoading || forecastLoading) && <Typography>common.loading</Typography>}
+                {(sensorsLoading || forecastLoading) && <Typography>{t("common.loading")}</Typography>}
 
                 {/* Data Grid */}
                 {!forecastLoading && selectedModel && (
@@ -151,7 +152,9 @@ export const CustomizedDataGrid: React.FC = () => {
                         columns={columns}
                         density="compact"
                         pageSizeOptions={[25, 50, 100]}
-                        initialState={{ pagination: { pageSize: 100 } }}
+                        initialState={{
+                            pagination: { paginationModel: { pageSize: 100, page: 0 } },
+                        }}
                         disableColumnResize
                         getRowClassName={(params) => (params.indexRelativeToCurrentPage % 2 === 0 ? "even" : "odd")}
                         slotProps={{
