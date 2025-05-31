@@ -1,5 +1,5 @@
 import React from "react"
-import { Stack } from "@mui/material"
+import { Box, Stack } from "@mui/material"
 import { Sidebar } from "@/widgets/Sidebar"
 import { Header } from "@/widgets/Header"
 import { DataForecast } from "@/widgets/DataForecast"
@@ -11,20 +11,20 @@ export const MainLayout = ({ children }: { children: React.ReactNode }) => {
             sx={{
                 height: `100vh`,
                 width: `100vw`,
-                overflow: `hidden`,
+                overflow: `auto`,
             }}
         >
             <Sidebar />
-            <Stack
-                direction={"column"}
+            <Box
                 sx={{
+                    display: `grid`,
                     width: `100%`,
-                    height: `100%`,
-                }}
-            >
+                    overflow: `auto`,
+                    gridTemplateRows: `max-content`
+                }}>
                 <Header />
                 {children}
-            </Stack>
+            </Box>
         </Stack>
     )
 }
