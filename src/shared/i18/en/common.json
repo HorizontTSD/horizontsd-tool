@@ -1,53 +1,162 @@
 {
-    "sidebar": {
-        "menu": {
-            "data_forecast": "Data forecast",
-            "alert_settings": "Alert settings",
-            "data_analysis": "Data analysis",
-            "quick_forecast": "Quick forecast",
-            "about": "More about us"
+    "widgets": {
+        "nav_bar": {
+            "path": {
+                "main": "Dashboard",
+                "alerts": "Alerts",
+                "forecast": "New Forecast"
+            },
+            "title": "HorizonTSD",
+            "toggle_tooltip": {
+                "collapse": "Collapse sidebar",
+                "expand": "Expand sidebar"
+            }
+        },
+        "weatherStatCard": {
+            "loading": "Loading...",
+            "error_loading_charts_data": "Error loading charts data",
+            "title": "",
+            "description": "",
+            "trend_positive": "↑",
+            "trend_negative": "↓"
+        },
+        "LoadForecastGraphBlock": {
+            "title": "Forecast",
+            "sensors_loading": "Loading...",
+            "sensors_error": "Error loading sensors!",
+            "data_loading": "Data loading...",
+            "error_prefix": "Error: ",
+            "unknown_error": "Unknown error",
+            "navbar": {
+                "disabled_options_label": "Disabled options",
+                "time_range_options": {
+                    "option1": "now-1d to now+1d",
+                    "yesterday": "yesterday",
+                    "tommorow": "tommorow"
+                },
+                "from_label": "from:",
+                "to_label": "to:",
+                "absolute_time_range_heading": "Absolute time range",
+                "apply_time_range_button": "Apply time range",
+                "time_units": {
+                    "minute": "minute",
+                    "hour": "hour",
+                    "day": "day"
+                },
+                "last_time_unit": "Last: {{count}} {{unit}}",
+                "timezone_caption": "Coordinated Universal Time UTC, GMT UTC+00:00",
+                "timezone_label": "timezone:",
+                "select_period_placeholder": "Select period",
+                "sensor_label": "sensor",
+                "select_sensor_placeholder": "Select sensor",
+                "refresh_at_label": "refresh at"
+            }
+        },
+        "Metrix": {
+            "data": "Table of metrics by points",
+            "select_data_range": "Select data range",
+            "sensor_selection": "Sensor selection",
+            "model_selection": "Model selection",
+            "start_date": "Start date",
+            "end_date": "End date",
+            "date_range": "Date range",
+            "title": "Model metrics for the selected period",
+            "chose_alert": "Select a date range to display forecast metrics"
+        },
+        "GridDetails": {
+            "table_title": "Table",
+            "sensor_selection_label": "Sensor Selection",
+            "model_selection_label": "Model Selection",
+            "date_time_header": "Date & time",
+            "sensor_fetch_error": "Error fetching sensors",
+            "forecast_fetch_error_prefix": "Error fetching forecast:",
+            "loading_message": "Loading..."
+        },
+        "metrix_bloc": {
+            "error_1": "Data loading error:",
+            "mae": "Mean Absolute Error (MAE)",
+            "rmse": "Root Mean Square Error (RMSE)",
+            "r2": "Coefficient of Determination (R²)",
+            "mape": "Mean Absolute Percentage Error (MAPE)"
+        },
+        "alertsContent": {
+            "alert_rules": "Alert rules",
+            "search": "Search",
+            "search_alerts_placeholder": "search alerts",
+            "create_button": "Create",
+            "error_creating_alert": "Error creating alert:",
+            "error_deleting_alert": "Error deleting alert:",
+            "sensor_selection": "Sensor selection",
+            "model_selection": "Model selection",
+            "alert_block_name": "name",
+            "alert_block_trigger_frequency": "trigger frequency",
+            "alert_block_message": "message",
+            "alert_block_start_date": "start date",
+            "alert_block_end_date": "end_date",
+            "alert_block_start_warning_interval": "start warning interval",
+            "alert_block_sensor_id": "sensor id",
+            "alert_block_model": "model",
+            "alert_block_threshold_value": "threshold value",
+            "alert_block_scheme": "scheme",
+            "alert_block_telegram": "telegram",
+            "alert_block_email": "email",
+            "alert_block_include_graph": "include graph",
+            "alert_block_actions": "Actions",
+            "alert_block_view_button": "view",
+            "alert_block_more_button": "More",
+            "alert_block_edit_menu_item": "Edit",
+            "alert_block_delete_menu_item": "Delete",
+            "create_alert_modal_title_edit": "Edit alert",
+            "create_alert_modal_title_create": "Create alert",
+            "create_alert_modal_alert_name_label": "Alert name*",
+            "create_alert_modal_sensor_label": "Sensor*",
+            "create_alert_modal_model_label": "Model*",
+            "create_alert_modal_threshold_value_label": "Threshold value",
+            "create_alert_modal_alert_scheme_label": "Alert scheme",
+            "create_alert_modal_alert_scheme_above_value": "Above value",
+            "create_alert_modal_alert_scheme_below_value": "Below value",
+            "create_alert_modal_trigger_frequency_label": "Trigger frequency",
+            "create_alert_modal_start_date_label": "Start date",
+            "create_alert_modal_start_time_label": "Start time",
+            "create_alert_modal_end_date_label": "End date",
+            "create_alert_modal_end_time_label": "End time",
+            "create_alert_modal_email_addresses_label": "Email addresses",
+            "create_alert_modal_email_addresses_placeholder": "email1@example.com, email2@example.com",
+            "create_alert_modal_telegram_nicknames_label": "Telegram nicknames",
+            "create_alert_modal_telegram_nicknames_placeholder": "@username1, @username2",
+            "create_alert_modal_include_graph_label": "Include graph in notification",
+            "create_alert_modal_message_label": "Message",
+            "create_alert_modal_save_button": "Save",
+            "create_alert_modal_delete_button": "Delete",
+            "create_alert_modal_create_button": "Create",
+            "create_alert_modal_reset_button": "Reset",
+            "create_alert_modal_cancel_button": "Cancel"
+        },
+        "newForecast": {
+            "steps": {
+                "select_data": "Select data",
+                "choose_xy": "Choose X & Y",
+                "choose_time": "Choose Time"
+            },
+            "select_range_label": "Select Forecast Range",
+            "controlled_picker_label": "Controlled picker",
+            "all_steps_completed": "All steps completed - you're finished",
+            "reset_button": "Reset",
+            "download_button": "Download",
+            "back_button": "Back",
+            "next_button": "Next",
+            "step_completed_message": "Step {{stepNumber}} already completed",
+            "complete_step_button": "Complete Step",
+            "send_button": "Send",
+            "current_step_message": "Current step: {{stepNumber}}",
+            "select_data_description": "Select preferred data source",
+            "load_data_description": "Load data",
+            "select_x_axis_description": "Select X axis",
+            "select_y_axis_description": "Select Y axis",
+            "select_forecast_date_description": "Select forecast date",
+            "send_button_description": "If everything is correct, press \"send\" button",
+            "loading": "Loading...",
+            "error_generating_forecast": "Error generating forecast"
         }
-    },
-    "nav_bar": {
-        "path": {
-            "main_path": "Horizon TSD",
-            "home": "Forecast data"
-        }
-    },
-    "footer": {
-        "text": "All rights reserved. Horizon is an original project."
-    },
-    "ready_made_forecast_page": {
-        "additional_info": "Additional information",
-        "forecast_chart": "Forecast chart",
-        "sensor_name": "Sensor name",
-        "sensor_id": "Sensor ID",
-        "download_button": "Download"
-    },
-    "metrix_bloc": {
-        "title": "Model metrics for the selected period",
-        "end_date": "Start date",
-        "start_date": "End date",
-        "mae": "Mean Absolute Error (MAE)",
-        "mape": "Mean Absolute Percentage Error (MAPE)",
-        "r2": "Coefficient of Determination (R²)",
-        "rmse": "Root Mean Square Error (RMSE)",
-        "date_range": "Date range",
-        "error_1": "Data loading error:",
-        "model_xgboost": "Model XGBoost",
-        "model_lstm": "Model LSTM",
-        "chose_alert": "Select a date range to display forecast metrics"
-    },
-    "metrix_table": {
-        "title": "Table of metrics by points"
-    },
-    "metrics": {
-        "data": "Data",
-        "select_data_range": "Select data range",
-        "sensor_selection": "Sensor Selection",
-        "model_selection": "Model Selection",
-        "start_date": "Start date",
-        "end_date": "End date",
-        "metric_title": "METRIC_CONFIG TITLE"
     }
 }

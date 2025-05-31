@@ -1,53 +1,162 @@
 {
-    "sidebar": {
-        "menu": {
-            "data_forecast": "Прогноз данных",
-            "alert_settings": "Настройка оповещений",
-            "data_analysis": "Анализ данных",
-            "quick_forecast": "Быстрый прогноз",
-            "about": "Подробнее о нас"
+    "widgets": {
+        "nav_bar": {
+            "path": {
+                "main": "Главная",
+                "alerts": "Оповещения",
+                "forecast": "Новый прогноз"
+            },
+            "title": "HorizonTSD",
+            "toggle_tooltip": {
+                "collapse": "Свернуть боковую панель",
+                "expand": "Развернуть боковую панель"
+            }
+        },
+        "weatherStatCard": {
+            "loading": "Загрузка...",
+            "error_loading_charts_data": "Ошибка загрузки данных графиков",
+            "title": "",
+            "description": "",
+            "trend_positive": "↑",
+            "trend_negative": "↓"
+        },
+        "LoadForecastGraphBlock": {
+            "title": "Прогноз",
+            "sensors_loading": "Загрузка...",
+            "sensors_error": "Ошибка загрузки датчиков!",
+            "data_loading": "Загрузка данных...",
+            "error_prefix": "Ошибка: ",
+            "unknown_error": "Неизвестная ошибка",
+            "navbar": {
+                "disabled_options_label": "Отключенные опции",
+                "time_range_options": {
+                    "option1": "сейчас-1д до сейчас+1д",
+                    "yesterday": "вчера",
+                    "tommorow": "завтра"
+                },
+                "from_label": "с:",
+                "to_label": "по:",
+                "absolute_time_range_heading": "Абсолютный временной диапазон",
+                "apply_time_range_button": "Применить временной диапазон",
+                "time_units": {
+                    "minute": "минута",
+                    "hour": "час",
+                    "day": "день"
+                },
+                "last_time_unit": "Последние: {{count}} {{unit}}",
+                "timezone_caption": "Всемирное координированное время UTC, GMT UTC+00:00",
+                "timezone_label": "часовой пояс:",
+                "select_period_placeholder": "Выберите период",
+                "sensor_label": "датчик",
+                "select_sensor_placeholder": "Выберите датчик",
+                "refresh_at_label": "обновление"
+            }
+        },
+        "Metrix": {
+            "data": "Таблица метрик по точкам",
+            "select_data_range": "Выберите диапазон данных",
+            "sensor_selection": "Выбор датчика",
+            "model_selection": "Выбор модели",
+            "start_date": "Дата начала",
+            "end_date": "Дата окончания",
+            "date_range": "Диапазон дат",
+            "title": "Метрики модели за выбранный период",
+            "chose_alert": "Выберите диапазон дат для отображения метрик прогноза"
+        },
+        "GridDetails": {
+            "table_title": "Таблица",
+            "sensor_selection_label": "Выбор датчика",
+            "model_selection_label": "Выбор модели",
+            "date_time_header": "Дата и время",
+            "sensor_fetch_error": "Ошибка получения датчиков",
+            "forecast_fetch_error_prefix": "Ошибка получения прогноза:",
+            "loading_message": "Загрузка..."
+        },
+        "metrix_bloc": {
+            "error_1": "Ошибка загрузки данных:",
+            "mae": "Средняя абсолютная ошибка (MAE)",
+            "rmse": "Среднеквадратичная ошибка (RMSE)",
+            "r2": "Коэффициент детерминации (R²)",
+            "mape": "Средняя абсолютная процентная ошибка (MAPE)"
+        },
+        "alertsContent": {
+            "alert_rules": "Правила оповещений",
+            "search": "Поиск",
+            "search_alerts_placeholder": "поиск оповещений",
+            "create_button": "Создать",
+            "error_creating_alert": "Ошибка создания оповещения:",
+            "error_deleting_alert": "Ошибка удаления оповещения:",
+            "sensor_selection": "Выбор датчика",
+            "model_selection": "Выбор модели",
+            "alert_block_name": "название",
+            "alert_block_trigger_frequency": "частота срабатывания",
+            "alert_block_message": "сообщение",
+            "alert_block_start_date": "дата начала",
+            "alert_block_end_date": "дата окончания",
+            "alert_block_start_warning_interval": "начало интервала предупреждения",
+            "alert_block_sensor_id": "идентификатор датчика",
+            "alert_block_model": "модель",
+            "alert_block_threshold_value": "пороговое значение",
+            "alert_block_scheme": "схема",
+            "alert_block_telegram": "telegram",
+            "alert_block_email": "email",
+            "alert_block_include_graph": "включить график",
+            "alert_block_actions": "Действия",
+            "alert_block_view_button": "просмотр",
+            "alert_block_more_button": "Ещё",
+            "alert_block_edit_menu_item": "Редактировать",
+            "alert_block_delete_menu_item": "Удалить",
+            "create_alert_modal_title_edit": "Редактировать оповещение",
+            "create_alert_modal_title_create": "Создать оповещение",
+            "create_alert_modal_alert_name_label": "Название оповещения*",
+            "create_alert_modal_sensor_label": "Датчик*",
+            "create_alert_modal_model_label": "Модель*",
+            "create_alert_modal_threshold_value_label": "Пороговое значение",
+            "create_alert_modal_alert_scheme_label": "Схема оповещения",
+            "create_alert_modal_alert_scheme_above_value": "Выше значения",
+            "create_alert_modal_alert_scheme_below_value": "Ниже значения",
+            "create_alert_modal_trigger_frequency_label": "Частота срабатывания",
+            "create_alert_modal_start_date_label": "Дата начала",
+            "create_alert_modal_start_time_label": "Время начала",
+            "create_alert_modal_end_date_label": "Дата окончания",
+            "create_alert_modal_end_time_label": "Время окончания",
+            "create_alert_modal_email_addresses_label": "Email адреса",
+            "create_alert_modal_email_addresses_placeholder": "email1@example.com, email2@example.com",
+            "create_alert_modal_telegram_nicknames_label": "Telegram ники",
+            "create_alert_modal_telegram_nicknames_placeholder": "@username1, @username2",
+            "create_alert_modal_include_graph_label": "Включить график в уведомление",
+            "create_alert_modal_message_label": "Сообщение",
+            "create_alert_modal_save_button": "Сохранить",
+            "create_alert_modal_delete_button": "Удалить",
+            "create_alert_modal_create_button": "Создать",
+            "create_alert_modal_reset_button": "Сбросить",
+            "create_alert_modal_cancel_button": "Отмена"
+        },
+        "newForecast": {
+            "steps": {
+                "select_data": "Выбор данных",
+                "choose_xy": "Выбор X и Y",
+                "choose_time": "Выбор времени"
+            },
+            "select_range_label": "Выберите диапазон прогноза",
+            "controlled_picker_label": "Контролируемый выбор",
+            "all_steps_completed": "Все шаги завершены - вы закончили",
+            "reset_button": "Сбросить",
+            "download_button": "Скачать",
+            "back_button": "Назад",
+            "next_button": "Далее",
+            "step_completed_message": "Шаг {{stepNumber}} уже завершен",
+            "complete_step_button": "Завершить шаг",
+            "send_button": "Отправить",
+            "current_step_message": "Текущий шаг: {{stepNumber}}",
+            "select_data_description": "Выберите предпочтительный источник данных",
+            "load_data_description": "Загрузить данные",
+            "select_x_axis_description": "Выберите ось X",
+            "select_y_axis_description": "Выберите ось Y",
+            "select_forecast_date_description": "Выберите дату прогноза",
+            "send_button_description": "Если все верно, нажмите кнопку \"отправить\"",
+            "loading": "Загрузка...",
+            "error_generating_forecast": "Ошибка генерации прогноза"
         }
-    },
-    "nav_bar": {
-        "path": {
-            "main_path": "Horizon TSD",
-            "home": "Прогноз данных"
-        }
-    },
-    "footer": {
-        "text": "Все права защищены. Horizon - это оригинальный проект.."
-    },
-    "ready_made_forecast_page": {
-        "additional_info": "Дополнительная информация",
-        "forecast_chart": "График прогноза",
-        "sensor_name": "Имя датчика",
-        "sensor_id": "ID датчика",
-        "download_button": "Скачать"
-    },
-    "metrix_bloc": {
-        "title": "Метрики моделей за выбранный период",
-        "end_date": "Начальная дата",
-        "start_date": "Конечная дата",
-        "mae": "Средняя абсолютная ошибка (MAE)",
-        "mape": "Средняя процентная ошибка (MAPE)",
-        "r2": "Коэффициент детерминации (R²)",
-        "rmse": "Среднеквадратичная ошибка (RMSE)",
-        "date_range": "Диапазон дат",
-        "error_1": "Ошибка загрузки данных:",
-        "model_xgboost": "Модель XGBoost",
-        "model_lstm": "Модель LSTM",
-        "chose_alert": "Выберите диапазон дат для отображения метрик прогнозирования"
-    },
-    "metrix_table": {
-        "title": "Таблица метрик по точкам"
-    },
-    "metrics": {
-        "data": "Данные",
-        "select_data_range": "Выберите диапазон данных",
-        "sensor_selection": "Выбор датчика",
-        "model_selection": "Выбор модели",
-        "start_date": "Начальная дата",
-        "end_date": "Конечная дата",
-        "metric_title": "ЗАГОЛОВОК МЕТРИКИ"
     }
 }
