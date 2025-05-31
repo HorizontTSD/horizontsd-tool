@@ -1,0 +1,9 @@
+.u-plot {
+    background: var(--template-palette-background-default);
+}
+
+.u-legend .u-marker {
+    width: 21px;
+    height: 8.5px;
+    border-radius: 8px;
+}
