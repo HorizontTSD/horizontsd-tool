@@ -14,6 +14,14 @@ async function enableMocking() {
 
 enableMocking().then(() => {
     const root = createRoot(document.getElementById("root")!)
+    if (process.env.NODE_ENV !== "development") {
+        return root.render(
+            <AppProvider>
+                <App />
+            </AppProvider>
+        )
+    }
+    
     root.render(
         <React.StrictMode>
             <AppProvider>
