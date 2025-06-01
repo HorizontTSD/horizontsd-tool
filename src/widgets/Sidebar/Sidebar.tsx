@@ -1,5 +1,5 @@
 import { useColorScheme } from "@mui/material/styles"
-import { Stack, Typography } from "@mui/material"
+import { Divider, Stack, Typography } from "@mui/material"
 import { useTranslation } from "react-i18next"
 import { Link } from "react-router-dom"
 import List from "@mui/material/List"
@@ -128,6 +128,7 @@ export const Sidebar = () => {
                             {opened && <ListItemText primary={t("widgets.nav_bar.path.alerts")} />}
                         </ListItemButton>
                     </ListItem>
+                    {opened && <Divider />}
                     <ListItem disablePadding>
                         <ListItemButton component={Link} to="/forecast" sx={{ padding: 1 }}>
                             <IconButton

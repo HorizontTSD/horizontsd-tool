@@ -182,12 +182,13 @@ interface ForecastPureGraphProps {
 		forecast: {
 			map_data: {
 				data: {
-					last_real_data: {
+					last_real_data: string, /*{
 						[key: string]: string | number
-					}[],
-					predictions: {
+					}[]*/
+					predictions: string,
+					/*{
 						[key: string]: string | number
-					}[]
+					}[]*/
 				}
 			}
 		},
@@ -239,7 +240,9 @@ export const DataChart = ({
 
 	//
 
-	const { last_real_data, predictions } = forecast_data
+	let { last_real_data, predictions } = forecast_data
+	last_real_data = JSON.parse(last_real_data)
+	predictions = JSON.parse(predictions)
 	const real_data = [...last_real_data].reverse()
 	const prediction_lstm = [...predictions].reverse()
 
@@ -264,6 +267,7 @@ export const DataChart = ({
 		{ length: max_timeline_length },
 		(v, i) => (min_ts + timestep_size * i) / plugin_refresh_rate
 	)
+
 	const load_consumption = [null, ...real_data].map((e) => e && target_value in e ? e[target_value] : null)
 
 	const chart_data = [

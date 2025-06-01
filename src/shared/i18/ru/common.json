@@ -139,7 +139,7 @@
                 "choose_time": "Выбор времени"
             },
             "select_range_label": "Выберите диапазон прогноза",
-            "controlled_picker_label": "Контролируемый выбор",
+            "controlled_picker_label": "Выберите конечную дату",
             "all_steps_completed": "Все шаги завершены - вы закончили",
             "reset_button": "Сбросить",
             "download_button": "Скачать",

@@ -53,14 +53,14 @@ const LoadData = ({
     }
     return new Date(Number(s)).valueOf();
   }
-  const oldest_date = (data && data.length > 0) ? data.slice().sort((a: DataRow, b: DataRow) => {
+  const newest_date = (data && data.length > 0) ? data.slice().sort((a: DataRow, b: DataRow) => {
     const dateA = a[XY[0]];
     const dateB = b[XY[0]];
-    return stts(dateA) - stts(dateB);
+    return stts(dateB) - stts(dateA);
   })[0] : undefined;
 
   const [value, setValue] = React.useState<Dayjs | null>(
-    oldest_date && oldest_date[XY[0]] ? dayjs(oldest_date[XY[0]]) : null
+    newest_date && newest_date[XY[0]] ? dayjs(newest_date[XY[0]]) : null
   );
 
   const { t } = useTranslation('common');

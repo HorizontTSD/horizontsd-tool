@@ -139,7 +139,7 @@
                 "choose_time": "Choose Time"
             },
             "select_range_label": "Select Forecast Range",
-            "controlled_picker_label": "Controlled picker",
+            "controlled_picker_label": "Select forecast data",
             "all_steps_completed": "All steps completed - you're finished",
             "reset_button": "Reset",
             "download_button": "Download",

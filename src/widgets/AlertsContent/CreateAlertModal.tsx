@@ -10,6 +10,7 @@ import {
     useFuncGetSensorIdListBackendV1GetSensorIdListGetQuery
 } from "@/shared/api/model_fast_api"
 import { useTranslation } from "react-i18next"
+import { AlertConfigRequest } from "@/shared/api/alert"
 
 interface CreateAlertModalProps {
     open: boolean
@@ -25,11 +26,11 @@ const AlerModalForm = ({
     handleSubmit,
     onClose,
     handleReset,
-    availableModels = [],
-    sensors = []
+    availableModels,
+    sensors
 }) => {
     const { t } = useTranslation()
-    
+
     return (
         <Box sx={{ flex: 1, pr: 2 }}>
             <Typography variant="h4" sx={{ color: "white", mb: 2 }}>
@@ -217,10 +218,8 @@ const AlerModalForm = ({
                             ".MuiSelect-select": { p: "4px 12px" },
                         }}
                     >
-                        <MenuItem value={"1h"}>1h</MenuItem>
-                        <MenuItem value={"6h"}>6h</MenuItem>
-                        <MenuItem value={"12h"}>12h</MenuItem>
-                        <MenuItem value={"24h"}>24h</MenuItem>
+                        <MenuItem value={"Каждый день"}>Каждый день</MenuItem>
+                        <MenuItem value={"Каждый час"}>Каждый час</MenuItem>
                     </Select>
                 </Box>
 
@@ -444,6 +443,8 @@ const AlerModalForm = ({
 
 const AlertModalChart = ({
     formValues
+}: {
+    formValues: AlertConfigRequest
 }) => {
     const { mode, setMode } = useColorScheme()
     const isDark = mode === "dark"
@@ -466,7 +467,7 @@ const AlertModalChart = ({
 
 export const CreateAlertModal = ({ open, onClose, alert, onSubmit }: CreateAlertModalProps) => {
     const { t } = useTranslation()
-    
+
     // Data fetching hooks
     const {
         data: sensors,
@@ -482,11 +483,11 @@ export const CreateAlertModal = ({ open, onClose, alert, onSubmit }: CreateAlert
     const [selectedModel, setSelectedModel] = useState<string>("");
 
     // Initialize form values
-    const [formValues, setFormValues] = useState<CreateAlertFormValues>({
+    const [formValues, setFormValues] = useState<AlertConfigRequest>({
         name: "",
         threshold_value: 0.0,
         alert_scheme: "Выше значения",
-        trigger_frequency: "1h",
+        trigger_frequency: "trigger_frequency",
         message: "",
         telegram_nicknames: [],
         email_addresses: [],
@@ -497,7 +498,7 @@ export const CreateAlertModal = ({ open, onClose, alert, onSubmit }: CreateAlert
         time_end: "23:59",
         start_warning_interval: "60m",
         sensor_id: "",
-        model: "",
+        model: availableModels[0],
     });
 
     // Fetch forecast data when sensors change
@@ -592,7 +593,7 @@ export const CreateAlertModal = ({ open, onClose, alert, onSubmit }: CreateAlert
             name: "",
             threshold_value: 0.0,
             alert_scheme: "Выше значения",
-            trigger_frequency: "1h",
+            trigger_frequency: "Каждый день",
             message: "",
             telegram_nicknames: [],
             email_addresses: [],

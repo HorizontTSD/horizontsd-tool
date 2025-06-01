@@ -18,6 +18,7 @@ import AlertBlock from "./AlertBlock"
 import { CreateAlertModal } from "./CreateAlertModal"
 import { Alert } from "@/shared/types/Alert"
 import {
+    AlertConfigRequest,
     useCreateAlertEndpointAlertManagerV1CreatePostMutation,
     useDeleteAlertEndpointAlertManagerV1DeleteDeleteMutation,
     useListAlertConfigsAlertManagerV1ListGetQuery
@@ -367,12 +368,11 @@ export const AlertsContent = () => {
     const [loading, setLoading] = useState(false)
     const [expandedIdx, setExpandedIdx] = useState<number | null>(null)
 
-    // TODO:
     const [createAlertMutation] = useCreateAlertEndpointAlertManagerV1CreatePostMutation();
     const [deleteAlertMutation] = useDeleteAlertEndpointAlertManagerV1DeleteDeleteMutation();
 
     // Create alert
-    const handleCreateAlert = async (alert: Omit<Alert, "id" | "eventId">) => {
+    const handleCreateAlert = async (alert: AlertConfigRequest) => {
         try {
             await createAlertMutation({
                 alertConfigRequest: alert
