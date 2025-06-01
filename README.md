@@ -1,34 +1,78 @@
 ![alt text](/readme_materials/logo_line_white.svg "Title")
 
-
 # `.env`
 
 Example:
+
 ```txt
 # .env
-VITE_EMAIL_SERVICE_URL="https://0.0.0.0:8080"
-VITE_PUBLIC_YANDEX_ANALYTICS_ID="000000000"
-VITE_PUBLIC_EMAIL_LEGAL="legal@domain.com"
-VITE_FIGMA_URL=https://www.figma.com/design/DIRECT_LINK_TO_FIGMA
+
+# to build client
+VITE_BACKEND_ENDPOINT=/backend_endpoint
+VITE_ALERT_ENDPOINT=/alert_endpoint
+VITE_MODEL_FAST_API_ENDPOINT=/model_fast_api_endpoint
+# to run server
+NODE_BACKEND_ENDPOINT=http://XX.XX.XX.XX:XXXX
+NODE_ALERT_ENDPOINT=http://XX.XX.XX.XX:XXXX
+NODE_MODEL_FAST_API_ENDPOINT=http://XX.XX.XX.XX:XXXX
+
+VITE_FIGMA_URL=https://www.figma.com/design/XXXXXXXXXXXXXXXXX/XXXXXXXXXXXXXXXXX?node-id=XXX-XXX
+```
+
+```txt
+# .storybook/.env.development
+VITE_BACKEND_URL=0.0.0.0
+VITE_BACKEND=http://localhost:6006
 ```
 
 <br/>
 
 # DEVELOPMENT
-```
-yarn install # install dependencies
-yarn dev # run development server
-yarn build # run production build
-yarn storybook # launch for components preview and testing
-yarn preview # preview production build
+
+```bash
+# pull
+git clone https://github.com/HorizontTSD/horizontsd-tool.git --branch ...
+
+# setup .env
+...
+# setup .storybook/.env.development
+...
+
+
+# install dependencies
+yarn install
+
+# Generate OpenAPI schemas:
+VITE_MODEL_FAST_API_ENDPOINT=https://1X.XX.XX.XX:XXXX npx @rtk-query/codegen-openapi ./openapi-config-model_fast_api.ts
+VITE_ALERT_ENDPOINT=http://2X.XX.XX.XX:XXXX npx @rtk-query/codegen-openapi ./openapi-config-alerts.ts
+VITE_BACKEND_ENDPOINT=http://3X.XX.XX.XX:XXXX npx @rtk-query/codegen-openapi ./openapi-config-model_fast_api.ts
+
+# run development server
+yarn dev
+
+# launch for components preview and testing
+yarn storybook
+
+# run production build
+yarn build
+
+# preview production build
+yarn server
 ```
 
 <br/>
 
 # DEPLOY
-VITE_BACKEND="https://XX.XX.XX.XX:XXXX" - backend data enpoint
-```cmd
-docker build --pull --rm -f Dockerfile -t horizontsdtool:latest . --progress=plain --build-arg VITE_BACKEND="https://XX.XX.XX.XX:XXXX"
+
+```bash
+docker build --pull --rm -f Dockerfile -t horizontsdtool:latest . --progress=plain \
+--build-arg VITE_BACKEND_ENDPOINT=/backend_endpoint \
+--build-arg VITE_ALERT_ENDPOINT=/alert_endpoint \
+--build-arg VITE_MODEL_FAST_API_ENDPOINT=/model_fast_api_endpoint \
+--build-arg NODE_BACKEND_ENDPOINT=http://XX.XX.XX.XX:XXXX \
+--build-arg NODE_ALERT_ENDPOINT=http://XX.XX.XX.XX:XXXX \
+--build-arg NODE_MODEL_FAST_API_ENDPOINT=http://XX.XX.XX.XX:XXXX
+
 docker run -d -p 3000:80 -e --name horizontsdtool:latest
 ```
 
@@ -37,7 +81,10 @@ docker run -d -p 3000:80 -e --name horizontsdtool:latest
 <br/>
 <br/>
 <br/>
-<br/>
+
+---
+
+# [<span style="color:orange"> Git Workflow & Contribution Guidelines </span>]("./readme_materials/Git_Workflow_and_Contribution_Guidelines.md")
 
 ---
 
@@ -46,9 +93,6 @@ docker run -d -p 3000:80 -e --name horizontsdtool:latest
 <br/>
 
 ## Development details:
-
-
-
 
 ![alt text](/readme_materials/storybook_figma.png "Title")
 
@@ -64,11 +108,9 @@ docker run -d -p 3000:80 -e --name horizontsdtool:latest
 
 ![alt text](/readme_materials/storybook_smoke.png "Title")
 
-
 <br/>
 <br/>
 <br/>
-
 
 ### Design:
 
