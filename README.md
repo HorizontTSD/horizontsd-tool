@@ -5,9 +5,17 @@
 Example:
 
 ```txt
-# .env.development
-VITE_BACKEND_URL=0.0.0.0
-VITE_BACKEND=http://localhost:3000
+# .env
+
+# to build client
+VITE_BACKEND_ENDPOINT=/backend_endpoint
+VITE_ALERT_ENDPOINT=/alert_endpoint
+VITE_MODEL_FAST_API_ENDPOINT=/model_fast_api_endpoint
+# to run server
+NODE_BACKEND_ENDPOINT=http://XX.XX.XX.XX:XXXX
+NODE_ALERT_ENDPOINT=http://XX.XX.XX.XX:XXXX
+NODE_MODEL_FAST_API_ENDPOINT=http://XX.XX.XX.XX:XXXX
+
 VITE_FIGMA_URL=https://www.figma.com/design/XXXXXXXXXXXXXXXXX/XXXXXXXXXXXXXXXXX?node-id=XXX-XXX
 ```
 
@@ -25,7 +33,7 @@ VITE_BACKEND=http://localhost:6006
 # pull
 git clone https://github.com/HorizontTSD/horizontsd-tool.git --branch ...
 
-# setup .env.development at root
+# setup .env
 ...
 # setup .storybook/.env.development
 ...
@@ -49,17 +57,22 @@ yarn storybook
 yarn build
 
 # preview production build
-yarn preview
+yarn server
 ```
 
 <br/>
 
 # DEPLOY
 
-VITE_BACKEND="https://XX.XX.XX.XX:XXXX" - backend data enpoint
-
 ```bash
-docker build --pull --rm -f Dockerfile -t horizontsdtool:latest . --progress=plain --build-arg VITE_BACKEND="https://XX.XX.XX.XX:XXXX"
+docker build --pull --rm -f Dockerfile -t horizontsdtool:latest . --progress=plain \
+--build-arg VITE_BACKEND_ENDPOINT=/backend_endpoint \
+--build-arg VITE_ALERT_ENDPOINT=/alert_endpoint \
+--build-arg VITE_MODEL_FAST_API_ENDPOINT=/model_fast_api_endpoint \
+--build-arg NODE_BACKEND_ENDPOINT=http://XX.XX.XX.XX:XXXX \
+--build-arg NODE_ALERT_ENDPOINT=http://XX.XX.XX.XX:XXXX \
+--build-arg NODE_MODEL_FAST_API_ENDPOINT=http://XX.XX.XX.XX:XXXX
+
 docker run -d -p 3000:80 -e --name horizontsdtool:latest
 ```
 
