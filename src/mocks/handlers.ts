@@ -1,10 +1,12 @@
 /* eslint-disable */
 import { http, HttpResponse } from "msw"
 
-const API_URL = import.meta.env.VITE_BACKEND
+const backend_endpoint = import.meta.env.VITE_BACKEND_ENDPOINT
+const alert_endpoint = import.meta.env.VITE_ALERT_ENDPOINT
+const model_fast_api_endpoint = import.meta.env.VITE_MODEL_FAST_API_ENDPOINT
 
 const alert_handlers = [
-    http.get(`${API_URL}/alert_manager/v1/fetch_data_for_front`, () => {
+    http.get(`${alert_endpoint}/alert_manager/v1/fetch_data_for_front`, () => {
         return HttpResponse.json({
             "sensor_ids": [
                 "arithmetic_1464947681"
@@ -333,7 +335,7 @@ const alert_handlers = [
             ]
         })
     }),
-    http.get(`${API_URL}/alert_manager/v1/list`, () => {
+    http.get(`${alert_endpoint}/alert_manager/v1/list`, () => {
         return HttpResponse.json({
             "yaml_files": [
                 {
@@ -479,12 +481,12 @@ const alert_handlers = [
             ]
         })
     }),
-    http.get(`${API_URL}/alert_manager/v1/notification`, () => {
+    http.get(`${alert_endpoint}/alert_manager/v1/notification`, () => {
         return HttpResponse.json({
             "massage": "Emails send successfuly"
         })
     }),
-    http.post(`${API_URL}/alert_manager/v1/create`, async ({ request }) => {
+    http.post(`${alert_endpoint}/alert_manager/v1/create`, async ({ request }) => {
         const {
             name,
             threshold_value,
@@ -568,7 +570,7 @@ const alert_handlers = [
             config: yamlString
         })
     }),
-    http.delete(`${API_URL}/alert_manager/v1/delete`, async ({ request }) => {
+    http.delete(`${alert_endpoint}/alert_manager/v1/delete`, async ({ request }) => {
         const { filename } = await request.json()
 
         // Validate filename exists and has .yaml extension
@@ -604,7 +606,7 @@ const alert_handlers = [
 ]
 
 const model_fast_api_handlers = [
-    http.get(`${API_URL}/backend/v1/get_mini_charts_data`, () => {
+    http.get(`${model_fast_api_endpoint}/backend/v1/get_mini_charts_data`, () => {
         const now = Date.now()
         const yesterday = now - 24 * 60 * 60 * 1000
         return HttpResponse.json([
@@ -727,11 +729,11 @@ const model_fast_api_handlers = [
         ])
     }),
 
-    http.get(`${API_URL}/backend/v1/get_sensor_id_list`, () => {
+    http.get(`${model_fast_api_endpoint}/backend/v1/get_sensor_id_list`, () => {
         return HttpResponse.json(["arithmetic_1464947681", "arithmetic_1464947681_2"])
     }),
 
-    http.post<{ sensor_ids: string[] }>(`${API_URL}/backend/v1/fetch_possible_date_for_metrix`, async ({ request }) => {
+    http.post<{ sensor_ids: string[] }>(`${model_fast_api_endpoint}/backend/v1/fetch_possible_date_for_metrix`, async ({ request }) => {
         const { sensor_ids } = await request.json()
 
         if (!Array.isArray(sensor_ids)) {
@@ -765,7 +767,7 @@ const model_fast_api_handlers = [
         return HttpResponse.json(response)
     }),
 
-    http.post<{ sensor_ids: string[] }>(`${API_URL}/backend/v1/get_forecast_data`, async ({ request }) => {
+    http.post<{ sensor_ids: string[] }>(`${model_fast_api_endpoint}/backend/v1/get_forecast_data`, async ({ request }) => {
         const { sensor_ids } = await request.json()
         if (!Array.isArray(sensor_ids)) {
             return HttpResponse.json({ error: "sensor_ids must be an array" }, { status: 400 })
@@ -933,7 +935,7 @@ const model_fast_api_handlers = [
         return HttpResponse.json(response)
     }),
 
-    http.post<{ sensor_ids: string[] }>(`${API_URL}/backend/v1/metrix_by_period`, async ({ request }) => {
+    http.post<{ sensor_ids: string[] }>(`${model_fast_api_endpoint}/backend/v1/metrix_by_period`, async ({ request }) => {
         const { sensor_ids, date_start, date_end } = await request.json()
 
         if (!Array.isArray(sensor_ids)) {
@@ -962,7 +964,7 @@ const model_fast_api_handlers = [
 ]
 
 const backend_handlers = [
-    http.post<{ sensor_ids: string[] }>(`${API_URL}/backend/v1/generate_forecast`, async ({ request }) => {
+    http.post<{ sensor_ids: string[] }>(`${backend_endpoint}/backend/v1/generate_forecast`, async ({ request }) => {
         const {
             df,
             time_column,
@@ -976,7 +978,7 @@ const backend_handlers = [
         const response = {
             "map_data": {
                 "data": {
-                    "last_real_data": [
+                    "last_real_data": JSON.stringify([
                         {
                             "Unnamed: 0": 999,
                             "time": "2022-09-10 02:45:00",
@@ -13977,8 +13979,8 @@ const backend_handlers = [
                             "uv_index": 0.6,
                             "wind_chill": 26.4
                         }
-                    ],
-                    "predictions": [
+                    ]),
+                    "predictions": JSON.stringify([
                         {
                             "time": "2022-09-10 02:50:00",
                             "load_consumption": 17855.5224954754
@@ -14131,7 +14133,7 @@ const backend_handlers = [
                             "time": "2022-09-10 05:55:00",
                             "load_consumption": 17968.9
                         }
-                    ]
+                    ])
                 },
                 "last_know_data": "2022-09-10 2:45:00",
                 "title": "Реальный прогноз load_consumption",
