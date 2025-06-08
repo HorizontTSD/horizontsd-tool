@@ -47,9 +47,9 @@
                 "timezone_caption": "Всемирное координированное время UTC, GMT UTC+00:00",
                 "timezone_label": "часовой пояс:",
                 "select_period_placeholder": "Выберите период",
-                "sensor_label": "датчик",
+                "sensor_label": "источник данных",
                 "select_sensor_placeholder": "Выберите датчик",
-                "refresh_at_label": "обновление"
+                "refresh_at_label": "частота обновления"
             }
         },
         "Metrix": {

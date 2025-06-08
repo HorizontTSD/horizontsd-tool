@@ -47,7 +47,7 @@
                 "timezone_caption": "Coordinated Universal Time UTC, GMT UTC+00:00",
                 "timezone_label": "timezone:",
                 "select_period_placeholder": "Select period",
-                "sensor_label": "sensor",
+                "sensor_label": "data source",
                 "select_sensor_placeholder": "Select sensor",
                 "refresh_at_label": "refresh at"
             }

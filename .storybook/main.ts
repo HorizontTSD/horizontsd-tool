@@ -8,27 +8,34 @@ const config: StorybookConfig = {
         "@chromatic-com/storybook",
         "@storybook/addon-designs",
         "@storybook/experimental-addon-test",
-        // '@storybook/addon-interactions'
     ],
-
     framework: {
         name: "@storybook/react-vite",
         options: {
             strictMode: false,
         },
     },
-    env: (config) => ({
-        ...config,
-        VITE_BACKEND: `http://localhost:6006`,
-    }),
-
     docs: {
         autodocs: true,
     },
-
     typescript: {
         reactDocgen: "react-docgen-typescript",
     },
     staticDirs: ["../public"],
+    async viteFinal(config, { configType }) {
+        // Load env variables based on mode
+        const env = loadEnv(configType.toLowerCase(), process.cwd(), "")
+        
+        return mergeConfig(config, {
+            define: {
+                "process.env": {
+                    VITE_BACKEND_ENDPOINT: env.VITE_BACKEND_ENDPOINT,
+                    VITE_ALERT_ENDPOINT: env.VITE_ALERT_ENDPOINT,
+                    VITE_MODEL_FAST_API_ENDPOINT: env.VITE_MODEL_FAST_API_ENDPOINT,
+                }
+            }
+        })
+    },
 }
+
 export default config
