@@ -27,8 +27,8 @@ export default defineConfig(async ({ command, mode }) => {
             },
         },
         define: {
-            VITE_APP_BACKEND_ADDRESS: JSON.stringify(env.VITE_APP_BACKEND_ADDRESS),
-            VITE_BACKEND: JSON.stringify(`${process.env.VITE_BACKEND}`),
+            // VITE_APP_BACKEND_ADDRESS: JSON.stringify(env.VITE_APP_BACKEND_ADDRESS),
+            // VITE_BACKEND: JSON.stringify(`${process.env.VITE_BACKEND}`),
         },
         build: {
             sourcemap: true

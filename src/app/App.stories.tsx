@@ -24,9 +24,9 @@ export const Default: Story = {
         },
     },
     loaders: [
-        async () => ({
-            mocked: await (await fetch("/backend/v1/get_mini_charts_data")).json(),
-        }),
+      //  async () => ({
+      //      mocked: await (await fetch("/backend/v1/get_mini_charts_data")).json(),
+      //  }),
     ],
     decorators: [
         () => {

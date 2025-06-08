@@ -6,7 +6,7 @@ import { LoadForecastPureGraph } from "./index"
 import {
     useFuncGetSensorIdListBackendV1GetSensorIdListGetQuery,
     useFuncGetForecastDataBackendV1GetForecastDataPostMutation,
-} from "@/shared/api/backend"
+} from "@/shared/api/model_fast_api"
 
 import { handlers } from "@/mocks/handlers"
 
