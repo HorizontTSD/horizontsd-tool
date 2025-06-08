@@ -1,4 +1,4 @@
-![alt text](/readme_materials/logo_line_white.svg "Title")
+![alt text](/readme_materials/dashboard.png "Dashboard")
 
 # `.env`
 
@@ -82,48 +82,3 @@ docker run -d -p 3000:80 -e --name horizontsdtool:latest
 <br/>
 <br/>
 
----
-
-# [<span style="color:orange"> Git Workflow & Contribution Guidelines </span>]("./readme_materials/Git_Workflow_and_Contribution_Guidelines.md")
-
----
-
-<br/>
-<br/>
-<br/>
-
-## Development details:
-
-![alt text](/readme_materials/storybook_figma.png "Title")
-
-<br/>
-<br/>
-<br/>
-
-## run alongside with storybook
-
-<br/>
-<br/>
-<br/>
-
-![alt text](/readme_materials/storybook_smoke.png "Title")
-
-<br/>
-<br/>
-<br/>
-
-### Design:
-
-![alt text](/_design/palette.png "Title")
-
-<br/>
-<br/>
-<br/>
-
-![alt text](/_design/1920w_dark.png "Title")
-
-<br/>
-<br/>
-<br/>
-
-![alt text](/_design/1920w_light.png "Title")
