@@ -1,4 +1,4 @@
-import { Typography, Card, Box, CircularProgress, Alert, Grid, Stack } from "@mui/material"
+import { Typography, Card, Box, Alert, Grid, Stack } from "@mui/material"
 import { DateTimePicker } from "@mui/x-date-pickers/DateTimePicker"
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider"
 import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns"
@@ -12,8 +12,8 @@ import {
     useReadRootGetQuery,
     useFuncGetSensorIdListBackendV1GetSensorIdListGetQuery,
 } from "@/shared/api/model_fast_api"
-
 import { GridDropdown } from "@/widgets/GridDropdown"
+import { MetrixSkeleton } from "@/shared/ui/skeletons/MetrixSkeleton"
 
 type MetricConfig = {
     key: string
@@ -85,7 +85,7 @@ const MetricCard = ({
 )
 
 const ModelSection = ({ modelName, metrics }: { modelName: string; metrics: Metrics }) => {
-    const { t } = useTranslation();
+    const { t } = useTranslation()
     return (
         <Box
             sx={{
@@ -138,7 +138,8 @@ export const Metrix = () => {
     // Data fetching hooks
     const { data: rootData, isLoading: isRootLoading } = useReadRootGetQuery()
     const { data: sensors, isLoading: isSensorsLoading } = useFuncGetSensorIdListBackendV1GetSensorIdListGetQuery()
-    const [triggerMetrix, { data: metricsData, isLoading: isMetricsLoading, error }] = useFuncMetrixByPeriodBackendV1MetrixByPeriodPostMutation()
+    const [triggerMetrix, { data: metricsData, isLoading: isMetricsLoading, error }] =
+        useFuncMetrixByPeriodBackendV1MetrixByPeriodPostMutation()
 
     // State for selections
     const [selectedSensor, setSelectedSensor] = useState<string | null>(null)
@@ -217,92 +218,91 @@ export const Metrix = () => {
                 <Typography variant="h4">{t("widgets.Metrix.data")}</Typography>
             </Stack>
             <Card variant="outlined" sx={{ width: "100%", p: 2, minHeight: `400px` }}>
+                {isLoading ? (
+                    <MetrixSkeleton />
+                ) : (
+                    <>
+                        {/* Sensor and Model Selection */}
+                        <Box
+                            sx={{
+                                display: "flex",
+                                justifyContent: "space-between",
+                                width: "100%",
+                                mb: 3,
+                            }}
+                        >
+                            <Stack>
+                                <Typography>{t("widgets.Metrix.sensor_selection")}</Typography>
+                                <GridDropdown
+                                    list={sensors || []}
+                                    selected={selectedSensor || ""}
+                                    onSelect={handleSensorChange}
+                                />
+                            </Stack>
 
-                {isLoading && (
-                    <Box sx={{ display: "flex", justifyContent: "center", p: 4 }}>
-                        <CircularProgress />
-                    </Box>
+                            <Stack>
+                                <Typography>{t("widgets.Metrix.model_selection")}</Typography>
+                                <GridDropdown
+                                    list={availableModels}
+                                    selected={selectedModel || ""}
+                                    onSelect={handleModelChange}
+                                />
+                            </Stack>
+                        </Box>
+
+                        <Typography variant="h6" sx={{ mb: 3 }}>
+                            {t("widgets.Metrix.select_data_range")}
+                        </Typography>
+
+                        <LocalizationProvider dateAdapter={AdapterDateFns} adapterLocale={ru}>
+                            <Grid container spacing={2}>
+                                <Grid item xs={12} sm={6}>
+                                    <DateTimePicker
+                                        label={t("widgets.Metrix.start_date")}
+                                        ampm={false}
+                                        format="dd.MM.yyyy HH:mm"
+                                        value={startDate}
+                                        onChange={setStartDate}
+                                        onClose={() => setPickerOpen(false)}
+                                        onOpen={() => setPickerOpen(true)}
+                                        minDate={earliestDate || undefined}
+                                        maxDate={endDate || maxDate || undefined}
+                                        slotProps={{ textField: { fullWidth: true } }}
+                                    />
+                                </Grid>
+                                <Grid item xs={12} sm={6}>
+                                    <DateTimePicker
+                                        label={t("widgets.Metrix.end_date")}
+                                        ampm={false}
+                                        format="dd.MM.yyyy HH:mm"
+                                        value={endDate}
+                                        onChange={setEndDate}
+                                        onClose={() => setPickerOpen(false)}
+                                        onOpen={() => setPickerOpen(true)}
+                                        minDate={startDate ?? startDefaultDate.current ?? undefined}
+                                        maxDate={maxDate || undefined}
+                                        slotProps={{ textField: { fullWidth: true } }}
+                                    />
+                                </Grid>
+                            </Grid>
+                        </LocalizationProvider>
+
+                        <Box sx={{ mt: 2 }}>
+                            {error && (
+                                <Alert severity="error" sx={{ mb: 3 }}>
+                                    {t("widgets.metrix_bloc.error_1")}: {error.toString()}
+                                </Alert>
+                            )}
+
+                            {selectedModel && metricsData && metricsData.length > 0 && (
+                                <ModelSection
+                                    modelName={selectedModel}
+                                    metrics={metricsData[0][selectedModel as keyof (typeof metricsData)[0]]}
+                                />
+                            )}
+                        </Box>
+                    </>
                 )}
-
-                {/* Sensor and Model Selection */}
-                <Box
-                    sx={{
-                        display: "flex",
-                        justifyContent: "space-between",
-                        width: "100%",
-                        mb: 3,
-                    }}
-                >
-                    <Stack>
-                        <Typography>{t("widgets.Metrix.sensor_selection")}</Typography>
-                        <GridDropdown
-                            list={sensors || []}
-                            selected={selectedSensor || ""}
-                            onSelect={handleSensorChange}
-                        />
-                    </Stack>
-
-                    <Stack>
-                        <Typography>{t("widgets.Metrix.model_selection")}</Typography>
-                        <GridDropdown
-                            list={availableModels}
-                            selected={selectedModel || ""}
-                            onSelect={handleModelChange}
-                        />
-                    </Stack>
-                </Box>
-
-                <Typography variant="h6" sx={{ mb: 3 }}>
-                    {t("widgets.Metrix.select_data_range")}
-                </Typography>
-
-                <LocalizationProvider dateAdapter={AdapterDateFns} adapterLocale={ru}>
-                    <Grid container spacing={2}>
-                        <Grid component="div">
-                            <DateTimePicker
-                                label={t("widgets.Metrix.start_date")}
-                                ampm={false}
-                                format="dd.MM.yyyy HH:mm"
-                                value={startDate}
-                                onChange={setStartDate}
-                                onClose={() => setPickerOpen(false)}
-                                onOpen={() => setPickerOpen(true)}
-                                minDate={earliestDate || undefined}
-                                maxDate={endDate || maxDate || undefined}
-                                slotProps={{ textField: { fullWidth: true } }}
-                            />
-                        </Grid>
-                        <Grid component="div">
-                            <DateTimePicker
-                                label={t("widgets.Metrix.end_date")}
-                                ampm={false}
-                                format="dd.MM.yyyy HH:mm"
-                                value={endDate}
-                                onChange={setEndDate}
-                                onClose={() => setPickerOpen(false)}
-                                onOpen={() => setPickerOpen(true)}
-                                minDate={startDate ?? startDefaultDate.current ?? undefined}
-                                maxDate={maxDate || undefined}
-                                slotProps={{ textField: { fullWidth: true } }}
-                            />
-                        </Grid>
-                    </Grid>
-                </LocalizationProvider>
-
-                <Box sx={{ mt: 2 }}>
-                    {error && (
-                        <Alert severity="error" sx={{ mb: 3 }}>
-                            {t("widgets.metrix_bloc.error_1")}: {error.toString()}
-                        </Alert>
-                    )}
-
-                    {selectedModel && metricsData && metricsData.length > 0 && (
-                        <ModelSection
-                            modelName={selectedModel}
-                            metrics={metricsData[0][selectedModel as keyof (typeof metricsData)[0]]}
-                        />
-                    )}
-                </Box>
             </Card>
         </Stack>
     )

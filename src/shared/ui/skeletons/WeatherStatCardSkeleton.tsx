@@ -24,15 +24,15 @@ export const WeatherStatCardSkeleton = () => {
                     }}
                 >
                     <Stack direction="column" sx={{ padding: `1rem` }}>
-                        <Skeleton variant="rounded" width="60%" height={30} />
-                        <Stack sx={{ mt: 2, height: "70px" }}>
+                        <Skeleton variant="rounded" width="30%" height={30} />
+                        <Stack sx={{ mt: 1, height: "70px" }}>
                             <Stack direction="row" justifyContent="space-between" alignItems="center">
-                                <Skeleton variant="rounded" width="50%" height={40} />
+                                <Skeleton variant="rounded" width="50%" height={30} />
                                 <Skeleton variant="rounded" width="15%" height={30} />
                             </Stack>
                             <Skeleton sx={{ mt: 1 }} variant="rounded" width="30%" height={20} />
                         </Stack>
-                        <Skeleton variant="rounded" height={128} sx={{ mt: 1 }} />
+                        <Skeleton variant="rounded" height={135} sx={{ mt: 1 }} />
                     </Stack>
                 </Card>
             ))}

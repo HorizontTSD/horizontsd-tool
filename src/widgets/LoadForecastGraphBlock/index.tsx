@@ -1,5 +1,5 @@
 import React from "react"
-import { Box, Card, CircularProgress, Stack, Typography } from "@mui/material"
+import { Box, Card, Stack, Typography } from "@mui/material"
 import { LoadForecastPureGraph } from "@/widgets/LoadForecastGraphBlock/LoadForecastPureGraph"
 import { useState, useEffect } from "react"
 import {
@@ -7,30 +7,23 @@ import {
     useFuncGetSensorIdListBackendV1GetSensorIdListGetQuery,
 } from "@/shared/api/model_fast_api"
 import { useTranslation } from "react-i18next"
-import { FetchBaseQueryError } from '@reduxjs/toolkit/query/react';
-
-const spinnerContainerStyle = {
-    height: 615,
-    display: "flex",
-    justifyContent: "center",
-    alignItems: "center",
-}
-
+import { FetchBaseQueryError } from "@reduxjs/toolkit/query/react"
+import { ForecastGraphSkeleton } from "@/shared/ui/skeletons/ForecastGraphSkeleton"
 import { Navbar } from "./Navbar"
 
 // Helper function to convert time string (e.g., "5m", "1h") to milliseconds
 const timeStringToMilliseconds = (timeString: string): number => {
-    const value = parseInt(timeString.slice(0, -1), 10);
-    const unit = timeString.slice(-1);
+    const value = parseInt(timeString.slice(0, -1), 10)
+    const unit = timeString.slice(-1)
     switch (unit) {
-        case 'm':
-            return value * 60 * 1000; // minutes to milliseconds
-        case 'h':
-            return value * 60 * 60 * 1000; // hours to milliseconds
+        case "m":
+            return value * 60 * 1000 // minutes to milliseconds
+        case "h":
+            return value * 60 * 60 * 1000 // hours to milliseconds
         default:
-            return 0; // Default to no refresh if unit is unknown
+            return 0 // Default to no refresh if unit is unknown
     }
-};
+}
 
 export const LoadForecastGraphBlock = () => {
     const {
@@ -43,7 +36,7 @@ export const LoadForecastGraphBlock = () => {
 
     // Track selected model and refresh interval
     const [selectedModel, setSelectedModel] = useState<string | null>(null)
-    const [selectedRefreshInterval, setSelectedRefreshInterval] = useState<string | null>(null);
+    const [selectedRefreshInterval, setSelectedRefreshInterval] = useState<string | null>(null)
 
     // Set initial selected model and trigger first forecast when sensors load
     useEffect(() => {
@@ -60,40 +53,41 @@ export const LoadForecastGraphBlock = () => {
                 .unwrap()
                 .catch((err) => console.error("Failed to fetch initial forecast:", err))
         }
-    }, [sensorsList, triggerForecast]) // Added triggerForecast to dependencies
+    }, [sensorsList, triggerForecast])
 
     // Effect to manage the auto-refresh interval
     useEffect(() => {
-        let intervalId: NodeJS.Timeout | null = null;
+        let intervalId: ReturnType<typeof setInterval> | null = null
 
         if (selectedModel && selectedRefreshInterval) {
-            const intervalMs = timeStringToMilliseconds(selectedRefreshInterval);
+            const intervalMs = timeStringToMilliseconds(selectedRefreshInterval)
 
             if (intervalMs > 0) {
-                 intervalId = setInterval(() => {
-                    console.log(`Auto-refreshing chart for sensor ${selectedModel} at ${selectedRefreshInterval}`);
+                intervalId = setInterval(() => {
+                    console.log(`Auto-refreshing chart for sensor ${selectedModel} at ${selectedRefreshInterval}`)
                     triggerForecast({
                         forecastData: {
                             sensor_ids: [selectedModel],
                         },
-                    }).unwrap()
-                      .catch((err) => console.error("Failed to auto-refresh forecast:", err));
-                }, intervalMs);
+                    })
+                        .unwrap()
+                        .catch((err) => console.error("Failed to auto-refresh forecast:", err))
+                }, intervalMs)
             }
         }
 
         // Cleanup function to clear the interval
         return () => {
             if (intervalId) {
-                clearInterval(intervalId);
+                clearInterval(intervalId)
             }
-        };
-    }, [selectedModel, selectedRefreshInterval, triggerForecast]); // Re-run effect when selectedModel, selectedRefreshInterval, or triggerForecast changes
+        }
+    }, [selectedModel, selectedRefreshInterval, triggerForecast])
 
     const handleSubmit = async (selected: string) => {
         setSelectedModel(selected)
         // When sensor changes, clear previous refresh interval selection
-        setSelectedRefreshInterval(null);
+        setSelectedRefreshInterval(null)
         try {
             await triggerForecast({
                 forecastData: {
@@ -106,10 +100,10 @@ export const LoadForecastGraphBlock = () => {
     }
 
     const handleRefreshChart = (period: string) => {
-        setSelectedRefreshInterval(period);
-        console.log(`Selected refresh period: ${period}`);
+        setSelectedRefreshInterval(period)
+        console.log(`Selected refresh period: ${period}`)
         // The useEffect hook will handle triggering the forecast based on this state change
-    };
+    }
 
     // Get current forecast data based on selection
     const currentData = data?.[0]?.[selectedModel || ""]
@@ -124,8 +118,7 @@ export const LoadForecastGraphBlock = () => {
                 {sensorsListLoading ? (
                     <div>{t("widgets.LoadForecastGraphBlock.sensors_loading")}</div>
                 ) : sensorsListError ? (
-                    <div>{t("widgets.LoadForecastGraphBlock.sensors_error")}
-                    </div>
+                    <div>{t("widgets.LoadForecastGraphBlock.sensors_error")}</div>
                 ) : (
                     <Navbar
                         availableModels={sensorsList || []}
@@ -153,18 +146,13 @@ export const LoadForecastGraphBlock = () => {
                 {error && (
                     <div style={{ color: "red" }}>
                         {t("widgets.LoadForecastGraphBlock.error_prefix")}
-                        {(error as FetchBaseQueryError)?.data && typeof ((error as FetchBaseQueryError).data as any).detail === 'string'
-                            ? ((error as FetchBaseQueryError).data as any).detail
+                        {(error as FetchBaseQueryError)?.data &&
+                        typeof ((error as FetchBaseQueryError).data as { detail: string }).detail === "string"
+                            ? ((error as FetchBaseQueryError).data as { detail: string }).detail
                             : t("widgets.LoadForecastGraphBlock.unknown_error")}
                     </div>
                 )}
-                {currentData ? (
-                    <LoadForecastPureGraph initialData={currentData} />
-                ) : (
-                    <Box sx={spinnerContainerStyle}>
-                        <CircularProgress size={150} />
-                    </Box>
-                )}
+                {currentData ? <LoadForecastPureGraph initialData={currentData} /> : <ForecastGraphSkeleton />}
             </Card>
         </Stack>
     )
