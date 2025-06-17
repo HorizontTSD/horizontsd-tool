@@ -117,7 +117,7 @@ const ModelSection = ({ modelName, metrics }: { modelName: string; metrics: Metr
                 }}
             >
                 {
-                    // eslint-disable-next-line
+                     
                     METRIC_CONFIG.map(({ key, titleKey, equation, unit }) => (
                         <MetricCard
                             key={key}
