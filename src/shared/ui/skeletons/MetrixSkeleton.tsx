@@ -34,7 +34,7 @@ export const MetrixSkeleton = () => {
 
                 {/* Метрики */}
                 <Box sx={{ mt: 3, display: "flex", flexDirection: "column", alignItems: "center" }}>
-                    <Skeleton variant="rounded" width="90px" sx={{ mb: 3 }} height={30} animation="wave" />
+                    <Skeleton variant="rounded" width="90px" sx={{ mb: 2 }} height={30} animation="wave" />
 
                     <Box
                         sx={{

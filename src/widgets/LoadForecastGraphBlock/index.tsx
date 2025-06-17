@@ -10,6 +10,7 @@ import { useTranslation } from "react-i18next"
 import { FetchBaseQueryError } from "@reduxjs/toolkit/query/react"
 import { ForecastGraphSkeleton } from "@/shared/ui/skeletons/ForecastGraphSkeleton"
 import { Navbar } from "./Navbar"
+import { NavbarSkeleton } from "@/shared/ui/skeletons/NavbarSkeleton"
 
 // Helper function to convert time string (e.g., "5m", "1h") to milliseconds
 const timeStringToMilliseconds = (timeString: string): number => {
@@ -116,7 +117,7 @@ export const LoadForecastGraphBlock = () => {
 
             <Stack direction={"column"} sx={{ margin: `1rem 0` }}>
                 {sensorsListLoading ? (
-                    <div>{t("widgets.LoadForecastGraphBlock.sensors_loading")}</div>
+                    <NavbarSkeleton />
                 ) : sensorsListError ? (
                     <div>{t("widgets.LoadForecastGraphBlock.sensors_error")}</div>
                 ) : (
@@ -129,19 +130,6 @@ export const LoadForecastGraphBlock = () => {
                 )}
             </Stack>
 
-            <Box
-                sx={{
-                    display: "flex",
-                    flexDirection: { xs: "column", sm: "row" },
-                    gap: 2,
-                    mb: 2,
-                }}
-            >
-                <Box sx={{ display: "flex", alignItems: "center", gap: 2 }}>
-                    {isLoading && <Typography>{t("widgets.LoadForecastGraphBlock.data_loading")}</Typography>}
-                </Box>
-            </Box>
-
             <Card variant="outlined" sx={{ width: "100%", p: 1, minHeight: `600px` }}>
                 {error && (
                     <div style={{ color: "red" }}>
@@ -153,6 +141,7 @@ export const LoadForecastGraphBlock = () => {
                     </div>
                 )}
                 {currentData ? <LoadForecastPureGraph initialData={currentData} /> : <ForecastGraphSkeleton />}
+                {/* <ForecastGraphSkeleton /> */}
             </Card>
         </Stack>
     )

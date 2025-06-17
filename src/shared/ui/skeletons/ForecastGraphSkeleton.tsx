@@ -5,7 +5,7 @@ interface ForecastGraphSkeletonProps {
     width?: string
 }
 
-export const ForecastGraphSkeleton = ({ height = 615, width = "100%" }: ForecastGraphSkeletonProps) => {
+export const ForecastGraphSkeleton = ({ height = 515, width = "100%" }: ForecastGraphSkeletonProps) => {
     return (
         <Box
             sx={{
@@ -14,12 +14,12 @@ export const ForecastGraphSkeleton = ({ height = 615, width = "100%" }: Forecast
                 display: "flex",
                 flexDirection: "column",
                 gap: 2,
-                padding: 2,
+                padding: 1,
             }}
         >
             {/* Заголовок графика */}
-            <Stack direction="row" spacing={2} alignItems="center" justifyContent="center">
-                <Skeleton variant="rounded" width="31%" height={25} animation="wave" />
+            <Stack direction="row" spacing={1} alignItems="center" justifyContent="center">
+                <Skeleton variant="rounded" width="31%" height={20} animation="wave" />
             </Stack>
 
             {/* Основной график */}
