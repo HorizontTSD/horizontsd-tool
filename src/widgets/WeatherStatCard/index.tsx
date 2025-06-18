@@ -5,11 +5,10 @@ import Stack from "@mui/material/Stack"
 import Typography from "@mui/material/Typography"
 import { SparkLineChart } from "@mui/x-charts/SparkLineChart"
 import { areaElementClasses } from "@mui/x-charts/LineChart"
-import {
-    useFuncGetMiniChartsDataBackendV1GetMiniChartsDataGetQuery
-} from "@/shared/api/model_fast_api"
+import { useFuncGetMiniChartsDataBackendV1GetMiniChartsDataGetQuery } from "@/shared/api/model_fast_api"
 import { useTranslation } from "react-i18next"
-import { MiniChartData, MiniChartStat } from "@/shared/types/MiniChartData"
+import { MiniChartStat } from "@/shared/types/MiniChartData"
+import { WeatherStatCardSkeleton } from "@/shared/ui/skeletons/WeatherStatCardSkeleton"
 
 const trendColors = (theme: Theme) => ({
     positive: theme.palette.success.main,
@@ -32,7 +31,7 @@ export const WeatherStatCard = () => {
     const { data: charts, isLoading, error } = useFuncGetMiniChartsDataBackendV1GetMiniChartsDataGetQuery()
     const { t } = useTranslation()
 
-    if (isLoading) return <div>{t("widgets.weatherStatCard.loading")}</div>
+    if (isLoading) return <WeatherStatCardSkeleton />
     if (error) return <div>{t("widgets.weatherStatCard.error_loading_charts_data")}</div>
     if (!charts) return null
 

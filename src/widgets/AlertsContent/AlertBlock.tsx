@@ -10,39 +10,36 @@ const AlertBlock = ({
     scheme,
     trigger_frequency,
     message,
-    notifications: {
-        email,
-        telegram
-    },
+    notifications: { email, telegram },
     include_graph,
     time_interval: { start_date, end_date },
     start_warning_interval,
     sensor_id,
     model,
-    // 
+    //
     expanded,
     onToggle,
     onEdit,
     onDelete,
 }: {
-    name: string,
-    threshold: string,
-    scheme: string,
-    trigger_frequency: string,
-    message: string,
+    name: string
+    threshold: string
+    scheme: string
+    trigger_frequency: string
+    message: string
     notifications: {
-        email: string[],
+        email: string[]
         telegram: string[]
-    },
-    include_graph: boolean,
+    }
+    include_graph: boolean
     time_interval: {
-        end_date: string,
+        end_date: string
         start_date: string
     }
-    start_warning_interval: string,
-    sensor_id: string,
-    model: string,
-    // 
+    start_warning_interval: string
+    sensor_id: string
+    model: string
+    //
     expanded: boolean
     onToggle: () => void
     onEdit?: () => void
@@ -86,7 +83,11 @@ const AlertBlock = ({
                 padding: `1rem`,
                 margin: `0.5rem 0`,
                 cursor: "pointer",
-                boxShadow: expanded ? isDark ? "0 2px 12px 0 rgba(0, 51, 190, 0.25)" : "0 2px 12px 0 rgba(0,0,0,0.10)" : "none",
+                boxShadow: expanded
+                    ? isDark
+                        ? "0 2px 12px 0 rgba(0, 51, 190, 0.25)"
+                        : "0 2px 12px 0 rgba(0,0,0,0.10)"
+                    : "none",
                 overflow: "hidden",
                 color: expanded ? color_exp : color,
             }}
@@ -95,31 +96,36 @@ const AlertBlock = ({
             {!expanded && (
                 <Stack direction="row" alignItems="start" spacing={1}>
                     <Stack direction="column">
-                        <Typography variant="caption">{t('widgets.alertsContent.alert_block_name')}</Typography>
-                        <Typography variant="body2" color="info">{name}</Typography>
-                        <Typography variant="caption">{t('widgets.alertsContent.alert_block_trigger_frequency')}</Typography>
-                        <Typography variant="body2" >{trigger_frequency}</Typography>
+                        <Typography variant="caption">{t("widgets.alertsContent.alert_block_name")}</Typography>
+                        <Typography variant="body2" color="info">
+                            {name}
+                        </Typography>
+                        <Typography variant="caption">
+                            {t("widgets.alertsContent.alert_block_trigger_frequency")}
+                        </Typography>
+                        <Typography variant="body2">{trigger_frequency}</Typography>
                     </Stack>
                     <Stack direction="column">
-                        <Typography variant="caption">{t('widgets.alertsContent.alert_block_message')}</Typography>
-                        <Typography variant="body2" >{message}</Typography>
+                        <Typography variant="caption">{t("widgets.alertsContent.alert_block_message")}</Typography>
+                        <Typography variant="body2">{message}</Typography>
                     </Stack>
                     <Stack direction="column">
-                        <Typography variant="caption">{t('widgets.alertsContent.alert_block_start_date')}</Typography>
-                        <Typography variant="body2" >{new Date(start_date).toUTCString()}</Typography>
-                        <Typography variant="caption">{t('widgets.alertsContent.alert_block_end_date')}</Typography>
-                        <Typography variant="body2" >{new Date(start_date).toUTCString()}</Typography>
+                        <Typography variant="caption">{t("widgets.alertsContent.alert_block_start_date")}</Typography>
+                        <Typography variant="body2">{new Date(start_date).toUTCString()}</Typography>
+                        <Typography variant="caption">{t("widgets.alertsContent.alert_block_end_date")}</Typography>
+                        <Typography variant="body2">{new Date(start_date).toUTCString()}</Typography>
                     </Stack>
                     <Stack direction="column">
-                        <Typography variant="caption">{t('widgets.alertsContent.alert_block_start_warning_interval')}</Typography>
-                        <Typography variant="body2" >{start_warning_interval}</Typography>
-                        <Typography variant="caption">{t('widgets.alertsContent.alert_block_sensor_id')}</Typography>
-                        <Typography variant="body2" >{sensor_id}</Typography>
-
+                        <Typography variant="caption">
+                            {t("widgets.alertsContent.alert_block_start_warning_interval")}
+                        </Typography>
+                        <Typography variant="body2">{start_warning_interval}</Typography>
+                        <Typography variant="caption">{t("widgets.alertsContent.alert_block_sensor_id")}</Typography>
+                        <Typography variant="body2">{sensor_id}</Typography>
                     </Stack>
                     <Stack direction="column">
-                        <Typography variant="caption">{t('widgets.alertsContent.alert_block_model')}</Typography>
-                        <Typography variant="body2" >{model}</Typography>
+                        <Typography variant="caption">{t("widgets.alertsContent.alert_block_model")}</Typography>
+                        <Typography variant="body2">{model}</Typography>
                     </Stack>
                 </Stack>
             )}
@@ -135,42 +141,54 @@ const AlertBlock = ({
                 {expanded && (
                     <Stack direction="row" alignItems="start" spacing={1}>
                         <Stack direction="column">
-                            <Typography variant="caption" >{t('widgets.alertsContent.alert_block_name')}</Typography>
-                            <Typography variant="body2" >{name}</Typography>
-                            <Typography variant="caption">{t('widgets.alertsContent.alert_block_threshold_value')}</Typography>
-                            <Typography variant="body2" >{threshold}</Typography>
-                            <Typography variant="caption">{t('widgets.alertsContent.alert_block_scheme')}</Typography>
-                            <Typography variant="body2" >{scheme}</Typography>
-                            <Typography variant="caption">{t('widgets.alertsContent.alert_block_trigger_frequency')}</Typography>
-                            <Typography variant="body2" >{trigger_frequency}</Typography>
+                            <Typography variant="caption">{t("widgets.alertsContent.alert_block_name")}</Typography>
+                            <Typography variant="body2">{name}</Typography>
+                            <Typography variant="caption">
+                                {t("widgets.alertsContent.alert_block_threshold_value")}
+                            </Typography>
+                            <Typography variant="body2">{threshold}</Typography>
+                            <Typography variant="caption">{t("widgets.alertsContent.alert_block_scheme")}</Typography>
+                            <Typography variant="body2">{scheme}</Typography>
+                            <Typography variant="caption">
+                                {t("widgets.alertsContent.alert_block_trigger_frequency")}
+                            </Typography>
+                            <Typography variant="body2">{trigger_frequency}</Typography>
                         </Stack>
                         <Stack direction="column">
-                            <Typography variant="caption">{t('widgets.alertsContent.alert_block_message')}</Typography>
-                            <Typography variant="body2" >{message}</Typography>
-                            <Typography variant="caption">{t('widgets.alertsContent.alert_block_telegram')}</Typography>
-                            <Typography variant="body2" >{telegram.join(' ')}</Typography>
-                            <Typography variant="caption">{t('widgets.alertsContent.alert_block_email')}</Typography>
-                            <Typography variant="body2" >{email.join(' ')}</Typography>
-                            <Typography variant="caption">{t('widgets.alertsContent.alert_block_include_graph')}</Typography>
+                            <Typography variant="caption">{t("widgets.alertsContent.alert_block_message")}</Typography>
+                            <Typography variant="body2">{message}</Typography>
+                            <Typography variant="caption">{t("widgets.alertsContent.alert_block_telegram")}</Typography>
+                            <Typography variant="body2">{telegram.join(" ")}</Typography>
+                            <Typography variant="caption">{t("widgets.alertsContent.alert_block_email")}</Typography>
+                            <Typography variant="body2">{email.join(" ")}</Typography>
+                            <Typography variant="caption">
+                                {t("widgets.alertsContent.alert_block_include_graph")}
+                            </Typography>
                             {include_graph}
                         </Stack>
                         <Stack direction="column">
-                            <Typography variant="caption">{t('widgets.alertsContent.alert_block_start_date')}</Typography>
-                            <Typography variant="body2" >{new Date(start_date).toUTCString()}</Typography>
-                            <Typography variant="caption">{t('widgets.alertsContent.alert_block_end_date')}</Typography>
-                            <Typography variant="body2" >{new Date(end_date).toUTCString()}</Typography>
+                            <Typography variant="caption">
+                                {t("widgets.alertsContent.alert_block_start_date")}
+                            </Typography>
+                            <Typography variant="body2">{new Date(start_date).toUTCString()}</Typography>
+                            <Typography variant="caption">{t("widgets.alertsContent.alert_block_end_date")}</Typography>
+                            <Typography variant="body2">{new Date(end_date).toUTCString()}</Typography>
                         </Stack>
                         <Stack direction="column">
-                            <Typography variant="caption">{t('widgets.alertsContent.alert_block_start_warning_interval')}</Typography>
-                            <Typography variant="body2" >{start_warning_interval}</Typography>
-                            <Typography variant="caption">{t('widgets.alertsContent.alert_block_sensor_id')}</Typography>
-                            <Typography variant="body2" >{sensor_id}</Typography>
-                            <Typography variant="caption">{t('widgets.alertsContent.alert_block_model')}</Typography>
-                            <Typography variant="body2" >{model}</Typography>
+                            <Typography variant="caption">
+                                {t("widgets.alertsContent.alert_block_start_warning_interval")}
+                            </Typography>
+                            <Typography variant="body2">{start_warning_interval}</Typography>
+                            <Typography variant="caption">
+                                {t("widgets.alertsContent.alert_block_sensor_id")}
+                            </Typography>
+                            <Typography variant="body2">{sensor_id}</Typography>
+                            <Typography variant="caption">{t("widgets.alertsContent.alert_block_model")}</Typography>
+                            <Typography variant="body2">{model}</Typography>
                         </Stack>
                         <Box>
                             <Typography fontWeight={700} fontSize={28} color="white">
-                                {t('widgets.alertsContent.alert_block_actions')}
+                                {t("widgets.alertsContent.alert_block_actions")}
                             </Typography>
                             <Stack direction="row" spacing={1} mt={2} alignItems="center">
                                 <Button
@@ -186,7 +204,7 @@ const AlertBlock = ({
                                     }}
                                     startIcon={<VisibilityIcon sx={{ color: "#F5F5F5" }} />}
                                 >
-                                    {t('widgets.alertsContent.alert_block_view_button')}
+                                    {t("widgets.alertsContent.alert_block_view_button")}
                                 </Button>
                                 <Button
                                     size="small"
@@ -202,7 +220,7 @@ const AlertBlock = ({
                                     endIcon={<KeyboardArrowDownIcon sx={{ color: "#F5F5F5" }} />}
                                     onClick={handleMenuOpen}
                                 >
-                                    {t('widgets.alertsContent.alert_block_more_button')}
+                                    {t("widgets.alertsContent.alert_block_more_button")}
                                 </Button>
                                 <Menu
                                     anchorEl={anchorEl}
@@ -212,9 +230,11 @@ const AlertBlock = ({
                                     transformOrigin={{ vertical: "top", horizontal: "center" }}
                                     slotProps={{ paper: { sx: { mt: 0.5, width: "93px" } } }}
                                 >
-                                    <MenuItem onClick={handleEdit}>{t('widgets.alertsContent.alert_block_edit_menu_item')}</MenuItem>
+                                    <MenuItem onClick={handleEdit}>
+                                        {t("widgets.alertsContent.alert_block_edit_menu_item")}
+                                    </MenuItem>
                                     <MenuItem onClick={handleDelete} sx={{ color: "error.main" }}>
-                                        {t('widgets.alertsContent.alert_block_delete_menu_item')}
+                                        {t("widgets.alertsContent.alert_block_delete_menu_item")}
                                     </MenuItem>
                                 </Menu>
                             </Stack>
@@ -222,7 +242,7 @@ const AlertBlock = ({
                     </Stack>
                 )}
             </Box>
-        </Box >
+        </Box>
     )
 }
 

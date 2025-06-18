@@ -9,6 +9,8 @@ import {
 } from "@/shared/api/model_fast_api"
 import { CustomRow } from "@/shared/types"
 import { useTranslation } from "react-i18next"
+import { GridDetailsSkeleton } from "@/shared/ui/skeletons/GridDetailsSkeleton"
+import { GridDropdownSkeleton } from "@/shared/ui/skeletons/GridDropdownSkeleton"
 
 export const CustomizedDataGrid: React.FC = () => {
     const { t } = useTranslation("common")
@@ -121,21 +123,31 @@ export const CustomizedDataGrid: React.FC = () => {
                         width: "100%",
                     }}
                 >
-                    <Stack>
-                        <Typography>{t("widgets.GridDetails.sensor_selection_label")}</Typography>
-                        <GridDropdown list={sensors || []} selected={selectedSensor || ""} onSelect={handleSubmit} />
-                    </Stack>
+                    {sensorsLoading || forecastLoading ? (
+                        <GridDropdownSkeleton />
+                    ) : (
+                        <>
+                            <Stack>
+                                <Typography>{t("widgets.GridDetails.sensor_selection_label")}</Typography>
+                                <GridDropdown
+                                    list={sensors || []}
+                                    selected={selectedSensor || ""}
+                                    onSelect={handleSubmit}
+                                />
+                            </Stack>
 
-                    <Stack>
-                        <Typography>{t("widgets.GridDetails.model_selection_label")}</Typography>
-                        {selectedSensor && (
-                            <GridDropdown
-                                list={Object.keys(metricsTables) || []}
-                                selected={selectedModel || ""}
-                                onSelect={handleSubmitModel}
-                            />
-                        )}
-                    </Stack>
+                            <Stack>
+                                <Typography>{t("widgets.GridDetails.model_selection_label")}</Typography>
+                                {selectedSensor && (
+                                    <GridDropdown
+                                        list={Object.keys(metricsTables) || []}
+                                        selected={selectedModel || ""}
+                                        onSelect={handleSubmitModel}
+                                    />
+                                )}
+                            </Stack>
+                        </>
+                    )}
                 </Box>
 
                 {/* Loading and Error States */}
@@ -143,10 +155,12 @@ export const CustomizedDataGrid: React.FC = () => {
                 {forecastError && (
                     <Typography color="error">{`${t("widgets.GridDetails.forecast_fetch_error_prefix")} ${JSON.stringify(forecastError)}`}</Typography>
                 )}
-                {(sensorsLoading || forecastLoading) && <Typography>{t("common.loading")}</Typography>}
+
+                {/* <GridDetailsSkeleton /> */}
+                {(sensorsLoading || forecastLoading) && <GridDetailsSkeleton />}
 
                 {/* Data Grid */}
-                {!forecastLoading && selectedModel && (
+                {!forecastLoading && selectedModel && !sensorsLoading && (
                     <DataGrid
                         rows={rows}
                         columns={columns}

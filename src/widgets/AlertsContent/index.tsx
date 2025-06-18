@@ -1,10 +1,10 @@
-import * as React from 'react';
-import OutlinedInput from '@mui/material/OutlinedInput';
-import InputLabel from '@mui/material/InputLabel';
-import FormControl from '@mui/material/FormControl';
-import ListItemText from '@mui/material/ListItemText';
-import Select, { SelectChangeEvent } from '@mui/material/Select';
-import Checkbox from '@mui/material/Checkbox';
+import * as React from "react"
+import OutlinedInput from "@mui/material/OutlinedInput"
+import InputLabel from "@mui/material/InputLabel"
+import FormControl from "@mui/material/FormControl"
+import ListItemText from "@mui/material/ListItemText"
+import Select, { SelectChangeEvent } from "@mui/material/Select"
+import Checkbox from "@mui/material/Checkbox"
 
 import { Box, Stack, Typography, TextField, MenuItem, InputAdornment, Button } from "@mui/material"
 import SearchIcon from "@mui/icons-material/Search"
@@ -21,12 +21,13 @@ import {
     AlertConfigRequest,
     useCreateAlertEndpointAlertManagerV1CreatePostMutation,
     useDeleteAlertEndpointAlertManagerV1DeleteDeleteMutation,
-    useListAlertConfigsAlertManagerV1ListGetQuery
+    useListAlertConfigsAlertManagerV1ListGetQuery,
 } from "@/shared/api/alert"
 import { useTranslation } from "react-i18next"
+import { AlertBlockSkeleton } from "@/shared/ui/skeletons/AlertBlockSkeleton"
 
-const ITEM_HEIGHT = 48;
-const ITEM_PADDING_TOP = 8;
+const ITEM_HEIGHT = 48
+const ITEM_PADDING_TOP = 8
 const MenuProps = {
     PaperProps: {
         style: {
@@ -34,19 +35,15 @@ const MenuProps = {
             width: 250,
         },
     },
-};
+}
 
-function MultipleSelectCheckmarks({
-    list,
-    selected,
-    onSelect,
-    disabled,
-    width = 200
-}) {
+function MultipleSelectCheckmarks({ list, selected, onSelect, disabled, width = 200 }) {
     const handleChange = (event: SelectChangeEvent) => {
-        const { target: { value } } = event;
+        const {
+            target: { value },
+        } = event
         onSelect(value)
-    };
+    }
 
     const { mode, setMode } = useColorScheme()
     const isDark = mode === "dark"
@@ -62,7 +59,7 @@ function MultipleSelectCheckmarks({
                     value={selected}
                     onChange={handleChange}
                     input={<OutlinedInput />}
-                    renderValue={(selected) => selected.join(', ')}
+                    renderValue={(selected) => selected.join(", ")}
                     MenuProps={MenuProps}
                     sx={{
                         height: `2rem`,
@@ -79,9 +76,8 @@ function MultipleSelectCheckmarks({
                 </Select>
             </FormControl>
         </Stack>
-    );
+    )
 }
-
 
 const SensorAndModelSelection = ({
     sensors,
@@ -95,10 +91,7 @@ const SensorAndModelSelection = ({
     const { t } = useTranslation()
 
     return (
-        <Stack
-            direction={"row"}
-            spacing={1}
-        >
+        <Stack direction={"row"} spacing={1}>
             <Stack>
                 <Typography>{t("widgets.alertsContent.sensor_selection")}</Typography>
                 <MultipleSelectCheckmarks
@@ -123,15 +116,12 @@ const SensorAndModelSelection = ({
     )
 }
 
-
 const Header = () => {
     const { t } = useTranslation()
 
     return (
         <Stack>
-            <Typography variant="h4">
-                {t("widgets.alertsContent.alert_rules")}
-            </Typography>
+            <Typography variant="h4">{t("widgets.alertsContent.alert_rules")}</Typography>
         </Stack>
     )
 }
@@ -146,7 +136,7 @@ const FiltersBar = ({
     sensorsLoading,
     search,
     setSearch,
-    setOpenCreate
+    setOpenCreate,
 }) => {
     const theme = useTheme()
     const { mode, setMode } = useColorScheme()
@@ -166,8 +156,9 @@ const FiltersBar = ({
                 margin: `0.5rem 0`,
                 padding: `1rem`,
                 borderRadius: `var(--mui-shape-borderRadius)`,
-                flex: "0 0 auto"
-            }}>
+                flex: "0 0 auto",
+            }}
+        >
             <Stack direction="row" spacing={1} alignItems="center">
                 <Stack direction="row" spacing={1} alignItems="center">
                     {/* Sensor and Model Selection */}
@@ -180,10 +171,7 @@ const FiltersBar = ({
                         sensors={sensors}
                         sensorsLoading={sensorsLoading}
                     />
-                    <Stack
-                        direction={"row"}
-                        spacing={1}
-                    >
+                    <Stack direction={"row"} spacing={1}>
                         <Stack>
                             <Typography>{t("widgets.alertsContent.search")}</Typography>
                             <TextField
@@ -222,7 +210,6 @@ const FiltersBar = ({
                         </Stack>
                     </Stack>
                 </Stack>
-
             </Stack>
             <Stack>
                 <Button
@@ -246,7 +233,7 @@ const AlertBlocks = ({
     setExpandedIdx,
     setSelectedAlert,
     setOpenEdit,
-    handleDeleteAlert
+    handleDeleteAlert,
 }) => {
     return (
         <Stack
@@ -284,9 +271,15 @@ export const AlertsContent = () => {
         isLoading: sensorsLoading,
         error: sensorsError,
     } = useFuncGetSensorIdListBackendV1GetSensorIdListGetQuery()
-    const [triggerForecast, { data: forecastData, isLoading: forecastLoading, error: forecastError }] = useFuncGetForecastDataBackendV1GetForecastDataPostMutation()
-    const { data: alertsData, isLoading: isLoadingAlerts, error: alertsError, refetch: refetchAlerts } = useListAlertConfigsAlertManagerV1ListGetQuery();
-    const alerts = alertsData?.yaml_files || [];
+    const [triggerForecast, { data: forecastData, isLoading: forecastLoading, error: forecastError }] =
+        useFuncGetForecastDataBackendV1GetForecastDataPostMutation()
+    const {
+        data: alertsData,
+        isLoading: isLoadingAlerts,
+        error: alertsError,
+        refetch: refetchAlerts,
+    } = useListAlertConfigsAlertManagerV1ListGetQuery()
+    const alerts = alertsData?.yaml_files || []
 
     const [selectedSensors, setSelectedSensors] = useState<string[]>([])
     const [selectedModels, setSelectedModels] = useState<string[]>([])
@@ -295,9 +288,10 @@ export const AlertsContent = () => {
     // get a load of this guy
     useEffect(() => {
         if (sensors && sensors.length > 0) {
-
             triggerForecast({
-                forecastData: { sensor_ids: sensors }
+                forecastData: {
+                    sensor_ids: [sensors[0]],
+                },
             })
                 .unwrap()
                 .catch(console.error)
@@ -314,52 +308,60 @@ export const AlertsContent = () => {
     // Initialize model selection when metrics data arrives
     useEffect(() => {
         if (forecastData && forecastData.length > 0 && !selectedModels) {
-            const availableModels = Array.from(new Set(forecastData.map(e => Object.keys(e[Object.keys(e)]["metrix_tables"])).flat())) as string[]
+            const availableModels = Array.from(
+                new Set(forecastData.map((e) => Object.keys(e[Object.keys(e)]["metrix_tables"])).flat())
+            ) as string[]
             if (availableModels.length > 0) {
                 setSelectedModels(availableModels)
             }
         }
     }, [forecastData, selectedModels])
 
-    // 
+    //
     const handleSensorChange = (sensors: string[]) => {
         setSelectedSensors(sensors)
     }
 
-    // 
+    //
     const handleModelChange = (models: string[]) => {
         setSelectedModels(models)
     }
 
-    // 
-    const availableModels = forecastData && forecastData.length > 0 ? Array.from(new Set(forecastData.map(e => Object.keys(e[Object.keys(e)]["metrix_tables"])).flat())) : []
+    //
+    const availableModels =
+        forecastData && forecastData.length > 0
+            ? Array.from(new Set(forecastData.map((e) => Object.keys(e[Object.keys(e)]["metrix_tables"])).flat()))
+            : []
 
     const filteredAlerts = alerts
         // by sensor & model
-        .filter(
-            ({ alert }) => {
-                const { sensor_id, model } = alert
-                if (selectedSensors.length == 0 && selectedModels.length == 0) {
-                    return true
-                }
-                if (selectedSensors.length != 0 && selectedModels.length == 0) {
-                    return selectedSensors.includes(sensor_id)
-                }
-                if (selectedSensors.length == 0 && selectedModels.length != 0) {
-                    return selectedModels.includes(model)
-                }
+        .filter(({ alert }) => {
+            const { sensor_id, model } = alert
+            if (selectedSensors.length == 0 && selectedModels.length == 0) {
+                return true
+            }
+            if (selectedSensors.length != 0 && selectedModels.length == 0) {
+                return selectedSensors.includes(sensor_id)
+            }
+            if (selectedSensors.length == 0 && selectedModels.length != 0) {
+                return selectedModels.includes(model)
+            }
 
-                return selectedModels.includes(model) && selectedSensors.includes(sensor_id)
-            })
+            return selectedModels.includes(model) && selectedSensors.includes(sensor_id)
+        })
         // by name
         .filter(({ alert }) => {
             const { name, message } = alert
-            if (search.length != 0) return name.toLowerCase().includes(search.toLowerCase()) || message.toLowerCase().includes(search.toLowerCase())
+            if (search.length != 0)
+                return (
+                    name.toLowerCase().includes(search.toLowerCase()) ||
+                    message.toLowerCase().includes(search.toLowerCase())
+                )
             return true
         })
 
     /**
-     * 
+     *
      */
 
     const [openCreate, setOpenCreate] = useState(false)
@@ -368,23 +370,23 @@ export const AlertsContent = () => {
     const [loading, setLoading] = useState(false)
     const [expandedIdx, setExpandedIdx] = useState<number | null>(null)
 
-    const [createAlertMutation] = useCreateAlertEndpointAlertManagerV1CreatePostMutation();
-    const [deleteAlertMutation] = useDeleteAlertEndpointAlertManagerV1DeleteDeleteMutation();
+    const [createAlertMutation] = useCreateAlertEndpointAlertManagerV1CreatePostMutation()
+    const [deleteAlertMutation] = useDeleteAlertEndpointAlertManagerV1DeleteDeleteMutation()
 
     // Create alert
     const handleCreateAlert = async (alert: AlertConfigRequest) => {
         try {
             await createAlertMutation({
-                alertConfigRequest: alert
-            }).unwrap();
+                alertConfigRequest: alert,
+            }).unwrap()
 
-            await refetchAlerts();
-            setOpenCreate(false);
+            await refetchAlerts()
+            setOpenCreate(false)
         } catch (error) {
-            console.error(t("widgets.alertsContent.error_creating_alert"), error);
+            console.error(t("widgets.alertsContent.error_creating_alert"), error)
             // TODO toast
         }
-    };
+    }
 
     //TODO Update alert
 
@@ -392,21 +394,20 @@ export const AlertsContent = () => {
     const handleDeleteAlert = async (id: string) => {
         try {
             await deleteAlertMutation({
-                deleteAlertRequest: { filename: id }
-            }).unwrap();
+                deleteAlertRequest: { filename: id },
+            }).unwrap()
 
-            await refetchAlerts();
-            setOpenEdit(false);
-            setSelectedAlert(null);
+            await refetchAlerts()
+            setOpenEdit(false)
+            setSelectedAlert(null)
         } catch (error) {
-            console.error(t("widgets.alertsContent.error_deleting_alert"), error);
+            console.error(t("widgets.alertsContent.error_deleting_alert"), error)
             // TODO toast
         }
-    };
-
+    }
 
     /**
-     * 
+     *
      */
 
     return (
@@ -416,7 +417,7 @@ export const AlertsContent = () => {
                 overflow: `auto`,
             }}
         >
-            {/* Header */}
+            Header
             <Header />
             {/* Filters bar */}
             <FiltersBar
@@ -432,19 +433,21 @@ export const AlertsContent = () => {
                 setOpenCreate={setOpenCreate}
             />
             {/* Alert blocks */}
-            <AlertBlocks
-                filteredAlerts={filteredAlerts}
-                expandedIdx={expandedIdx}
-                setExpandedIdx={setExpandedIdx}
-                setSelectedAlert={setSelectedAlert}
-                setOpenEdit={setOpenEdit}
-                handleDeleteAlert={handleDeleteAlert}
-            />
-            <CreateAlertModal
-                open={openCreate}
-                onClose={() => setOpenCreate(false)}
-                onSubmit={handleCreateAlert}
-            />
+            {isLoadingAlerts ? (
+                <Box sx={{ margin: `1rem  1rem 0 1rem` }}>
+                    <AlertBlockSkeleton />
+                </Box>
+            ) : (
+                <AlertBlocks
+                    filteredAlerts={filteredAlerts}
+                    expandedIdx={expandedIdx}
+                    setExpandedIdx={setExpandedIdx}
+                    setSelectedAlert={setSelectedAlert}
+                    setOpenEdit={setOpenEdit}
+                    handleDeleteAlert={handleDeleteAlert}
+                />
+            )}
+            <CreateAlertModal open={openCreate} onClose={() => setOpenCreate(false)} onSubmit={handleCreateAlert} />
             <CreateAlertModal
                 open={openEdit}
                 onClose={() => {
@@ -452,7 +455,7 @@ export const AlertsContent = () => {
                     setSelectedAlert(null)
                 }}
                 alert={selectedAlert}
-            // onSubmit={(alert) => handleUpdateAlert(alert as Alert)}
+                // onSubmit={(alert) => handleUpdateAlert(alert as Alert)}
             />
         </Stack>
     )
