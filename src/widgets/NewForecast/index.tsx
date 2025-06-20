@@ -10,17 +10,16 @@ import { useEffect, useState } from "react"
 import * as React from "react"
 import Button from "@mui/material/Button"
 import CheckCircleIcon from "@mui/icons-material/CheckCircle"
-import CircularProgress from "@mui/material/CircularProgress"
 import dayjs, { Dayjs } from "dayjs"
 import ErrorIcon from "@mui/icons-material/Error"
 import Step from "@mui/material/Step"
 import Stepper from "@mui/material/Stepper"
 import { useFuncGenerateForecastBackendV1GenerateForecastPostMutation } from "@/shared/api/backend"
+import { useFuncGeneratePossibleDateBackendV1GeneratePossibleDatePostMutation } from "@/shared/api/backend"
 
 import "./index.css"
 import "dayjs/locale/en-gb"
 import { useTranslation } from "react-i18next"
-import { DateTimeValidationError, PickerChangeHandlerContext, PickerValue } from "@mui/x-date-pickers"
 import { ForecastGraphSkeleton } from "@/shared/ui/skeletons/ForecastGraphSkeleton"
 
 interface DataRow {
@@ -34,13 +33,17 @@ const LoadData = ({
     XY,
     forecast_horizon_time,
     setForecast_horizon_time,
+    dateLimits,
+    minForecastHorizon,
 }: {
     dataChartLoading: boolean
     data: DataRow[] | null
-    forecast: any
+    forecast: unknown
     XY: string[]
     forecast_horizon_time: string | Dayjs | null
     setForecast_horizon_time: React.Dispatch<React.SetStateAction<string | Dayjs | null>>
+    dateLimits: { min: string; max: string } | null
+    minForecastHorizon: string | null
 }) => {
     const stts = (s: string | number | Date | Dayjs | null | undefined) => {
         if (s === null || s === undefined) return NaN
@@ -67,29 +70,49 @@ const LoadData = ({
 
     const { t } = useTranslation("common")
 
+    const forecastData =
+        forecast && typeof forecast === "object" && "data" in forecast ? (forecast as any).data : undefined
+
+    // Проверка на наличие map_data
+    const hasMapData = forecastData && typeof forecastData === "object" && "map_data" in forecastData
+
     return (
         <Stack>
-            <Stack spacing={1} sx={{ padding: `1rem 0` }}>
+            <Stack spacing={1} sx={{ padding: `1rem 0`, width: "240px" }}>
                 <Typography>{t("widgets.newForecast.controlled_picker_label")}</Typography>
                 <LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale={"en-gb"}>
                     <DateTimePicker
                         label={t("widgets.newForecast.controlled_picker_label")}
                         value={value}
-                        onChange={(newValue: Dayjs | null) => {
-                            setValue(newValue)
-                            setForecast_horizon_time(newValue)
+                        onChange={(newValue) => {
+                            setValue(newValue as Dayjs | null)
+                            setForecast_horizon_time(newValue as Dayjs | null)
+                        }}
+                        minDate={dateLimits ? dayjs(dateLimits.min) : undefined}
+                        maxDate={dateLimits ? dayjs(dateLimits.max) : undefined}
+                        shouldDisableDate={(date) => {
+                            if (!dateLimits) return false
+                            const min = dayjs(dateLimits.min)
+                            const max = dayjs(dateLimits.max)
+                            const d = dayjs(date)
+                            return d.isBefore(min) || d.isAfter(max)
                         }}
                     />
                 </LocalizationProvider>
+                {minForecastHorizon && (
+                    <Typography variant="caption" color="info.main">
+                        {t("widgets.newForecast.min_forecast_horizon_time")}: {minForecastHorizon}
+                    </Typography>
+                )}
             </Stack>
-            {dataChartLoading || !forecast?.data || !data ? (
+            {dataChartLoading || !hasMapData || !data ? (
                 <ForecastGraphSkeleton />
             ) : (
                 <DataChart
                     dataChartLoading={dataChartLoading}
                     payload={{
                         data: {
-                            df: data.map((row) => {
+                            df: data.map((row: any) => {
                                 const formattedRow: { [key: string]: string | number } = {}
                                 for (const key in row) {
                                     if (Object.prototype.hasOwnProperty.call(row, key)) {
@@ -108,7 +131,7 @@ const LoadData = ({
                                 ? dayjs(forecast_horizon_time).toISOString().replace(`T`, ` `).replace(`.000Z`, ``)
                                 : "",
                         },
-                        forecast: forecast.data,
+                        forecast: forecastData,
                         target_time: XY[0],
                         target_value: XY[1],
                     }}
@@ -118,8 +141,29 @@ const LoadData = ({
     )
 }
 
+// Функция для нормализации данных: преобразует числовые строки в числа
+function normalizeDataRows(data: DataRow[], timeColumn: string): DataRow[] {
+    return data.map((row) => {
+        const newRow: DataRow = {}
+        for (const key in row) {
+            if (
+                key !== timeColumn && // не преобразуем колонку времени
+                row[key] !== "" &&
+                row[key] !== null &&
+                typeof row[key] === "string" &&
+                !isNaN(Number(row[key]))
+            ) {
+                newRow[key] = Number(row[key])
+            } else {
+                newRow[key] = row[key]
+            }
+        }
+        return newRow
+    })
+}
+
 export const NewForecast = () => {
-    const { mode, setMode } = useColorScheme()
+    const { mode } = useColorScheme()
     const isDark = mode === "dark"
     const bgPalette = ["var(--mui-palette-primary-light)", "var(--mui-palette-primary-dark)"]
     const bg = bgPalette[~~isDark]
@@ -142,6 +186,9 @@ export const NewForecast = () => {
     const [completed, setCompleted] = React.useState<{
         [k: number]: boolean
     }>({})
+    const [generatePossibleDate] = useFuncGeneratePossibleDateBackendV1GeneratePossibleDatePostMutation()
+    const [dateLimits, setDateLimits] = useState<{ min: string; max: string } | null>(null)
+    const [minForecastHorizon, setMinForecastHorizon] = useState<string | null>(null)
 
     // Effects
     const [generateForecast, result] = useFuncGenerateForecastBackendV1GenerateForecastPostMutation()
@@ -155,19 +202,7 @@ export const NewForecast = () => {
         ) {
             generateForecast({
                 predictRequest: {
-                    df: data
-                        ? data.map((row) => {
-                              const formattedRow: { [key: string]: string | number } = {}
-                              for (const key in row) {
-                                  if (Object.prototype.hasOwnProperty.call(row, key)) {
-                                      const value = row[key]
-                                      formattedRow[key] =
-                                          typeof value === "string" || typeof value === "number" ? value : String(value)
-                                  }
-                              }
-                              return formattedRow
-                          })
-                        : [],
+                    df: data ? normalizeDataRows(data, selected_axis[0]) : [],
                     col_target: selected_axis[1],
                     time_column: selected_axis[0],
                     forecast_horizon_time: forecast_horizon_time
@@ -189,6 +224,28 @@ export const NewForecast = () => {
         setDataChartLoading(result.isLoading)
     }, [result.isLoading])
 
+    useEffect(() => {
+        if (selected_axis.every((value) => value.length !== 0) && data && data.length > 0) {
+            generatePossibleDate({
+                convertRequest: {
+                    df: data,
+                    time_column: selected_axis[0],
+                },
+            })
+                .unwrap()
+                .then((res) => {
+                    if (res && res.date) {
+                        setDateLimits(res.date)
+                        setMinForecastHorizon(res.min_forecast_horizon_time)
+                    }
+                })
+                .catch(() => {
+                    setDateLimits(null)
+                    setMinForecastHorizon(null)
+                })
+        }
+    }, [selected_axis, data])
+
     const totalSteps = () => steps.length
 
     const completedSteps = () => Object.keys(completed).length
@@ -204,8 +261,6 @@ export const NewForecast = () => {
     }
 
     const handleBack = () => setActiveStep((prevActiveStep) => prevActiveStep - 1)
-
-    const handleStep = (step: number) => () => setActiveStep(step)
 
     const handleComplete = () => {
         setCompleted({
@@ -240,7 +295,7 @@ export const NewForecast = () => {
     }
 
     const steps_requrements = [
-        [selected_data != null, load_data == true || selected_data == "Example"],
+        [selected_data != null, load_data == true || selected_data == "Example" || selected_data == "ExampleCSV"],
         [selected_axis.every((value) => value.length !== 0)],
         [selected_data != null, selected_axis.every((value) => value.length !== 0)],
     ]
@@ -286,9 +341,21 @@ export const NewForecast = () => {
         ),
     ]
 
-    const MsetData = (args: { [key: string]: DataRow[] }) => {
-        let first = Object.keys(args)[0]
-        setData(args[first])
+    const MsetData = (args: unknown) => {
+        const timeColumn = selected_axis[0]
+        if (Array.isArray(args)) {
+            setData(normalizeDataRows(args, timeColumn))
+        } else if (args && typeof args === "object") {
+            const firstKey = Object.keys(args)[0]
+            const value = args[firstKey]
+            if (Array.isArray(value)) {
+                setData(normalizeDataRows(value, timeColumn))
+            } else {
+                setData([])
+            }
+        } else {
+            setData([])
+        }
     }
 
     return (
@@ -416,9 +483,7 @@ export const NewForecast = () => {
                         <SelectDataSource
                             selected_data={selected_data}
                             setSelected={setSelected}
-                            load_data={load_data}
                             setLoaddata={setLoaddata}
-                            data={data}
                             setData={MsetData}
                         />,
                         <DataTable selected_axis={selected_axis} setSelected_axis={setSelected_axis} data={data} />,
@@ -429,6 +494,8 @@ export const NewForecast = () => {
                             XY={selected_axis}
                             forecast_horizon_time={forecast_horizon_time}
                             setForecast_horizon_time={setForecast_horizon_time}
+                            dateLimits={dateLimits}
+                            minForecastHorizon={minForecastHorizon}
                         />,
                     ][activeStep]
                 }
