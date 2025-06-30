@@ -1,10 +1,16 @@
-import React from "react"
-import { Box, Stack } from "@mui/material"
+import React, { useState } from "react"
+import { Box, Stack, Drawer, useMediaQuery, useTheme } from "@mui/material"
 import { Sidebar } from "@/widgets/Sidebar"
 import { Header } from "@/widgets/Header"
-import { DataForecast } from "@/widgets/DataForecast"
 
 export const MainLayout = ({ children }: { children: React.ReactNode }) => {
+    const theme = useTheme()
+    const isMobile = useMediaQuery(theme.breakpoints.down("md"))
+    const [drawerOpen, setDrawerOpen] = useState(false)
+
+    const handleDrawerOpen = () => setDrawerOpen(true)
+    const handleDrawerClose = () => setDrawerOpen(false)
+
     return (
         <Stack
             direction={"row"}
@@ -14,15 +20,27 @@ export const MainLayout = ({ children }: { children: React.ReactNode }) => {
                 overflow: `auto`,
             }}
         >
-            <Sidebar />
+            {!isMobile && <Sidebar />}
+            {isMobile && (
+                <Drawer
+                    sx={{ zIndex: 100 }}
+                    anchor="left"
+                    open={drawerOpen}
+                    onClose={handleDrawerClose}
+                    ModalProps={{ keepMounted: true }}
+                >
+                    <Sidebar />
+                </Drawer>
+            )}
             <Box
                 sx={{
                     display: `grid`,
                     width: `100%`,
                     overflow: `auto`,
-                    gridTemplateRows: `max-content`
-                }}>
-                <Header />
+                    gridTemplateRows: `max-content`,
+                }}
+            >
+                <Header onMenuClick={isMobile ? handleDrawerOpen : undefined} />
                 {children}
             </Box>
         </Stack>

@@ -20,9 +20,10 @@ const languages = [
 interface LanguageDropdownProps {
     selectedLanguage?: "en" | "ru" | "it"
     onChange?: (lang: "en" | "ru" | "it") => void
+    isVerySmall?: boolean
 }
 
-export const LanguageDropdown = ({ selectedLanguage, onChange }: LanguageDropdownProps) => {
+export const LanguageDropdown = ({ selectedLanguage, onChange, isVerySmall }: LanguageDropdownProps) => {
     const { i18n } = useTranslation()
     const [open, setOpen] = React.useState(false)
     const anchorRef = React.useRef<HTMLDivElement>(null)
@@ -63,9 +64,7 @@ export const LanguageDropdown = ({ selectedLanguage, onChange }: LanguageDropdow
     }
 
     return (
-        <Box sx={{
-             zIndex: 9999,
-        }}>
+        <Box sx={{ zIndex: 1 }}>
             <ButtonGroup
                 variant="contained"
                 ref={anchorRef}
@@ -74,6 +73,10 @@ export const LanguageDropdown = ({ selectedLanguage, onChange }: LanguageDropdow
                     border: `none`,
                     boxShadow: `none`,
                     cursor: `pointer`,
+                    ...(isVerySmall && {
+                        minWidth: 32,
+                        height: 28,
+                    }),
                 }}
                 onClick={handleToggle}
             >
@@ -85,7 +88,8 @@ export const LanguageDropdown = ({ selectedLanguage, onChange }: LanguageDropdow
                         border: `2px solid var(${isDark ? "--mui-palette-secondary-light" : "--mui-palette-secondary-dark"}) !important`,
                         boxShadow: `none`,
                         color: `var(--mui-palette-text-primary) !important`,
-                        padding: `0 0.8rem`,
+                        padding: isVerySmall ? "0 0.15rem" : `0 0.8rem`,
+                        fontSize: isVerySmall ? "0.7rem" : undefined,
                     }}
                 >
                     {currentLangData?.code.toUpperCase()}
@@ -101,10 +105,11 @@ export const LanguageDropdown = ({ selectedLanguage, onChange }: LanguageDropdow
                         border: `none`,
                         boxShadow: `none`,
                         color: `var(${isDark ? "--mui-palette-secondary-dark" : "--mui-palette-secondary-light"}) !important`,
-                        padding: `0`,
+                        padding: 0,
+                        minWidth: isVerySmall ? 18 : undefined,
                     }}
                 >
-                    <ArrowDropDownIcon />
+                    <ArrowDropDownIcon fontSize={isVerySmall ? "inherit" : "medium"} />
                 </Button>
             </ButtonGroup>
             <Popper
@@ -115,8 +120,7 @@ export const LanguageDropdown = ({ selectedLanguage, onChange }: LanguageDropdow
                 sx={{
                     borderRadius: "var(--mui-shape-borderRadius)",
                     paddingTop: `7px`,
-                    width: `100px`,
-                    zIndex: 1,
+                    width: isVerySmall ? 60 : 100,
                 }}
                 transition
             >
@@ -136,19 +140,26 @@ export const LanguageDropdown = ({ selectedLanguage, onChange }: LanguageDropdow
                                             key={lang.code}
                                             onClick={(event) => handleLanguageChange(event, index)}
                                             selected={index === selectedIndex}
-                                            sx={{ padding: `0.1rem 1rem`, justifyContent: `space-evenly` }}
+                                            sx={{
+                                                padding: isVerySmall ? "0.1rem 0.5rem" : "0.1rem 1rem",
+                                                justifyContent: "space-evenly",
+                                                minHeight: isVerySmall ? 28 : undefined,
+                                            }}
                                         >
                                             <Typography
                                                 color="textPrimary"
                                                 variant="button"
-                                                sx={{ marginRight: `1rem` }}
+                                                sx={{
+                                                    marginRight: isVerySmall ? "0.5rem" : "1rem",
+                                                    fontSize: isVerySmall ? "0.7rem" : undefined,
+                                                }}
                                             >
                                                 {lang.code.toUpperCase()}
                                             </Typography>
                                             <img
                                                 loading="lazy"
-                                                width="16"
-                                                height="8"
+                                                width={isVerySmall ? 12 : 16}
+                                                height={isVerySmall ? 6 : 8}
                                                 src={`https://flagcdn.com/w20/${lang.flag}.png`}
                                                 alt=""
                                             />
