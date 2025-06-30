@@ -9,6 +9,7 @@ import { useFuncGetMiniChartsDataBackendV1GetMiniChartsDataGetQuery } from "@/sh
 import { useTranslation } from "react-i18next"
 import { MiniChartStat } from "@/shared/types/MiniChartData"
 import { WeatherStatCardSkeleton } from "@/shared/ui/skeletons/WeatherStatCardSkeleton"
+import useMediaQuery from "@mui/material/useMediaQuery"
 
 const trendColors = (theme: Theme) => ({
     positive: theme.palette.success.main,
@@ -30,6 +31,7 @@ export const WeatherStatCard = () => {
     const colors = trendColors(theme)
     const { data: charts, isLoading, error } = useFuncGetMiniChartsDataBackendV1GetMiniChartsDataGetQuery()
     const { t } = useTranslation()
+    const isMobile = useMediaQuery(theme.breakpoints.down("md"))
 
     if (isLoading) return <WeatherStatCardSkeleton />
     if (error) return <div>{t("widgets.weatherStatCard.error_loading_charts_data")}</div>
@@ -37,12 +39,20 @@ export const WeatherStatCard = () => {
 
     return (
         <Stack
-            direction={"row"}
+            component="div"
             sx={{
-                justifyContent: `space-between`,
-                width: `100%`,
-                alignItems: `center`,
-                padding: `1rem 0`,
+                display: "grid",
+                gridTemplateColumns: {
+                    xs: "1fr", // до 768px — 1 карточка в ряд
+                    lg: "1fr 1fr 1fr 1fr", // с 1200px и выше — 4 карточки в ряд
+                },
+                gap: "1rem",
+                width: "100%",
+                alignItems: "stretch",
+                padding: "1rem 0",
+                "@media (min-width:768px) and (max-width:1199.98px)": {
+                    gridTemplateColumns: "1fr 1fr", // только между 768px и 1200px — 2 карточки в ряд
+                },
             }}
         >
             {charts.map((stat: MiniChartStat, i: number) => (
@@ -52,7 +62,8 @@ export const WeatherStatCard = () => {
                     sx={{
                         maxHeight: `360px`,
                         width: `100%`,
-                        marginRight: i < charts.length - 1 ? `1rem` : "none",
+                        marginRight: !isMobile && i < charts.length - 1 ? `1rem` : 0,
+                        marginBottom: isMobile && i < charts.length - 1 ? `1rem` : 0,
                     }}
                 >
                     <Stack direction="column" sx={{ padding: `1rem` }}>
