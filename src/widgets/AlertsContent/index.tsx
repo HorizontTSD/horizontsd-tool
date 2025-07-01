@@ -91,8 +91,8 @@ const SensorAndModelSelection = ({
     const { t } = useTranslation()
 
     return (
-        <Stack direction={"row"} spacing={1}>
-            <Stack>
+        <Stack direction={{ xs: "column", sm: "row" }} spacing={1} sx={{ width: "100%" }}>
+            <Stack sx={{ width: { xs: "100%", sm: 220 } }}>
                 <Typography>{t("widgets.alertsContent.sensor_selection")}</Typography>
                 <MultipleSelectCheckmarks
                     width={220}
@@ -102,7 +102,7 @@ const SensorAndModelSelection = ({
                     disabled={sensorsLoading}
                 />
             </Stack>
-            <Stack>
+            <Stack sx={{ width: { xs: "100%", sm: 140 } }}>
                 <Typography>{t("widgets.alertsContent.model_selection")}</Typography>
                 <MultipleSelectCheckmarks
                     width={140}
@@ -148,8 +148,8 @@ const FiltersBar = ({
 
     return (
         <Stack
-            direction="row"
-            alignItems="center"
+            direction={{ xs: "column", sm: "row" }}
+            alignItems={{ xs: "stretch", sm: "center" }}
             justifyContent="space-between"
             sx={{
                 background: bg,
@@ -157,10 +157,25 @@ const FiltersBar = ({
                 padding: `1rem`,
                 borderRadius: `var(--mui-shape-borderRadius)`,
                 flex: "0 0 auto",
+                flexWrap: { xs: "nowrap", sm: "nowrap" },
+                "@media (max-width: 600px)": {
+                    flexDirection: "column",
+                    alignItems: "stretch",
+                },
             }}
         >
-            <Stack direction="row" spacing={1} alignItems="center">
-                <Stack direction="row" spacing={1} alignItems="center">
+            <Stack
+                direction={{ xs: "column", sm: "row" }}
+                spacing={1}
+                alignItems={{ xs: "stretch", sm: "center" }}
+                sx={{ width: "100%" }}
+            >
+                <Stack
+                    direction={{ xs: "column", sm: "row" }}
+                    spacing={1}
+                    alignItems={{ xs: "stretch", sm: "center" }}
+                    sx={{ width: "100%" }}
+                >
                     {/* Sensor and Model Selection */}
                     <SensorAndModelSelection
                         availableModels={availableModels}
@@ -171,8 +186,12 @@ const FiltersBar = ({
                         sensors={sensors}
                         sensorsLoading={sensorsLoading}
                     />
-                    <Stack direction={"row"} spacing={1}>
-                        <Stack>
+                    <Stack
+                        direction={{ xs: "column", sm: "row" }}
+                        spacing={1}
+                        sx={{ mt: { xs: 2, sm: 0 }, width: "100%" }}
+                    >
+                        <Stack sx={{ width: { xs: "100%", sm: "auto" } }}>
                             <Typography>{t("widgets.alertsContent.search")}</Typography>
                             <TextField
                                 value={search}
@@ -211,14 +230,18 @@ const FiltersBar = ({
                     </Stack>
                 </Stack>
             </Stack>
-            <Stack>
+            <Stack
+                sx={{
+                    width: { xs: "100%", sm: "auto" },
+                    alignItems: { xs: "stretch", sm: "flex-end" },
+                    mt: { xs: 2, sm: 0 },
+                }}
+            >
                 <Button
                     variant="contained"
                     color="success"
-                    sx={{
-                        boxShadow: "none",
-                    }}
                     onClick={() => setOpenCreate(true)}
+                    sx={{ width: { xs: "100%", sm: "auto" }, ml: { xs: 0, sm: 2 } }}
                 >
                     {t("widgets.alertsContent.create_button")}
                 </Button>
