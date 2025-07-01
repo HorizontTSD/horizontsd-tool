@@ -25,27 +25,49 @@ export const SelectDataSource = ({ selected_data, setSelected, setLoaddata, setD
     }
     return (
         <Stack direction={"column"} sx={{ padding: `2rem 0` }}>
-            <Typography variant="h5">Select preffered data source</Typography>
-            <ToggleButtonGroup color="success" value={alignment} exclusive onChange={handleChange} aria-label="Source">
-                <ToggleButton value="ExampleCSV">
+            <Typography variant="h5" sx={{ fontSize: { xs: "0.95rem", sm: "1.25rem" }, mb: 1 }}>
+                Select preffered data source
+            </Typography>
+            <ToggleButtonGroup
+                color="success"
+                value={alignment}
+                exclusive
+                onChange={handleChange}
+                aria-label="Source"
+                orientation="horizontal"
+                sx={{
+                    flexWrap: { xs: "wrap", sm: "nowrap" },
+                    flexDirection: { xs: "column", sm: "row" },
+                    gap: { xs: 1, sm: 0 },
+                    alignItems: { xs: "stretch", sm: "center" },
+                    width: "100%",
+                    "@media (max-width:600px)": {
+                        "& .MuiToggleButton-root": {
+                            borderRadius: "999px",
+                            border: "1px solid #e0e0e0",
+                        },
+                    },
+                }}
+            >
+                <ToggleButton value="ExampleCSV" sx={{ width: { xs: "100%", sm: "auto" } }}>
                     <AddchartIcon />
-                    <Typography>Example CSV</Typography>
+                    <Typography sx={{ fontSize: { xs: "0.85rem", sm: "1rem" } }}>Example CSV</Typography>
                 </ToggleButton>
-                <ToggleButton value="ExampleJSON">
+                <ToggleButton value="ExampleJSON" sx={{ width: { xs: "100%", sm: "auto" } }}>
                     <AddchartIcon />
-                    <Typography>Example JSON</Typography>
+                    <Typography sx={{ fontSize: { xs: "0.85rem", sm: "1rem" } }}>Example JSON</Typography>
                 </ToggleButton>
-                <ToggleButton value="JSON">
+                <ToggleButton value="JSON" sx={{ width: { xs: "100%", sm: "auto" } }}>
                     <FileUploadIcon />
-                    <Typography>JSON</Typography>
+                    <Typography sx={{ fontSize: { xs: "0.85rem", sm: "1rem" } }}>JSON</Typography>
                 </ToggleButton>
-                <ToggleButton value="CSV">
+                <ToggleButton value="CSV" sx={{ width: { xs: "100%", sm: "auto" } }}>
                     <FileUploadIcon />
-                    <Typography>CSV</Typography>
+                    <Typography sx={{ fontSize: { xs: "0.85rem", sm: "1rem" } }}>CSV</Typography>
                 </ToggleButton>
-                <ToggleButton value="XLSX">
+                <ToggleButton value="XLSX" sx={{ width: { xs: "100%", sm: "auto" } }}>
                     <FileUploadIcon />
-                    <Typography>XLSX</Typography>
+                    <Typography sx={{ fontSize: { xs: "0.85rem", sm: "1rem" } }}>XLSX</Typography>
                 </ToggleButton>
             </ToggleButtonGroup>
             {alignment == "ExampleCSV" && <CsvExampleTableWithDropdowns setData={setData} setLoaddata={setLoaddata} />}
