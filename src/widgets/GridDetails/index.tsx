@@ -119,8 +119,10 @@ export const CustomizedDataGrid: React.FC = () => {
                 <Box
                     sx={{
                         display: "flex",
+                        flexDirection: { xs: "column", sm: "row" },
                         justifyContent: "space-between",
                         width: "100%",
+                        gap: 2,
                     }}
                 >
                     {sensorsLoading || forecastLoading ? (

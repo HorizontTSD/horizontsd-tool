@@ -77,7 +77,7 @@ const MetricCard = ({
         </Typography>
 
         {equation && (
-            <Box sx={{ mt: 2 }}>
+            <Box sx={{ mt: 2, fontSize: { xs: "0.7rem", sm: "1rem" } }}>
                 <LatexEquation equation={equation} />
             </Box>
         )}
@@ -116,18 +116,15 @@ const ModelSection = ({ modelName, metrics }: { modelName: string; metrics: Metr
                     minWidth: 0,
                 }}
             >
-                {
-                     
-                    METRIC_CONFIG.map(({ key, titleKey, equation, unit }) => (
-                        <MetricCard
-                            key={key}
-                            title={t(titleKey)}
-                            value={metrics[key as keyof Metrics] ?? 0}
-                            equation={equation}
-                            unit={unit}
-                        />
-                    ))
-                }
+                {METRIC_CONFIG.map(({ key, titleKey, equation, unit }) => (
+                    <MetricCard
+                        key={key}
+                        title={t(titleKey)}
+                        value={metrics[key as keyof Metrics] ?? 0}
+                        equation={equation}
+                        unit={unit}
+                    />
+                ))}
             </Box>
         </Box>
     )
@@ -226,9 +223,11 @@ export const Metrix = () => {
                         <Box
                             sx={{
                                 display: "flex",
+                                flexDirection: { xs: "column", sm: "row" },
                                 justifyContent: "space-between",
                                 width: "100%",
                                 mb: 3,
+                                gap: 2,
                             }}
                         >
                             <Stack>
@@ -239,7 +238,6 @@ export const Metrix = () => {
                                     onSelect={handleSensorChange}
                                 />
                             </Stack>
-
                             <Stack>
                                 <Typography>{t("widgets.Metrix.model_selection")}</Typography>
                                 <GridDropdown

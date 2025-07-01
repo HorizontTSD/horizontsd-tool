@@ -73,7 +73,9 @@ export function DisabledOptions() {
             options={timeSlots}
             getOptionDisabled={(option) => option === timeSlots[0] || option === timeSlots[2]}
             sx={{ width: 300 }}
-            renderInput={(params) => <TextField {...params} label={t("widgets.LoadForecastGraphBlock.navbar.disabled_options_label")} />}
+            renderInput={(params) => (
+                <TextField {...params} label={t("widgets.LoadForecastGraphBlock.navbar.disabled_options_label")} />
+            )}
         />
     )
 }
@@ -101,7 +103,12 @@ export function PinnedSubheaderList() {
                         </ListSubheader>
                         {[0, 1, 2, 3, 4].map((item) => (
                             <ListItem key={`item-${index}-${item}`}>
-                                <ListItemText primary={t("widgets.LoadForecastGraphBlock.navbar.last_time_unit", { count: item + 1, unit: t(`widgets.LoadForecastGraphBlock.navbar.time_units.${sectionId}`) })} />
+                                <ListItemText
+                                    primary={t("widgets.LoadForecastGraphBlock.navbar.last_time_unit", {
+                                        count: item + 1,
+                                        unit: t(`widgets.LoadForecastGraphBlock.navbar.time_units.${sectionId}`),
+                                    })}
+                                />
                             </ListItem>
                         ))}
                     </ul>
@@ -175,8 +182,12 @@ export function SplitButton() {
                 <Tooltip
                     title={
                         <React.Fragment>
-                            <Typography color="inherit">{t("widgets.LoadForecastGraphBlock.navbar.from_label")}: {new Date().toUTCString()}</Typography>
-                            <Typography color="inherit">{t("widgets.LoadForecastGraphBlock.navbar.to_label")}: {new Date().toUTCString()}</Typography>
+                            <Typography color="inherit">
+                                {t("widgets.LoadForecastGraphBlock.navbar.from_label")}: {new Date().toUTCString()}
+                            </Typography>
+                            <Typography color="inherit">
+                                {t("widgets.LoadForecastGraphBlock.navbar.to_label")}: {new Date().toUTCString()}
+                            </Typography>
                             <Typography color="warning">UTC</Typography>
                         </React.Fragment>
                     }
@@ -225,17 +236,27 @@ export function SplitButton() {
                                             sx={{ marginBottom: `1rem` }}
                                         >
                                             <Box>
-                                                <Typography variant="h6">{t("widgets.LoadForecastGraphBlock.navbar.absolute_time_range_heading")}</Typography>
+                                                <Typography variant="h6">
+                                                    {t(
+                                                        "widgets.LoadForecastGraphBlock.navbar.absolute_time_range_heading"
+                                                    )}
+                                                </Typography>
                                                 <Box>
-                                                    <Typography>{t("widgets.LoadForecastGraphBlock.navbar.from_label")}:</Typography>
+                                                    <Typography>
+                                                        {t("widgets.LoadForecastGraphBlock.navbar.from_label")}:
+                                                    </Typography>
                                                     <DisabledOptions />
                                                 </Box>
                                                 <Box>
-                                                    <Typography>{t("widgets.LoadForecastGraphBlock.navbar.to_label")}:</Typography>
+                                                    <Typography>
+                                                        {t("widgets.LoadForecastGraphBlock.navbar.to_label")}:
+                                                    </Typography>
                                                     <DisabledOptions />
                                                 </Box>
                                             </Box>
-                                            <Button variant="contained">{t("widgets.LoadForecastGraphBlock.navbar.apply_time_range_button")}</Button>
+                                            <Button variant="contained">
+                                                {t("widgets.LoadForecastGraphBlock.navbar.apply_time_range_button")}
+                                            </Button>
                                         </Stack>
                                         <Divider />
                                         <Stack>
@@ -266,7 +287,10 @@ export function SplitButton() {
                                                 }}
                                             >
                                                 <Typography variant="button" color="textPrimary">
-                                                    {timezone_list[0] || t("widgets.LoadForecastGraphBlock.navbar.select_period_placeholder")}
+                                                    {timezone_list[0] ||
+                                                        t(
+                                                            "widgets.LoadForecastGraphBlock.navbar.select_period_placeholder"
+                                                        )}
                                                 </Typography>
                                                 <ArrowDropDownIcon />
                                             </IconButton>
@@ -320,7 +344,7 @@ interface ModelSelectorDropdownProps {
     availableModels: string[]
     selectedModel: string | null
     onSelect: (model: string) => void
-    onRefreshSelect: (period: string) => void;
+    onRefreshSelect: (period: string) => void
 }
 
 export function Navbar({ availableModels, selectedModel, onSelect, onRefreshSelect }: ModelSelectorDropdownProps) {
@@ -350,7 +374,7 @@ export function Navbar({ availableModels, selectedModel, onSelect, onRefreshSele
     }
 
     const handleRefreshSelect = (period: string) => {
-        onRefreshSelect(period);
+        onRefreshSelect(period)
         handleClose2()
     }
 
@@ -364,10 +388,11 @@ export function Navbar({ availableModels, selectedModel, onSelect, onRefreshSele
         <Stack
             sx={{
                 borderRadius: "var(--mui-shape-borderRadius)",
-                padding: `0 1rem`,
+                padding: `0.5rem`,
+                gap: `1rem`,
                 minHeight: `60px`,
                 display: `flex`,
-                flexDirection: `row`,
+                flexDirection: { xs: "column", sm: "row" },
                 justifyContent: `space-between`,
                 alignItems: `center`,
                 background: bg,
@@ -448,7 +473,11 @@ export function Navbar({ availableModels, selectedModel, onSelect, onRefreshSele
                         },
                     }}
                 >
-                    <Typography variant="button" color="textPrimary" sx={{ color: textColor }}>
+                    <Typography
+                        variant="button"
+                        color="textPrimary"
+                        sx={{ color: textColor, fontSize: { xs: "0.7rem", sm: "1rem" } }}
+                    >
                         {selectedModel || t("widgets.LoadForecastGraphBlock.navbar.select_sensor_placeholder")}
                     </Typography>
                     <ArrowDropDownIcon sx={{ color: textColor }} />
@@ -492,8 +521,11 @@ export function Navbar({ availableModels, selectedModel, onSelect, onRefreshSele
             </Stack>
 
             <Stack direction={"row"} sx={{ alignItems: `center` }} spacing={1}>
-
-                <Typography variant="button" color="textPrimary" sx={{ marginRight: `1rem` }}>
+                <Typography
+                    variant="button"
+                    color="textPrimary"
+                    sx={{ marginRight: `1rem`, fontSize: { xs: "0.85rem", sm: "1rem" } }}
+                >
                     {t("widgets.LoadForecastGraphBlock.navbar.refresh_at_label")}:
                 </Typography>
                 <IconButton
@@ -508,7 +540,7 @@ export function Navbar({ availableModels, selectedModel, onSelect, onRefreshSele
                         },
                     }}
                 >
-                    <Typography variant="button" sx={{ color: textColor }}>
+                    <Typography variant="button" sx={{ color: textColor, fontSize: { xs: "0.85rem", sm: "1rem" } }}>
                         {refreshAt[0] || t("widgets.LoadForecastGraphBlock.navbar.select_period_placeholder")}
                     </Typography>
                     <ArrowDropDownIcon sx={{ color: textColor }} />

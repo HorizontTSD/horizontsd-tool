@@ -4,9 +4,10 @@ import Stack from "@mui/material/Stack"
 import { LanguageDropdown } from "../dropdowns/LanguageDropdown"
 import ColorModeIconDropdown from "../ColorModeIconDropdown"
 import React from "react"
-import { useTheme } from "@mui/material/styles"
 import useMediaQuery from "@mui/material/useMediaQuery"
 import { getWidthStyles } from "@/shared/lib/styles/breakpoints"
+import IconButton from "@mui/material/IconButton"
+import MenuIcon from "@mui/icons-material/Menu"
 
 interface HeaderProps {
     copyright?: string
@@ -14,17 +15,17 @@ interface HeaderProps {
     language?: "ru" | "en" | "it"
     width?: "xs" | "sm" | "md" | "lg" | "xl"
     title?: string
+    onMenuClick?: () => void
 }
 
 // eslint-disable-next-line
-export function Header({ copyright = "local", theme, language, width, title = "FORECAST" }: HeaderProps) {
+export function Header({ copyright = "local", theme, language, width, title = "FORECAST", onMenuClick }: HeaderProps) {
     const { mode, setMode } = useColorScheme()
-    const themeMUI = useTheme()
     const isDark = mode === "dark"
     const bgPalette = ["var(--mui-palette-secondary-dark)", "var(--mui-palette-secondary-main)"]
     const bg = bgPalette[~~!isDark]
 
-    const isLessThanMd = useMediaQuery(themeMUI.breakpoints.down("md"))
+    const isVerySmall = useMediaQuery("(max-width:320px)")
 
     React.useEffect(() => {
         if (theme) {
@@ -42,12 +43,24 @@ export function Header({ copyright = "local", theme, language, width, title = "F
                 justifyContent: "center",
                 padding: `1rem`,
                 margin: "0 auto",
-                height: isLessThanMd ? "40px" : "60px",
+                gap: 1,
+                height: isVerySmall ? "36px" : "60px",
                 ...getWidthStyles(width),
             }}
         >
-            <Stack direction={"row"} justifyContent={"start"} alignItems={"baseline"} sx={{ width: `100%` }}>
-                <Typography variant="h6" sx={{ color: `var(--mui-palette-common-white)` }}>
+            <Stack direction={"row"} justifyContent={"start"} alignItems={"center"} sx={{ width: `100%` }}>
+                {onMenuClick && (
+                    <IconButton onClick={onMenuClick} sx={{ mr: 1, color: "white" }}>
+                        <MenuIcon />
+                    </IconButton>
+                )}
+                <Typography
+                    variant="h6"
+                    sx={{
+                        color: `var(--mui-palette-common-white)`,
+                        fontSize: isVerySmall ? "0.9rem" : undefined,
+                    }}
+                >
                     {title}
                 </Typography>
                 <Typography variant="caption" sx={{ fontSize: `0.6rem`, color: `var(--mui-palette-text-secondary)` }}>
@@ -62,9 +75,10 @@ export function Header({ copyright = "local", theme, language, width, title = "F
                     width: "100%",
                     justifyContent: "end",
                     alignItems: "center",
+                    gap: 1,
                 }}
             >
-                <LanguageDropdown />
+                <LanguageDropdown isVerySmall={isVerySmall} />
                 <ColorModeIconDropdown />
             </Stack>
         </Stack>

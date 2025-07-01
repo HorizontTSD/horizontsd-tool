@@ -35,12 +35,12 @@ export const GridDropdown = ({ list, selected, onSelect }: GridDropdownProps) =>
                 onClick={handleClick}
                 size="small"
                 sx={{
-                    minWidth: 160,
+                    minWidth: { xs: "100%", sm: 160 },
                     border: "1px solid",
                     borderColor: "divider",
                     borderRadius: 1,
                     padding: "6px 12px",
-                    width: "auto",
+                    width: { xs: "100%", sm: "auto" },
                     "&:hover": {
                         backgroundColor: "action.hover",
                     },
@@ -56,14 +56,16 @@ export const GridDropdown = ({ list, selected, onSelect }: GridDropdownProps) =>
                 anchorEl={anchorEl}
                 open={Boolean(anchorEl)}
                 onClose={handleClose}
-                PaperProps={{
-                    sx: {
-                        minWidth: 160,
-                        maxHeight: 300,
-                        boxShadow: 2,
-                        mt: 1,
-                        "& .MuiMenuItem-root": {
-                            minHeight: 36,
+                slotProps={{
+                    paper: {
+                        sx: {
+                            minWidth: { xs: "90%", sm: 160 },
+                            maxHeight: 300,
+                            boxShadow: 2,
+                            mt: 1,
+                            "& .MuiMenuItem-root": {
+                                minHeight: 36,
+                            },
                         },
                     },
                 }}
