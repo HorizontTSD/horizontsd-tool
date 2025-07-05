@@ -8,21 +8,42 @@ dotenv.config()
 
 // Конфигурация прокси
 const alertProxy = {
-    target: process.env.NODE_ALERT_ENDPOINT,
+    target: "http://77.37.136.11:7080",
     changeOrigin: true,
     rewrite: (path: string) => path.replace(/^\/alert_endpoint/, ""),
+    configure: (proxy: any) => {
+        proxy.on("proxyReq", (proxyReq: any, req: any, res: any) => {
+            if (process.env.VITE_ALERT_TOKEN) {
+                proxyReq.setHeader("Authorization", `Bearer ${process.env.VITE_ALERT_TOKEN}`)
+            }
+        })
+    },
 }
 
 const backendProxy = {
-    target: process.env.NODE_BACKEND_ENDPOINT,
+    target: process.env.NODE_BACKEND_ENDPOINT || "http://77.37.136.11:7070",
     changeOrigin: true,
     rewrite: (path: string) => path.replace(/^\/backend_endpoint/, ""),
+    configure: (proxy: any) => {
+        proxy.on("proxyReq", (proxyReq: any, req: any, res: any) => {
+            if (process.env.VITE_BACKEND_TOKEN) {
+                proxyReq.setHeader("Authorization", `Bearer ${process.env.VITE_BACKEND_TOKEN}`)
+            }
+        })
+    },
 }
 
 const modelProxy = {
-    target: process.env.NODE_MODEL_FAST_API_ENDPOINT,
+    target: process.env.NODE_MODEL_FAST_API_ENDPOINT || "http://77.37.136.11:7072",
     changeOrigin: true,
     rewrite: (path: string) => path.replace(/^\/model_fast_api_endpoint/, ""),
+    configure: (proxy: any) => {
+        proxy.on("proxyReq", (proxyReq: any, req: any, res: any) => {
+            if (process.env.VITE_CASE_TOKEN) {
+                proxyReq.setHeader("Authorization", `Bearer ${process.env.VITE_CASE_TOKEN}`)
+            }
+        })
+    },
 }
 
 // eslint-disable-next-line
