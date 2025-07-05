@@ -11,7 +11,7 @@ export const router = createBrowserRouter([
         path: "/alert",
         element: <AlertsPage />,
     },
-      {
+    {
         path: "/forecast",
         element: <ForecastPage />,
     },
