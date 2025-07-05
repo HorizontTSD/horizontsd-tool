@@ -156,7 +156,12 @@
             "select_forecast_date_description": "Seleziona data di previsione",
             "send_button_description": "Se tutto è corretto, premi il pulsante \"invia\"",
             "loading": "Caricamento...",
-            "error_generating_forecast": "Errore nella generazione della previsione"
+            "error_generating_forecast": "Errore nella generazione della previsione",
+            "example_csv": "Esempio CSV",
+            "example_json": "Esempio JSON",
+            "csv": "CSV",
+            "json": "JSON",
+            "xlsx": "XLSX"
         }
     }
 }

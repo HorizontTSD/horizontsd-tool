@@ -1,15 +1,15 @@
 import Box from "@mui/material/Box"
 import Typography from "@mui/material/Typography"
 import { useColorScheme } from "@mui/material/styles"
-import { useEffect, useState, useMemo } from "react"
+import { useEffect, useState } from "react"
 import { marked } from "marked"
 import temp from "@/shared/lib/data/temp.json"
 import { Stack } from "@mui/material"
 import { LoadCSV, LoadJSON, LoadXLSX } from "./fileLoader"
 import tempCsvRaw from "@/shared/lib/data/temp.csv?raw"
 import tempJson from "@/shared/lib/data/temp.json"
-import { DataGrid, GridRowsProp, GridColDef } from "@mui/x-data-grid"
-import { GridDropdown } from "@/widgets/GridDropdown"
+import { DataGrid } from "@mui/x-data-grid"
+import { useTranslation } from "react-i18next"
 
 interface ExamplePreviewProps {
     setData: (v: unknown) => void
@@ -25,11 +25,6 @@ export const DataSample = ({
     setData: (v: unknown) => void
     setLoaddata?: (v: boolean) => void
 }) => {
-    const { mode, setMode } = useColorScheme()
-    const isDark = mode === "dark"
-    const bgPalette = ["var(--mui-palette-primary-light)", "var(--mui-palette-primary-dark)"]
-    const bg = bgPalette[~~isDark]
-
     const loaders = {
         XLSX: LoadXLSX,
         CSV: LoadCSV,
@@ -42,8 +37,8 @@ export const DataSample = ({
         JSON: ".json",
     }
 
-    if (type in loaders == false) return null
-    if (type in extensions == false) return null
+    if (!(type in loaders)) return null
+    if (!(type in extensions)) return null
 
     const { loader } = loaders[type]({
         setData,
@@ -104,6 +99,7 @@ export const MarkdownPreview = ({ setData, setLoaddata }: ExamplePreviewProps) =
 }
 
 export const CsvExamplePreview = ({ setData, setLoaddata }: ExamplePreviewProps) => {
+    const { t } = useTranslation("common")
     const [csvData, setCsvData] = useState<any[]>([])
     const [headers, setHeaders] = useState<string[]>([])
     useEffect(() => {
@@ -125,7 +121,7 @@ export const CsvExamplePreview = ({ setData, setLoaddata }: ExamplePreviewProps)
     return (
         <Box sx={{ mt: 1 }}>
             <Typography variant="h6" gutterBottom>
-                CSV Example Table:
+                {t("widgets.newForecast.example_csv")}:
             </Typography>
             <Box sx={{ overflowX: "auto", maxHeight: 400 }}>
                 <table className="data-table">
@@ -152,6 +148,7 @@ export const CsvExamplePreview = ({ setData, setLoaddata }: ExamplePreviewProps)
 }
 
 export const JsonExamplePreview = ({ setData, setLoaddata }: ExamplePreviewProps) => {
+    const { t } = useTranslation("common")
     useEffect(() => {
         setData({ example: tempJson })
         setLoaddata && setLoaddata(true)
@@ -159,7 +156,7 @@ export const JsonExamplePreview = ({ setData, setLoaddata }: ExamplePreviewProps
     return (
         <Box sx={{ mt: 1 }}>
             <Typography variant="h6" gutterBottom>
-                JSON Preview:
+                {t("widgets.newForecast.example_json")}:
             </Typography>
             <pre style={{ maxHeight: 400, overflow: "auto", background: "#f5f5f5", padding: 8 }}>
                 {JSON.stringify(tempJson, null, 2)}
@@ -190,6 +187,7 @@ export const CsvExampleTableWithDropdowns = ({
     setData?: (v: unknown) => void
     setLoaddata?: (v: boolean) => void
 }) => {
+    const { t } = useTranslation("common")
     // CSV данные (пример)
     const [csvRows, setCsvRows] = useState<any[]>([])
     const [columns, setColumns] = useState<any[]>([])
@@ -224,11 +222,8 @@ export const CsvExampleTableWithDropdowns = ({
     return (
         <Box sx={{ mt: 1 }}>
             <Typography variant="h6" gutterBottom>
-                Пример CSV:
+                {t("widgets.newForecast.example_csv")}:
             </Typography>
-            <Box sx={{ background: "#f5f5f5", p: 1, mb: 2, borderRadius: 1 }}>
-                <pre style={{ margin: 0 }}>{csvText}</pre>
-            </Box>
             <Box
                 sx={{
                     height: 700,

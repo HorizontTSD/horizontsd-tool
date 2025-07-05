@@ -64,7 +64,7 @@ export const LanguageDropdown = ({ selectedLanguage, onChange, isVerySmall }: La
     }
 
     return (
-        <Box sx={{ zIndex: 1 }}>
+        <Box>
             <ButtonGroup
                 variant="contained"
                 ref={anchorRef}
@@ -114,13 +114,13 @@ export const LanguageDropdown = ({ selectedLanguage, onChange, isVerySmall }: La
             </ButtonGroup>
             <Popper
                 anchorEl={anchorRef.current}
-                disablePortal
                 open={open}
                 role={undefined}
                 sx={{
                     borderRadius: "var(--mui-shape-borderRadius)",
                     paddingTop: `7px`,
                     width: isVerySmall ? 60 : 100,
+                    zIndex: 1300,
                 }}
                 transition
             >

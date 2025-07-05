@@ -6,13 +6,13 @@ import List from "@mui/material/List"
 import ListItem from "@mui/material/ListItem"
 import ListItemButton from "@mui/material/ListItemButton"
 import ListItemText from "@mui/material/ListItemText"
-import IconButton from '@mui/material/IconButton';
+import IconButton from "@mui/material/IconButton"
 import Icon from "./Icon"
-import ArrowCircleLeftIcon from '@mui/icons-material/ArrowCircleLeft';
-import ArrowCircleRightIcon from '@mui/icons-material/ArrowCircleRight';
-import ScreenShareIcon from '@mui/icons-material/ScreenShare';
-import AccessAlarmIcon from '@mui/icons-material/AccessAlarm';
-import AddCircleIcon from '@mui/icons-material/AddCircle';
+import ArrowCircleLeftIcon from "@mui/icons-material/ArrowCircleLeft"
+import ArrowCircleRightIcon from "@mui/icons-material/ArrowCircleRight"
+import ScreenShareIcon from "@mui/icons-material/ScreenShare"
+import AccessAlarmIcon from "@mui/icons-material/AccessAlarm"
+import AddCircleIcon from "@mui/icons-material/AddCircle"
 
 import React, { useState } from "react"
 
@@ -26,7 +26,6 @@ interface Props {
     window?: () => Window
 }
 
-
 export const Sidebar = () => {
     const { t } = useTranslation()
     const { mode } = useColorScheme()
@@ -35,7 +34,6 @@ export const Sidebar = () => {
     const bg = bgPalette[~~!isDark]
 
     const [opened, setOpened] = useState(true)
-
 
     return (
         <Stack
@@ -49,7 +47,8 @@ export const Sidebar = () => {
                 borderRight: "1px solid",
                 borderColor: bg,
                 overflow: `hidden`,
-                padding: 0, margin: 0
+                padding: 0,
+                margin: 0,
             }}
         >
             <Stack
@@ -67,21 +66,20 @@ export const Sidebar = () => {
                     boxShadow: `none`,
                 }}
             >
-                {
-                    opened && <Icon color={bg} size={"s"} />
-                }
+                {opened && <Icon color={bg} size={"s"} />}
 
-                {
-                    opened && <Typography
+                {opened && (
+                    <Typography
                         variant="h5"
                         sx={{
                             marginLeft: `1rem`,
                             lineHeight: `1rem`,
                             marginBottom: `-3px`,
-                        }}>
+                        }}
+                    >
                         HorizonTSD
                     </Typography>
-                }
+                )}
 
                 <IconButton
                     size="small"
@@ -90,12 +88,8 @@ export const Sidebar = () => {
                         setOpened(!opened)
                     }}
                 >
-                    {
-                        opened
-                            ? <ArrowCircleLeftIcon />
-                            : <ArrowCircleRightIcon />
-                    }
-                </IconButton >
+                    {opened ? <ArrowCircleLeftIcon /> : <ArrowCircleRightIcon />}
+                </IconButton>
             </Stack>
             <Stack
                 direction={"column"}
@@ -108,11 +102,9 @@ export const Sidebar = () => {
                 }}
             >
                 <List sx={{ width: "100%" }}>
-                    <ListItem disablePadding >
+                    <ListItem disablePadding>
                         <ListItemButton component={Link} to="/" sx={{ padding: 1 }}>
-                            <IconButton
-                                size="small"
-                                color="secondary">
+                            <IconButton size="small" color="secondary">
                                 <ScreenShareIcon />
                             </IconButton>
                             {opened && <ListItemText primary={t("widgets.nav_bar.path.main")} />}
@@ -120,9 +112,7 @@ export const Sidebar = () => {
                     </ListItem>
                     <ListItem disablePadding>
                         <ListItemButton component={Link} to="/alert" sx={{ padding: 1 }}>
-                            <IconButton
-                                size="small"
-                                color="secondary">
+                            <IconButton size="small" color="secondary">
                                 <AccessAlarmIcon />
                             </IconButton>
                             {opened && <ListItemText primary={t("widgets.nav_bar.path.alerts")} />}
@@ -131,9 +121,7 @@ export const Sidebar = () => {
                     {opened && <Divider />}
                     <ListItem disablePadding>
                         <ListItemButton component={Link} to="/forecast" sx={{ padding: 1 }}>
-                            <IconButton
-                                size="small"
-                                color="secondary">
+                            <IconButton size="small" color="secondary">
                                 <AddCircleIcon />
                             </IconButton>
                             {opened && <ListItemText primary={t("widgets.nav_bar.path.forecast")} />}

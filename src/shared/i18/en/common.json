@@ -156,7 +156,12 @@
             "select_forecast_date_description": "Select forecast date",
             "send_button_description": "If everything is correct, press \"send\" button",
             "loading": "Loading...",
-            "error_generating_forecast": "Error generating forecast"
+            "error_generating_forecast": "Error generating forecast",
+            "example_csv": "Example CSV",
+            "example_json": "Example JSON",
+            "csv": "CSV",
+            "json": "JSON",
+            "xlsx": "XLSX"
         }
     }
 }
