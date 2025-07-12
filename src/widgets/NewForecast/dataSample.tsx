@@ -6,8 +6,8 @@ import { marked } from "marked"
 import temp from "@/shared/lib/data/temp.json"
 import { Stack } from "@mui/material"
 import { LoadCSV, LoadJSON, LoadXLSX } from "./fileLoader"
-import tempCsvRaw from "@/shared/lib/data/temp.csv?raw"
-import tempJson from "@/shared/lib/data/temp.json"
+import tempCsvRaw from "@/shared/lib/data/csvExample.csv?raw"
+import tempJson from "@/shared/lib/data/morocco_energy_data.json"
 import { DataGrid } from "@mui/x-data-grid"
 import { useTranslation } from "react-i18next"
 
@@ -103,7 +103,7 @@ export const CsvExamplePreview = ({ setData, setLoaddata }: ExamplePreviewProps)
     const [csvData, setCsvData] = useState<any[]>([])
     const [headers, setHeaders] = useState<string[]>([])
     useEffect(() => {
-        const lines = tempCsvRaw.split("\n").filter(Boolean).slice(0, 11) // 1 header + 10 строк
+        const lines = tempCsvRaw.split("\n").filter(Boolean) // Загружаем все строки
         const [header, ...rows] = lines
         const headersArr = header.split(",")
         setHeaders(headersArr)
@@ -170,7 +170,7 @@ function normalizeCsvData(data: any[]) {
     return data.map((row) => {
         const newRow: any = {}
         for (const key in row) {
-            if (key !== "time" && row[key] !== "" && row[key] !== null && !isNaN(row[key])) {
+            if (key !== "Datetime" && row[key] !== "" && row[key] !== null && !isNaN(row[key])) {
                 newRow[key] = Number(row[key])
             } else {
                 newRow[key] = row[key]
@@ -193,22 +193,17 @@ export const CsvExampleTableWithDropdowns = ({
     const [columns, setColumns] = useState<any[]>([])
     const [csvText, setCsvText] = useState("")
     useEffect(() => {
-        const lines = tempCsvRaw.split("\n").filter(Boolean).slice(0, 11)
+        const lines = tempCsvRaw.split("\n").filter(Boolean) // Загружаем все строки
         setCsvText(lines.join("\n"))
         const [header, ...rows] = lines
-        // Удаляем Unnamed: 0 из headersArr
-        const headersArr = header.split(",").filter((h) => h !== "Unnamed: 0")
+        const headersArr = header.split(",")
         setColumns(headersArr.map((key: string) => ({ field: key, headerName: key, flex: 1, minWidth: 120 })))
-        // Формируем массив объектов для передачи в setData (без id и без Unnamed: 0)
+        // Формируем массив объектов для передачи в setData
         const data = rows.map((row: string) => {
             const values = row.split(",")
             const obj: any = {}
-            let valueIdx = 0
-            header.split(",").forEach((h: string) => {
-                if (h !== "Unnamed: 0") {
-                    obj[h] = values[valueIdx]
-                }
-                valueIdx++
+            headersArr.forEach((h: string, i: number) => {
+                obj[h] = values[i]
             })
             return obj
         })
@@ -237,10 +232,12 @@ export const CsvExampleTableWithDropdowns = ({
                     rows={csvRows}
                     columns={columns}
                     density="compact"
-                    pageSizeOptions={[10]}
-                    initialState={{ pagination: { paginationModel: { pageSize: 10, page: 0 } } }}
+                    pageSizeOptions={[25, 50, 100, 200]}
+                    initialState={{ pagination: { paginationModel: { pageSize: 100, page: 0 } } }}
                     disableColumnResize
                     getRowClassName={getRowClassName}
+                    pagination
+                    paginationMode="client"
                 />
             </Box>
         </Box>
