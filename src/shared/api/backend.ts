@@ -146,7 +146,7 @@ const injectedRtkApi = api.injectEndpoints({
             FuncGenerateForecastBackendV1GenerateForecastPostApiArg
         >({
             query: (queryArg) => ({
-                url: `/backend/v1/generate_forecast`,
+                url: `/api/v1/predict-xgboost`,
                 method: "POST",
                 body: queryArg.predictRequest,
             }),

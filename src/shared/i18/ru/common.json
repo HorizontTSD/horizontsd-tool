@@ -156,7 +156,12 @@
             "select_forecast_date_description": "Выберите дату прогноза",
             "send_button_description": "Если все верно, нажмите кнопку \"отправить\"",
             "loading": "Загрузка...",
-            "error_generating_forecast": "Ошибка генерации прогноза"
+            "error_generating_forecast": "Ошибка генерации прогноза",
+            "example_csv": "Пример CSV",
+            "example_json": "Пример JSON",
+            "csv": "CSV",
+            "json": "JSON",
+            "xlsx": "XLSX"
         }
     }
 }

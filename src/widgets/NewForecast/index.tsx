@@ -6,7 +6,7 @@ import { DataTable } from "./dataTable"
 import { DateTimePicker } from "@mui/x-date-pickers/DateTimePicker"
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider"
 import { SelectDataSource } from "./dataSelect"
-import { useEffect, useState } from "react"
+import { useEffect, useState, useRef, useMemo } from "react"
 import * as React from "react"
 import Button from "@mui/material/Button"
 import CheckCircleIcon from "@mui/icons-material/CheckCircle"
@@ -16,14 +16,147 @@ import Step from "@mui/material/Step"
 import Stepper from "@mui/material/Stepper"
 import { useFuncGenerateForecastBackendV1GenerateForecastPostMutation } from "@/shared/api/backend"
 import { useFuncGeneratePossibleDateBackendV1GeneratePossibleDatePostMutation } from "@/shared/api/backend"
+import { Options } from "uplot"
+import uPlot from "uplot"
 
 import "./index.css"
 import "dayjs/locale/en-gb"
 import { useTranslation } from "react-i18next"
 import { ForecastGraphSkeleton } from "@/shared/ui/skeletons/ForecastGraphSkeleton"
+import { UPlotChart } from "@/shared/ui/uplot/UPlotChart"
 
 interface DataRow {
     [key: string]: string | number
+}
+
+// Новый компонент для отображения пользовательских данных без прогноза
+const UserDataChart = ({ data, XY }: { data: DataRow[]; XY: string[] }) => {
+    const { mode } = useColorScheme()
+    const isDark = mode === "dark"
+    const containerRef = useRef<HTMLDivElement>(null)
+    const [dimensions, setDimensions] = useState({ width: 0, height: 0 })
+    const plotRef = useRef<uPlot | null>(null)
+    const animFrame = useRef<number | null>(null)
+
+    // Подготовка данных для графика
+    const timeKey = XY[0]
+    const valueKey = XY[1]
+    if (!timeKey || !valueKey) return null
+
+    const toTS = (s: string | number): number => new Date(s).valueOf()
+    const xs = data.map((row) => toTS(row[timeKey]) / 1000)
+    const ys = data.map((row) => (typeof row[valueKey] === "number" ? row[valueKey] : Number(row[valueKey])))
+    const chart_data = [xs, ys]
+
+    // Create a function to generate options based on current mode
+    const getOptions = (width: number, height: number): Options => ({
+        title: `Визуализация ваших данных (${valueKey})`,
+        width,
+        height,
+        pxAlign: false,
+        scales: {
+            x: { time: true },
+            y: {}, // range: [from,to]
+        },
+        series: [{}, { label: valueKey, stroke: "#1976d2" }],
+        axes: [
+            {
+                label: "X Axis (Time)",
+                stroke: isDark ? `rgba(255, 255, 255, 1)` : `rgba(0, 0, 0, 1)`,
+                grid: {
+                    width: 1,
+                    stroke: isDark ? `rgba(255, 255, 255, 0.1)` : `rgba(0, 0, 0, 0.1)`,
+                },
+            },
+            {
+                side: 1,
+                label: "Y Axis (Amount)",
+                stroke: isDark ? `rgba(255, 255, 255, 1)` : `rgba(0, 0, 0, 1)`,
+                grid: {
+                    width: 1,
+                    stroke: isDark ? `rgba(255, 255, 255, 0.1)` : `rgba(0, 0, 0, 0.1)`,
+                },
+            },
+        ],
+        legend: {
+            markers: {
+                fill: () => "#1976d2",
+                stroke: "transparent",
+            },
+        },
+    })
+
+    // Memoize options to prevent unnecessary recalculations
+    const opts = useMemo(() => {
+        return getOptions(dimensions.width, dimensions.height)
+    }, [dimensions.width, dimensions.height, isDark])
+
+    // Resize handler
+    useEffect(() => {
+        const updateDimensions = () => {
+            if (!containerRef.current) return
+            const { clientWidth, clientHeight } = containerRef.current
+
+            // Only update state if dimensions actually changed
+            if (clientWidth !== dimensions.width || clientHeight !== dimensions.height) {
+                setDimensions({ width: clientWidth, height: clientHeight })
+            }
+        }
+
+        const handleResize = () => {
+            // Cancel any pending animation frame
+            if (animFrame.current !== null) {
+                cancelAnimationFrame(animFrame.current)
+            }
+
+            // Schedule new update
+            animFrame.current = requestAnimationFrame(updateDimensions)
+        }
+
+        const resizeObserver = new ResizeObserver(handleResize)
+        if (containerRef.current) {
+            resizeObserver.observe(containerRef.current)
+        }
+
+        return () => {
+            resizeObserver.disconnect()
+            if (animFrame.current !== null) {
+                cancelAnimationFrame(animFrame.current)
+            }
+        }
+    }, [dimensions.width, dimensions.height])
+
+    return (
+        <Stack sx={{ padding: `1rem`, minHeight: `100%`, overflow: `visible` }}>
+            <div
+                ref={containerRef}
+                style={{
+                    minWidth: "512px",
+                    height: "480px",
+                }}
+            >
+                {chart_data && (
+                    <UPlotChart
+                        data={chart_data}
+                        opts={opts}
+                        callback={(u: uPlot) => {
+                            plotRef.current = u
+                            // Set initial size
+                            if (containerRef.current) {
+                                u.setSize({
+                                    width: containerRef.current.clientWidth,
+                                    height: containerRef.current.clientHeight,
+                                })
+                            }
+                        }}
+                    />
+                )}
+            </div>
+            <Typography variant="caption" color="info.main" sx={{ mt: 1 }}>
+                Это ваши данные. После отправки появится прогноз.
+            </Typography>
+        </Stack>
+    )
 }
 
 const LoadData = ({
@@ -71,7 +204,9 @@ const LoadData = ({
     const { t } = useTranslation("common")
 
     const forecastData =
-        forecast && typeof forecast === "object" && "data" in forecast ? (forecast as any).data : undefined
+        forecast && typeof forecast === "object" && "data" in forecast
+            ? (forecast as Record<string, unknown>).data
+            : undefined
 
     // Проверка на наличие map_data
     const hasMapData = forecastData && typeof forecastData === "object" && "map_data" in forecastData
@@ -105,14 +240,14 @@ const LoadData = ({
                     </Typography>
                 )}
             </Stack>
-            {dataChartLoading || !hasMapData || !data ? (
+            {dataChartLoading ? (
                 <ForecastGraphSkeleton />
-            ) : (
+            ) : hasMapData && data ? (
                 <DataChart
                     dataChartLoading={dataChartLoading}
                     payload={{
                         data: {
-                            df: data.map((row: any) => {
+                            df: data.map((row: DataRow) => {
                                 const formattedRow: { [key: string]: string | number } = {}
                                 for (const key in row) {
                                     if (Object.prototype.hasOwnProperty.call(row, key)) {
@@ -136,6 +271,10 @@ const LoadData = ({
                         target_value: XY[1],
                     }}
                 />
+            ) : data && data.length > 0 && XY[0] && XY[1] ? (
+                <UserDataChart data={data} XY={XY} />
+            ) : (
+                <ForecastGraphSkeleton />
             )}
         </Stack>
     )
@@ -347,7 +486,7 @@ export const NewForecast = () => {
             setData(normalizeDataRows(args, timeColumn))
         } else if (args && typeof args === "object") {
             const firstKey = Object.keys(args)[0]
-            const value = args[firstKey]
+            const value = (args as Record<string, unknown>)[firstKey]
             if (Array.isArray(value)) {
                 setData(normalizeDataRows(value, timeColumn))
             } else {
