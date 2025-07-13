@@ -136,7 +136,7 @@ const injectedRtkApi = api.injectEndpoints({
             FuncGeneratePossibleDateBackendV1GeneratePossibleDatePostApiArg
         >({
             query: (queryArg) => ({
-                url: `/backend/v1/generate_possible_date`,
+                url: `/api/v1/possible_date`,
                 method: "POST",
                 body: queryArg.convertRequest,
             }),
@@ -301,6 +301,7 @@ export type PredictRequest = {
     time_column: string
     col_target: string
     forecast_horizon_time: string
+    lag_search_depth?: number
 }
 export const {
     useGetConceptsBackendV1AnalyticsdfsPostMutation,

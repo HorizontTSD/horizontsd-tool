@@ -242,37 +242,30 @@ export const DataChart = ({ payload, dataChartLoading }: ForecastPureGraphProps)
 
     //
 
-    let { last_real_data, predictions } = forecast_data
-    // Данные теперь приходят в формате JSON, не нужно парсить
-    const real_data = [...last_real_data].reverse()
-    const prediction_lstm = [...predictions].reverse()
-
-    const toTS = (s: any) => new Date(s[target_time]).valueOf()
-
-    let min_ts = toTS(real_data[0])
-    let max_ts = toTS(real_data[0])
-
-    const max_timeline_length = real_data.length + prediction_lstm.length
-
-    for (let i = 0; i < real_data.length; i++) {
-        min_ts = Math.min(min_ts, toTS(real_data[i]))
-        max_ts = Math.max(max_ts, toTS(real_data[i]))
-    }
-    for (let i = 0; i < prediction_lstm.length; i++) {
-        min_ts = Math.min(min_ts, toTS(prediction_lstm[i]))
-        max_ts = Math.max(max_ts, toTS(prediction_lstm[i]))
+    // Универсальный источник данных для графика
+    let chartData: any[] = []
+    if (forecast && forecast.map_data && forecast.map_data.data && Array.isArray(forecast.map_data.data.predictions)) {
+        chartData = forecast.map_data.data.predictions
+    } else if (forecast_data && Array.isArray(forecast_data)) {
+        chartData = forecast_data
     }
 
-    const timestep_size = Math.floor((max_ts - min_ts) / max_timeline_length)
+    const toTS = (s: any) => {
+        if (!s || !(s.Datetime || s[target_time])) return NaN
+        return new Date(s.Datetime || s[target_time]).valueOf()
+    }
+
+    let min_ts = chartData.length > 0 ? toTS(chartData[0]) : 0
+    let max_ts = chartData.length > 0 ? toTS(chartData[0]) : 0
+    for (let i = 0; i < chartData.length; i++) {
+        min_ts = Math.min(min_ts, toTS(chartData[i]))
+        max_ts = Math.max(max_ts, toTS(chartData[i]))
+    }
+    const max_timeline_length = chartData.length
+    const timestep_size = max_timeline_length > 1 ? Math.floor((max_ts - min_ts) / (max_timeline_length - 1)) : 0
     const xs = Array.from({ length: max_timeline_length }, (v, i) => (min_ts + timestep_size * i) / plugin_refresh_rate)
-
-    const load_consumption = [null, ...real_data].map((e) => (e && target_value in e ? e[target_value] : null))
-
-    const chart_data = [
-        xs,
-        load_consumption,
-        populate({ offset: xs.length - prediction_lstm.length }).concat(prediction_lstm.map((e) => e[target_value])),
-    ]
+    const ys = chartData.map((e) => (e && target_value in e ? e[target_value] : null))
+    const chart_data = [xs, ys]
 
     // Create a function to generate options based on current mode
     const getOptions = (width: number, height: number): Options => ({
