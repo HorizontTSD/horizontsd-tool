@@ -24,6 +24,7 @@ import "dayjs/locale/en-gb"
 import { useTranslation } from "react-i18next"
 import { ForecastGraphSkeleton } from "@/shared/ui/skeletons/ForecastGraphSkeleton"
 import { UPlotChart } from "@/shared/ui/uplot/UPlotChart"
+import CircularProgress from "@mui/material/CircularProgress"
 
 interface DataRow {
     [key: string]: string | number
@@ -325,7 +326,8 @@ export const NewForecast = () => {
     const [completed, setCompleted] = React.useState<{
         [k: number]: boolean
     }>({})
-    const [generatePossibleDate] = useFuncGeneratePossibleDateBackendV1GeneratePossibleDatePostMutation()
+    const [generatePossibleDate, { isLoading: isPossibleDateLoading, error: possibleDateError }] =
+        useFuncGeneratePossibleDateBackendV1GeneratePossibleDatePostMutation()
     const [dateLimits, setDateLimits] = useState<{ min: string; max: string } | null>(null)
     const [minForecastHorizon, setMinForecastHorizon] = useState<string | null>(null)
 
@@ -347,6 +349,7 @@ export const NewForecast = () => {
                     forecast_horizon_time: forecast_horizon_time
                         ? dayjs(forecast_horizon_time).toISOString().replace(`T`, ` `).replace(`.000Z`, ``)
                         : "",
+                    lag_search_depth: 1,
                 },
             })
                 .unwrap()
@@ -436,7 +439,12 @@ export const NewForecast = () => {
     const steps_requrements = [
         [selected_data != null, load_data == true || selected_data == "Example" || selected_data == "ExampleCSV"],
         [selected_axis.every((value) => value.length !== 0)],
-        [selected_data != null, selected_axis.every((value) => value.length !== 0)],
+        [
+            selected_data != null,
+            selected_axis.every((value) => value.length !== 0),
+            dateLimits !== null,
+            !possibleDateError,
+        ],
     ]
 
     const steps_description = [
@@ -604,11 +612,24 @@ export const NewForecast = () => {
                                                 completedSteps() < totalSteps() - 1 ? handleComplete : handleComplete
                                             }
                                             variant="contained"
-                                            disabled={steps_requrements[activeStep].some((value) => value == false)}
+                                            disabled={
+                                                steps_requrements[activeStep].some((value) => value == false) ||
+                                                isPossibleDateLoading
+                                            }
+                                            sx={{
+                                                minWidth: 180,
+                                                display: "flex",
+                                                alignItems: "center",
+                                                justifyContent: "center",
+                                            }}
                                         >
-                                            {completedSteps() < totalSteps() - 1
-                                                ? t("widgets.newForecast.complete_step_button")
-                                                : t("widgets.newForecast.send_button")}
+                                            {isPossibleDateLoading ? (
+                                                <CircularProgress size={24} color="inherit" />
+                                            ) : completedSteps() < totalSteps() - 1 ? (
+                                                t("widgets.newForecast.complete_step_button")
+                                            ) : (
+                                                t("widgets.newForecast.send_button")
+                                            )}
                                         </Button>
                                     ))}
                             </Box>
