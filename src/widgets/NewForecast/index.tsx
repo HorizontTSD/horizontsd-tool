@@ -235,11 +235,6 @@ const LoadData = ({
                         }}
                     />
                 </LocalizationProvider>
-                {minForecastHorizon && (
-                    <Typography variant="caption" color="info.main">
-                        {t("widgets.newForecast.min_forecast_horizon_time")}: {minForecastHorizon}
-                    </Typography>
-                )}
             </Stack>
             {dataChartLoading ? (
                 <ForecastGraphSkeleton />
