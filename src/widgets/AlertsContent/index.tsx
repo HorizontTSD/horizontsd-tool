@@ -1,14 +1,12 @@
-import * as React from "react"
+import React from "react"
 import OutlinedInput from "@mui/material/OutlinedInput"
-import InputLabel from "@mui/material/InputLabel"
 import FormControl from "@mui/material/FormControl"
 import ListItemText from "@mui/material/ListItemText"
 import Select, { SelectChangeEvent } from "@mui/material/Select"
 import Checkbox from "@mui/material/Checkbox"
-
 import { Box, Stack, Typography, TextField, MenuItem, InputAdornment, Button } from "@mui/material"
 import SearchIcon from "@mui/icons-material/Search"
-import { useState, useEffect, useRef } from "react"
+import { useState, useEffect } from "react"
 import { useColorScheme, useTheme } from "@mui/material/styles"
 import {
     useFuncGetForecastDataBackendV1GetForecastDataPostMutation,
@@ -37,15 +35,24 @@ const MenuProps = {
     },
 }
 
-function MultipleSelectCheckmarks({ list, selected, onSelect, disabled, width = 200 }) {
-    const handleChange = (event: SelectChangeEvent) => {
-        const {
-            target: { value },
-        } = event
-        onSelect(value)
+interface MultipleSelectCheckmarksProps {
+    list: string[]
+    selected: string[]
+    onSelect: (selected: string[]) => void
+    disabled?: boolean
+    width?: number
+}
+const MultipleSelectCheckmarks: React.FC<MultipleSelectCheckmarksProps> = ({
+    list,
+    selected,
+    onSelect,
+    width = 200,
+}) => {
+    const handleChange = (event: SelectChangeEvent<string[]>) => {
+        onSelect(event.target.value as string[])
     }
 
-    const { mode, setMode } = useColorScheme()
+    const { mode } = useColorScheme()
     const isDark = mode === "dark"
     const bgPalette = ["var(--mui-palette-secondary-light)", "var(--mui-palette-primary-dark)"]
     const bg = bgPalette[~~isDark]
@@ -59,7 +66,7 @@ function MultipleSelectCheckmarks({ list, selected, onSelect, disabled, width = 
                     value={selected}
                     onChange={handleChange}
                     input={<OutlinedInput />}
-                    renderValue={(selected) => selected.join(", ")}
+                    renderValue={(selected) => (selected as string[]).join(", ")}
                     MenuProps={MenuProps}
                     sx={{
                         height: `2rem`,
@@ -79,7 +86,16 @@ function MultipleSelectCheckmarks({ list, selected, onSelect, disabled, width = 
     )
 }
 
-const SensorAndModelSelection = ({
+interface SensorAndModelSelectionProps {
+    sensors: string[]
+    selectedSensors: string[]
+    handleSensorChange: (sensors: string[]) => void
+    sensorsLoading: boolean
+    availableModels: string[]
+    selectedModels: string[]
+    handleModelChange: (models: string[]) => void
+}
+const SensorAndModelSelection: React.FC<SensorAndModelSelectionProps> = ({
     sensors,
     selectedSensors,
     handleSensorChange,
@@ -126,6 +142,18 @@ const Header = () => {
     )
 }
 
+interface FiltersBarProps {
+    availableModels: string[]
+    handleModelChange: (models: string[]) => void
+    handleSensorChange: (sensors: string[]) => void
+    selectedModels: string[]
+    selectedSensors: string[]
+    sensors: string[]
+    sensorsLoading: boolean
+    search: string
+    setSearch: (s: string) => void
+    setOpenCreate: (open: boolean) => void
+}
 const FiltersBar = ({
     availableModels,
     handleModelChange,
@@ -137,9 +165,9 @@ const FiltersBar = ({
     search,
     setSearch,
     setOpenCreate,
-}) => {
+}: FiltersBarProps) => {
     const theme = useTheme()
-    const { mode, setMode } = useColorScheme()
+    const { mode } = useColorScheme()
     const isDark = mode === "dark"
     const bgPalette = ["var(--mui-palette-secondary-main)", "var(--mui-palette-primary-main)"]
     const bg = bgPalette[~~isDark]
@@ -250,14 +278,22 @@ const FiltersBar = ({
     )
 }
 
-const AlertBlocks = ({
+interface AlertBlocksProps {
+    filteredAlerts: { alert: unknown; file_name: string }[]
+    expandedIdx: number | null
+    setExpandedIdx: (idx: number | null) => void
+    setSelectedAlert: (alert: unknown) => void
+    setOpenEdit: (open: boolean) => void
+    handleDeleteAlert: (fileName: string) => void
+}
+const AlertBlocks: React.FC<AlertBlocksProps> = ({
     filteredAlerts,
     expandedIdx,
     setExpandedIdx,
     setSelectedAlert,
     setOpenEdit,
     handleDeleteAlert,
-}) => {
+}: AlertBlocksProps) => {
     return (
         <Stack
             style={{
@@ -267,11 +303,20 @@ const AlertBlocks = ({
             }}
         >
             <Box sx={{ margin: `1rem  1rem 0 1rem` }}>
-                {filteredAlerts.map(({ alert, file_name }: { [key: string]: any }, idx: number) => (
+                {(filteredAlerts as { alert: Alert; file_name: string }[]).map(({ alert, file_name }, idx) => (
                     <AlertBlock
                         key={idx}
-                        {...alert}
-                        state="normal"
+                        name={alert.name}
+                        threshold={alert.threshold_value}
+                        scheme={alert.alert_scheme}
+                        trigger_frequency={alert.trigger_frequency}
+                        message={alert.message}
+                        notifications={{ email: alert.email_addresses, telegram: alert.telegram_nicknames }}
+                        include_graph={alert.include_graph}
+                        time_interval={{ start_date: alert.date_start, end_date: alert.date_end }}
+                        start_warning_interval={alert.start_warning_interval}
+                        sensor_id={alert.sensor_id}
+                        model={alert.model}
                         expanded={expandedIdx === idx}
                         onToggle={() => setExpandedIdx(expandedIdx === idx ? null : idx)}
                         onEdit={() => {
@@ -289,17 +334,11 @@ const AlertBlocks = ({
 export const AlertsContent = () => {
     const { t } = useTranslation()
     // Data fetching hooks
-    const {
-        data: sensors,
-        isLoading: sensorsLoading,
-        error: sensorsError,
-    } = useFuncGetSensorIdListBackendV1GetSensorIdListGetQuery()
-    const [triggerForecast, { data: forecastData, isLoading: forecastLoading, error: forecastError }] =
-        useFuncGetForecastDataBackendV1GetForecastDataPostMutation()
+    const { data: sensors, isLoading: sensorsLoading } = useFuncGetSensorIdListBackendV1GetSensorIdListGetQuery()
+    const [triggerForecast, { data: forecastData }] = useFuncGetForecastDataBackendV1GetForecastDataPostMutation()
     const {
         data: alertsData,
         isLoading: isLoadingAlerts,
-        error: alertsError,
         refetch: refetchAlerts,
     } = useListAlertConfigsAlertManagerV1ListGetQuery()
     const alerts = alertsData?.yaml_files || []
@@ -324,7 +363,7 @@ export const AlertsContent = () => {
     // Initialize sensor selection
     useEffect(() => {
         if (sensors?.[0] && !selectedSensors) {
-            setSelectedSensors(sensors)
+            setSelectedSensors(Array.isArray(sensors) ? sensors.filter((s): s is string => typeof s === "string") : [])
         }
     }, [sensors, selectedSensors])
 
@@ -332,7 +371,17 @@ export const AlertsContent = () => {
     useEffect(() => {
         if (forecastData && forecastData.length > 0 && !selectedModels) {
             const availableModels = Array.from(
-                new Set(forecastData.map((e) => Object.keys(e[Object.keys(e)]["metrix_tables"])).flat())
+                new Set(
+                    forecastData
+                        .map((e: unknown) => {
+                            const obj = e as Record<string, unknown>
+                            const firstKey = Object.keys(obj)[0]
+                            const metrixTables = (obj[firstKey] as { metrix_tables?: Record<string, unknown> })
+                                ?.metrix_tables
+                            return Object.keys(metrixTables || {})
+                        })
+                        .flat()
+                )
             ) as string[]
             if (availableModels.length > 0) {
                 setSelectedModels(availableModels)
@@ -353,29 +402,40 @@ export const AlertsContent = () => {
     //
     const availableModels =
         forecastData && forecastData.length > 0
-            ? Array.from(new Set(forecastData.map((e) => Object.keys(e[Object.keys(e)]["metrix_tables"])).flat()))
+            ? Array.from(
+                  new Set(
+                      forecastData
+                          .map((e: unknown) => {
+                              const obj = e as Record<string, unknown>
+                              const firstKey = Object.keys(obj)[0]
+                              const metrixTables = (obj[firstKey] as { metrix_tables?: Record<string, unknown> })
+                                  ?.metrix_tables
+                              return Object.keys(metrixTables || {})
+                          })
+                          .flat()
+                  )
+              )
             : []
 
     const filteredAlerts = alerts
         // by sensor & model
-        .filter(({ alert }) => {
+        .filter(({ alert }: { alert: { sensor_id: string; model: string } }) => {
             const { sensor_id, model } = alert
-            if (selectedSensors.length == 0 && selectedModels.length == 0) {
+            if (selectedSensors.length === 0 && selectedModels.length === 0) {
                 return true
             }
-            if (selectedSensors.length != 0 && selectedModels.length == 0) {
+            if (selectedSensors.length !== 0 && selectedModels.length === 0) {
                 return selectedSensors.includes(sensor_id)
             }
-            if (selectedSensors.length == 0 && selectedModels.length != 0) {
+            if (selectedSensors.length === 0 && selectedModels.length !== 0) {
                 return selectedModels.includes(model)
             }
-
             return selectedModels.includes(model) && selectedSensors.includes(sensor_id)
         })
         // by name
-        .filter(({ alert }) => {
+        .filter(({ alert }: { alert: { name: string; message: string } }) => {
             const { name, message } = alert
-            if (search.length != 0)
+            if (search.length !== 0)
                 return (
                     name.toLowerCase().includes(search.toLowerCase()) ||
                     message.toLowerCase().includes(search.toLowerCase())
@@ -390,7 +450,6 @@ export const AlertsContent = () => {
     const [openCreate, setOpenCreate] = useState(false)
     const [openEdit, setOpenEdit] = useState(false)
     const [selectedAlert, setSelectedAlert] = useState<Alert | null>(null)
-    const [loading, setLoading] = useState(false)
     const [expandedIdx, setExpandedIdx] = useState<number | null>(null)
 
     const [createAlertMutation] = useCreateAlertEndpointAlertManagerV1CreatePostMutation()
@@ -444,7 +503,7 @@ export const AlertsContent = () => {
             <Header />
             {/* Filters bar */}
             <FiltersBar
-                availableModels={availableModels}
+                availableModels={availableModels as string[]}
                 handleModelChange={handleModelChange}
                 handleSensorChange={handleSensorChange}
                 selectedModels={selectedModels}
@@ -465,7 +524,7 @@ export const AlertsContent = () => {
                     filteredAlerts={filteredAlerts}
                     expandedIdx={expandedIdx}
                     setExpandedIdx={setExpandedIdx}
-                    setSelectedAlert={setSelectedAlert}
+                    setSelectedAlert={setSelectedAlert as (alert: unknown) => void}
                     setOpenEdit={setOpenEdit}
                     handleDeleteAlert={handleDeleteAlert}
                 />

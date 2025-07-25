@@ -1,28 +1,32 @@
 import React, { useEffect, useState, useMemo } from "react"
 import { LoadForecastPureGraph } from "@/widgets/LoadForecastGraphBlock/LoadForecastPureGraph"
-import {
-    useFuncGetForecastDataBackendV1GetForecastDataPostMutation,
-    useFuncGetSensorIdListBackendV1GetSensorIdListGetQuery,
-} from "@/shared/api/model_fast_api"
+import { useFuncGetForecastDataBackendV1GetForecastDataPostMutation } from "@/shared/api/model_fast_api"
 
 interface ForecastGraphPanelProps {
     selectedSensor: string | null
 }
 
+type ForecastData = Record<string, unknown>
+
 export const ForecastGraphPanel: React.FC<ForecastGraphPanelProps> = ({ selectedSensor }) => {
     const [triggerForecast] = useFuncGetForecastDataBackendV1GetForecastDataPostMutation()
-    const [dataCache, setDataCache] = useState<Record<string, any>>({})
-    const [loading, setLoading] = useState(false)
+    const [dataCache, setDataCache] = useState<Record<string, ForecastData>>({})
+    const [loading, setLoading] = useState<boolean>(false)
     const [error, setError] = useState<string | null>(null)
-    const [currentData, setCurrentData] = useState<any>(null)
+    const [currentData, setCurrentData] = useState<ForecastData | null>(null)
 
     useEffect(() => {
         if (!selectedSensor || dataCache[selectedSensor]) return
         setLoading(true)
         setError(null)
         triggerForecast({ forecastData: { sensor_ids: [selectedSensor] } })
-            .then((res: any) => {
-                setDataCache((prev) => ({ ...prev, [selectedSensor]: res?.data?.[0]?.[selectedSensor] }))
+            .then((res: unknown) => {
+                const result = res as { data?: unknown[] }
+                setDataCache((prev) => ({
+                    ...prev,
+                    [selectedSensor]:
+                        ((result?.data?.[0] as ForecastData)?.[selectedSensor] as ForecastData) ?? ({} as ForecastData),
+                }))
             })
             .catch(() => setError("Error loading graph"))
             .finally(() => setLoading(false))
