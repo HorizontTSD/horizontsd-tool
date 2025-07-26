@@ -68,7 +68,17 @@ export const WeatherStatCard = () => {
                 >
                     <Stack direction="column" sx={{ padding: `1rem` }}>
                         <Typography variant="h6" gutterBottom>
-                            {stat.title["en"]}
+                            {t(
+                                stat.title["en"] === "Temperature"
+                                    ? "widgets.weatherStatCard.title_temperature"
+                                    : stat.title["en"] === "Wind speed"
+                                      ? "widgets.weatherStatCard.title_wind_speed"
+                                      : stat.title["en"] === "Humidity"
+                                        ? "widgets.weatherStatCard.title_humidity"
+                                        : stat.title["en"] === "Pressure"
+                                          ? "widgets.weatherStatCard.title_pressure"
+                                          : stat.title["en"]
+                            )}
                         </Typography>
                         <Stack direction="row" justifyContent="space-between" alignItems="center">
                             <Typography variant="h4">{stat.values}</Typography>
@@ -80,7 +90,11 @@ export const WeatherStatCard = () => {
                             />
                         </Stack>
                         <Typography variant="caption" sx={{ color: "text.secondary" }}>
-                            {stat.description["en"]}
+                            {t(
+                                stat.description["en"] === "The last 24 hours"
+                                    ? "widgets.weatherStatCard.description_last_24h"
+                                    : stat.description["en"]
+                            )}
                         </Typography>
                         <SparkLineChart
                             color={colors[stat.percentages.mark]}

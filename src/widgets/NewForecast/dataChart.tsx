@@ -3,15 +3,12 @@ import { UPlotChart } from "@/shared/ui/uplot/UPlotChart"
 import { Stack, useColorScheme } from "@mui/material"
 import { createPopper } from "@popperjs/core"
 import { Options } from "uplot"
-import uPlot from "uplot"
+import uPlot, { Series } from "uplot"
 import "@/widgets/LoadForecastGraphBlock/LoadForecastPureGraph/theme.css"
 
-function tooltipPlugin(opts = {}) {
+function tooltipPlugin(opts: { series: Series[] }) {
     let overlay: HTMLElement
-    // eslint-disable-next-line
-    let popperInstance: any
-    // eslint-disable-next-line
-    let uPlotInstance: any
+    let popperInstance: unknown
 
     // Create tooltip element
     overlay = document.createElement("div")
@@ -31,26 +28,19 @@ function tooltipPlugin(opts = {}) {
 
     return {
         hooks: {
-            init: (u) => {
-                uPlotInstance = u
-
-                // Show/hide tooltip on mouse enter/leave
+            init: (u: uPlot) => {
                 u.over.addEventListener("mouseenter", () => {
                     overlay.style.display = "block"
                 })
-
                 u.over.addEventListener("mouseleave", () => {
                     overlay.style.display = "none"
                 })
             },
-
-            setCursor: (u) => {
+            setCursor: (u: uPlot) => {
                 const { left, top, idx } = u.cursor
                 if (idx == null) return
-
-                // Update tooltip content
-                overlay.innerHTML = ``
-                u.data.slice(1).forEach((e, i) => {
+                overlay.innerHTML = ""
+                u.data.slice(1).forEach((e: unknown, i: number) => {
                     const val = document.createElement("div")
                     val.style.display = `flex`
                     val.style.flexDirection = `row`
@@ -67,37 +57,34 @@ function tooltipPlugin(opts = {}) {
                     text.style.textTransform = `uppercase`
                     label.style.width = `10px`
                     label.style.height = `10px`
-                    label.style.background = opts.series.slice(1)[i].stroke
+                    label.style.background = opts.series.slice(1)[i].stroke as string
                     val.append(label)
                     val.append(text)
                     val.append(value)
-
                     text.innerHTML = `${u.series.slice(1)[i].label}:`
+                    // @ts-expect-error: e is array of y values
                     value.innerHTML = e[idx] || "none"
                     overlay.append(val)
                 })
-
-                // Create a virtual anchor element at cursor position
                 const virtualAnchor = {
-                    getBoundingClientRect: () => {
+                    getBoundingClientRect: (): DOMRect => {
                         const rect = u.over.getBoundingClientRect()
                         return {
                             width: 0,
                             height: 0,
-                            top: rect.top + top,
-                            right: rect.left + left,
-                            bottom: rect.top + top,
-                            left: rect.left + left,
-                            x: rect.left + left,
-                            y: rect.top + top,
-                        }
+                            top: rect.top + (top ?? 0),
+                            right: rect.left + (left ?? 0),
+                            bottom: rect.top + (top ?? 0),
+                            left: rect.left + (left ?? 0),
+                            x: rect.left + (left ?? 0),
+                            y: rect.top + (top ?? 0),
+                            toJSON: () => ({}),
+                        } as DOMRect
                     },
                     contextElement: u.over,
                 }
-
-                // Initialize or update Popper
                 if (!popperInstance) {
-                    popperInstance = createPopper(virtualAnchor, overlay, {
+                    popperInstance = createPopper(virtualAnchor as unknown, overlay, {
                         placement: "right-start",
                         modifiers: [
                             {
@@ -122,59 +109,21 @@ function tooltipPlugin(opts = {}) {
                         ],
                     })
                 } else {
+                    // @ts-expect-error: popperInstance is unknown
                     popperInstance.state.elements.reference = virtualAnchor
+                    // @ts-expect-error: popperInstance is unknown
                     popperInstance.update()
                 }
             },
-
             destroy: () => {
                 if (popperInstance) {
+                    // @ts-expect-error: popperInstance is unknown
                     popperInstance.destroy()
                 }
                 overlay.remove()
             },
         },
     }
-}
-
-function clamp(num: number, min: number, max: number) {
-    return Math.min(Math.max(num, min), max)
-}
-
-function populate({ point, amount, offset }: { [key: string]: number }) {
-    let result = []
-    if (offset > 0) {
-        for (let i = 0; i < offset; i++) {
-            result.push(null)
-        }
-    }
-    if (point !== null && amount > 0) {
-        let amp = [point, point]
-        // eslint-disable-next-line
-        const gen_val = (v, i = 1) => {
-            const func = [Math.random, Math.log1p, Math.cosh, Math.tan, Math.cos, Math.asin][~~(Math.random() * 5)]
-
-            return clamp(func(v), amp[0], amp[1])
-        }
-
-        if (offset > 0) {
-            result.push(point)
-            amount--
-        }
-
-        if (result.length == 0) {
-            result.push(gen_val(point))
-            amount--
-        }
-
-        for (let i = 0; i < amount; i++) {
-            amp[0] -= 0.6
-            amp[1] += 0.6
-            result.push(gen_val(result[result.length - 1]))
-        }
-    }
-
-    return result
 }
 
 interface ForecastPureGraphProps {
@@ -208,18 +157,10 @@ interface ForecastPureGraphProps {
         target_time: string
         target_value: string
     }
-    dataChartLoading: boolean
 }
 
-export const DataChart = ({ payload, dataChartLoading }: ForecastPureGraphProps) => {
-    const {
-        forecast,
-        // data,
-        target_time,
-        target_value,
-    } = payload
-    const { map_data } = forecast
-    const { data: forecast_data } = map_data
+export const DataChart = ({ payload }: ForecastPureGraphProps) => {
+    const { forecast, target_time, target_value } = payload
 
     // TODO: decrease rerenders
     // console.log(`update`)
@@ -231,41 +172,37 @@ export const DataChart = ({ payload, dataChartLoading }: ForecastPureGraphProps)
     const plotRef = useRef<uPlot | null>(null)
     const animFrame = useRef<number | null>(null)
     //
-    const series_data = Object.entries(map_data?.legend || {}).slice(1)
 
-    // global setup
-    const total_hours = 24
-    const past_offset = Math.floor(total_hours / 2)
-    // eslint-disable-next-line
-    const now_offset = total_hours - past_offset
-    const plugin_refresh_rate = 1000 // 1000ms
+    // --- Новый способ: история и прогноз как две отдельные линии ---
+    // История берём из payload.data.df, прогноз — из forecast.map_data.data.predictions
+    const history = payload.data?.df || []
+    const predictions = forecast.map_data.data?.predictions || []
 
-    //
-
-    // Универсальный источник данных для графика
-    let chartData: any[] = []
-    if (forecast && forecast.map_data && forecast.map_data.data && Array.isArray(forecast.map_data.data.predictions)) {
-        chartData = forecast.map_data.data.predictions
-    } else if (forecast_data && Array.isArray(forecast_data)) {
-        chartData = forecast_data
+    const toTS = (s: unknown) => {
+        if (!s || typeof s !== "object") return NaN
+        const obj = s as Record<string, unknown>
+        // @ts-expect-error: dynamic access
+        return new Date(obj.Datetime || obj[target_time]).valueOf()
     }
+    const xsHistory = history.map(toTS)
+    const ysHistory = history.map((e: unknown) => (e as Record<string, unknown>)[target_value] ?? null)
+    const xsForecast = predictions.map(toTS)
+    const ysForecast = predictions.map((e: unknown) => (e as Record<string, unknown>)[target_value] ?? null)
 
-    const toTS = (s: any) => {
-        if (!s || !(s.Datetime || s[target_time])) return NaN
-        return new Date(s.Datetime || s[target_time]).valueOf()
+    let chart_data: any[]
+    let series: any[]
+    if (predictions.length === 0) {
+        // Только история
+        chart_data = [xsHistory, ysHistory]
+        series = [{}, { label: "История", stroke: "#1976d2" }]
+    } else {
+        // История + прогноз
+        const xs = [...xsHistory, ...xsForecast]
+        const ys1 = [...ysHistory, ...Array(xsForecast.length).fill(null)]
+        const ys2 = [...Array(xsHistory.length).fill(null), ...ysForecast]
+        chart_data = [xs, ys1, ys2]
+        series = [{}, { label: "История", stroke: "#1976d2" }, { label: "Прогноз", stroke: "#ff9800" }]
     }
-
-    let min_ts = chartData.length > 0 ? toTS(chartData[0]) : 0
-    let max_ts = chartData.length > 0 ? toTS(chartData[0]) : 0
-    for (let i = 0; i < chartData.length; i++) {
-        min_ts = Math.min(min_ts, toTS(chartData[i]))
-        max_ts = Math.max(max_ts, toTS(chartData[i]))
-    }
-    const max_timeline_length = chartData.length
-    const timestep_size = max_timeline_length > 1 ? Math.floor((max_ts - min_ts) / (max_timeline_length - 1)) : 0
-    const xs = Array.from({ length: max_timeline_length }, (v, i) => (min_ts + timestep_size * i) / plugin_refresh_rate)
-    const ys = chartData.map((e) => (e && target_value in e ? e[target_value] : null))
-    const chart_data = [xs, ys]
 
     // Create a function to generate options based on current mode
     const getOptions = (width: number, height: number): Options => ({
@@ -277,14 +214,7 @@ export const DataChart = ({ payload, dataChartLoading }: ForecastPureGraphProps)
             x: { time: true },
             y: {}, // range: [from,to]
         },
-        series: [
-            {},
-            ...series_data.map(([key, value]) => ({
-                label: key,
-                // eslint-disable-next-line
-                stroke: (value as any).color,
-            })),
-        ],
+        series,
         axes: [
             {
                 label: "X Axis (Time)",
@@ -306,7 +236,10 @@ export const DataChart = ({ payload, dataChartLoading }: ForecastPureGraphProps)
         ],
         legend: {
             markers: {
-                fill: (u, seriesIdx) => u.series[seriesIdx].stroke(u, seriesIdx),
+                fill: (u: any, seriesIdx: number) => {
+                    const stroke = u.series[seriesIdx].stroke
+                    return typeof stroke === "function" ? stroke(u, seriesIdx) : stroke || "#1976d2"
+                },
                 stroke: "transparent",
             },
         },
@@ -374,7 +307,7 @@ export const DataChart = ({ payload, dataChartLoading }: ForecastPureGraphProps)
                         opts={opts}
                         plugins={[
                             // box_whisker__legendAsTooltipPlugin()
-                            tooltipPlugin(opts),
+                            tooltipPlugin({ series } as unknown),
                         ]}
                         callback={(u: uPlot) => {
                             plotRef.current = u

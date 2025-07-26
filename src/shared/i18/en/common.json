@@ -15,8 +15,11 @@
         "weatherStatCard": {
             "loading": "Loading...",
             "error_loading_charts_data": "Error loading charts data",
-            "title": "",
-            "description": "",
+            "title_temperature": "Temperature",
+            "title_wind_speed": "Wind speed",
+            "title_humidity": "Humidity",
+            "title_pressure": "Pressure",
+            "description_last_24h": "The last 24 hours",
             "trend_positive": "↑",
             "trend_negative": "↓"
         },

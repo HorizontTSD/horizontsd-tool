@@ -2,9 +2,11 @@ import React from "react"
 import { Box, Stack, Typography, OutlinedInput, Select, MenuItem, InputAdornment, Button } from "@mui/material"
 import { CreateAlertFormValues } from "./types"
 
+type OnChange = <K extends keyof CreateAlertFormValues>(field: K, value: CreateAlertFormValues[K]) => void
+
 interface CreateAlertFormProps {
     values: CreateAlertFormValues
-    onChange: (field: keyof CreateAlertFormValues, value: any) => void
+    onChange: OnChange
     onSubmit: () => void
     onReset: () => void
     sensorsList: string[]
@@ -30,8 +32,8 @@ export const CreateAlertForm: React.FC<CreateAlertFormProps> = ({
                         Create alert
                     </Typography>
                     <Select
-                        value={values.selectedSensor || ""}
-                        onChange={(e) => onChange("selectedSensor", e.target.value)}
+                        value={values.sensor_id || ""}
+                        onChange={(e) => onChange("sensor_id", e.target.value)}
                         size="small"
                         sx={{ height: 30, background: "white", borderRadius: 2 }}
                         fullWidth
@@ -46,7 +48,12 @@ export const CreateAlertForm: React.FC<CreateAlertFormProps> = ({
                         fullWidth
                         value={values.atValue}
                         onChange={(e) => onChange("atValue", Number(e.target.value))}
-                        sx={{ background: "white", color: "black",  borderRadius: `var(--mui-shape-borderRadius)`, height: 30 }}
+                        sx={{
+                            background: "white",
+                            color: "black",
+                            borderRadius: `var(--mui-shape-borderRadius)`,
+                            height: 30,
+                        }}
                         size="small"
                         placeholder="At value"
                     />
@@ -55,7 +62,13 @@ export const CreateAlertForm: React.FC<CreateAlertFormProps> = ({
                             fullWidth
                             value={values.betweenValue1}
                             onChange={(e) => onChange("betweenValue1", Number(e.target.value))}
-                            sx={{ background: "white", color: "black",  borderRadius: `var(--mui-shape-borderRadius)`, height: 30, width: 80 }}
+                            sx={{
+                                background: "white",
+                                color: "black",
+                                borderRadius: `var(--mui-shape-borderRadius)`,
+                                height: 30,
+                                width: 80,
+                            }}
                             size="small"
                             placeholder="Between"
                         />
@@ -64,7 +77,13 @@ export const CreateAlertForm: React.FC<CreateAlertFormProps> = ({
                             fullWidth
                             value={values.betweenValue2}
                             onChange={(e) => onChange("betweenValue2", Number(e.target.value))}
-                            sx={{ background: "white", color: "black",  borderRadius: `var(--mui-shape-borderRadius)`, height: 30, width: 80 }}
+                            sx={{
+                                background: "white",
+                                color: "black",
+                                borderRadius: `var(--mui-shape-borderRadius)`,
+                                height: 30,
+                                width: 80,
+                            }}
                             size="small"
                         />
                     </Stack>
@@ -72,7 +91,13 @@ export const CreateAlertForm: React.FC<CreateAlertFormProps> = ({
                         value={values.refreshRate}
                         onChange={(e) => onChange("refreshRate", e.target.value)}
                         size="small"
-                        sx={{ background: "white", color: "black",  borderRadius: `var(--mui-shape-borderRadius)`, height: 30, width: 120 }}
+                        sx={{
+                            background: "white",
+                            color: "black",
+                            borderRadius: `var(--mui-shape-borderRadius)`,
+                            height: 30,
+                            width: 120,
+                        }}
                     >
                         <MenuItem value="1h">1h</MenuItem>
                         <MenuItem value="6h">6h</MenuItem>
@@ -84,8 +109,14 @@ export const CreateAlertForm: React.FC<CreateAlertFormProps> = ({
                             fullWidth
                             type="text"
                             value={values.from.replace("d", "")}
-                            onChange={(e) => onChange("from", e.target.value.replace(/[^0-9\-]/g, "") + "d")}
-                            sx={{ background: "white", color: "black",  borderRadius: `var(--mui-shape-borderRadius)`, width: 80, height: 30 }}
+                            onChange={(e) => onChange("from", e.target.value.replace(/[^0-9-]/g, "") + "d")}
+                            sx={{
+                                background: "white",
+                                color: "black",
+                                borderRadius: `var(--mui-shape-borderRadius)`,
+                                width: 80,
+                                height: 30,
+                            }}
                             size="small"
                             endAdornment={<InputAdornment position="end">d</InputAdornment>}
                         />
@@ -93,8 +124,14 @@ export const CreateAlertForm: React.FC<CreateAlertFormProps> = ({
                             fullWidth
                             type="text"
                             value={values.to.replace("d", "")}
-                            onChange={(e) => onChange("to", e.target.value.replace(/[^0-9\+]/g, "") + "d")}
-                            sx={{ background: "white", color: "black",  borderRadius: `var(--mui-shape-borderRadius)`, width: 80, height: 30 }}
+                            onChange={(e) => onChange("to", e.target.value.replace(/[^0-9+]/g, "") + "d")}
+                            sx={{
+                                background: "white",
+                                color: "black",
+                                borderRadius: `var(--mui-shape-borderRadius)`,
+                                width: 80,
+                                height: 30,
+                            }}
                             size="small"
                             endAdornment={<InputAdornment position="end">d</InputAdornment>}
                         />
@@ -103,7 +140,12 @@ export const CreateAlertForm: React.FC<CreateAlertFormProps> = ({
                         fullWidth
                         value={values.email}
                         onChange={(e) => onChange("email", e.target.value)}
-                        sx={{ background: "white", color: "black",  borderRadius: `var(--mui-shape-borderRadius)`, height: 30 }}
+                        sx={{
+                            background: "white",
+                            color: "black",
+                            borderRadius: `var(--mui-shape-borderRadius)`,
+                            height: 30,
+                        }}
                         size="small"
                         placeholder="Email*"
                     />
@@ -111,7 +153,12 @@ export const CreateAlertForm: React.FC<CreateAlertFormProps> = ({
                         fullWidth
                         value={values.telegram}
                         onChange={(e) => onChange("telegram", e.target.value)}
-                        sx={{ background: "white", color: "black",  borderRadius: `var(--mui-shape-borderRadius)`, height: 30 }}
+                        sx={{
+                            background: "white",
+                            color: "black",
+                            borderRadius: `var(--mui-shape-borderRadius)`,
+                            height: 30,
+                        }}
                         size="small"
                         placeholder="Telegram"
                     />

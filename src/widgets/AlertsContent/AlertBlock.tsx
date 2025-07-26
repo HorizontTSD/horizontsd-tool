@@ -23,9 +23,9 @@ const AlertBlock = ({
     onDelete,
 }: {
     name: string
-    threshold: string
+    threshold: string | number
     scheme: string
-    trigger_frequency: string
+    trigger_frequency: string | number
     message: string
     notifications: {
         email: string[]
@@ -36,7 +36,7 @@ const AlertBlock = ({
         end_date: string
         start_date: string
     }
-    start_warning_interval: string
+    start_warning_interval: string | number
     sensor_id: string
     model: string
     //
@@ -60,7 +60,7 @@ const AlertBlock = ({
         if (onDelete) onDelete()
     }
 
-    const { mode, setMode } = useColorScheme()
+    const { mode } = useColorScheme()
     const isDark = mode === "dark"
     const bgPalett_exp = ["var(--mui-palette-secondary-main)", "var(--mui-palette-primary-main)"]
     const bgPalette = ["var(--mui-palette-primary-light)", "var(--mui-palette-primary-light)"]

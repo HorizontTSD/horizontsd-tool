@@ -111,7 +111,10 @@ export const LoadForecastGraphBlock = () => {
 
     return (
         <Stack direction={"column"} sx={{ margin: `1rem 0` }}>
-            <Typography variant="h4" sx={{ textTransform: "capitalize" }}>
+            <Typography
+                variant="button"
+                sx={{ fontSize: { xs: "0.85rem", sm: "1rem" }, textTransform: "capitalize", fontWeight: 600 }}
+            >
                 {t("widgets.LoadForecastGraphBlock.title")}
             </Typography>
 
@@ -126,6 +129,8 @@ export const LoadForecastGraphBlock = () => {
                         selectedModel={selectedModel || ""}
                         onSelect={handleSubmit}
                         onRefreshSelect={handleRefreshChart}
+                        // Передаю проп fontSize для выравнивания стиля
+                        fontSize={{ xs: "0.85rem", sm: "1rem" }}
                     />
                 )}
             </Stack>

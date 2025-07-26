@@ -8,14 +8,13 @@ import {
     OutlinedInput,
     Select,
     MenuItem,
-    InputAdornment,
     Button,
     Checkbox,
     useColorScheme,
 } from "@mui/material"
 import { ForecastGraphPanel } from "./ForecastGraphPanel"
 import { CreateAlertFormValues } from "./types"
-import { Alert, AlertState, AlertHealth } from "@/shared/types/Alert"
+import { Alert } from "@/shared/types/Alert"
 import {
     useFuncGetForecastDataBackendV1GetForecastDataPostMutation,
     useFuncGetSensorIdListBackendV1GetSensorIdListGetQuery,
@@ -30,6 +29,16 @@ interface CreateAlertModalProps {
     onSubmit?: (alert: Alert | Omit<Alert, "id" | "eventId">) => Promise<void>
 }
 
+interface AlerModalFormProps {
+    isEdit: boolean
+    formValues: CreateAlertFormValues
+    handleChange: <K extends keyof CreateAlertFormValues>(field: K, value: CreateAlertFormValues[K]) => void
+    handleSubmit: (e?: React.FormEvent) => void
+    onClose: () => void
+    handleReset: () => void
+    availableModels: string[]
+    sensors: string[]
+}
 const AlerModalForm = ({
     isEdit,
     formValues,
@@ -39,7 +48,7 @@ const AlerModalForm = ({
     handleReset,
     availableModels,
     sensors,
-}) => {
+}: AlerModalFormProps) => {
     const { t } = useTranslation()
 
     return (
@@ -174,7 +183,7 @@ const AlerModalForm = ({
                                     onClick={() =>
                                         handleChange(
                                             "threshold_value",
-                                            Math.max(0, Number((formValues.threshold_value - 1).toFixed(1)))
+                                            Math.max(0, Number(formValues.threshold_value) - 1)
                                         )
                                     }
                                 >
@@ -193,10 +202,7 @@ const AlerModalForm = ({
                                         "&:hover": { background: "#002C50" },
                                     }}
                                     onClick={() =>
-                                        handleChange(
-                                            "threshold_value",
-                                            Number((formValues.threshold_value + 1).toFixed(1))
-                                        )
+                                        handleChange("threshold_value", Number(formValues.threshold_value) + 1)
                                     }
                                 >
                                     +
@@ -515,7 +521,7 @@ const AlerModalForm = ({
 }
 
 const AlertModalChart = ({ formValues }: { formValues: AlertConfigRequest }) => {
-    const { mode, setMode } = useColorScheme()
+    const { mode } = useColorScheme()
     const isDark = mode === "dark"
     const bgPalette = ["var(--mui-palette-primary-main)", "var(--mui-palette-primary-light)"]
     const bg = bgPalette[~~!isDark]
@@ -535,14 +541,7 @@ const AlertModalChart = ({ formValues }: { formValues: AlertConfigRequest }) => 
 }
 
 export const CreateAlertModal = ({ open, onClose, alert, onSubmit }: CreateAlertModalProps) => {
-    const { t } = useTranslation()
-
-    // Data fetching hooks
-    const {
-        data: sensors,
-        isLoading: sensorsLoading,
-        error: sensorsError,
-    } = useFuncGetSensorIdListBackendV1GetSensorIdListGetQuery()
+    const { data: sensors } = useFuncGetSensorIdListBackendV1GetSensorIdListGetQuery()
 
     const [triggerForecast, { data: forecastData }] = useFuncGetForecastDataBackendV1GetForecastDataPostMutation()
 
@@ -557,8 +556,8 @@ export const CreateAlertModal = ({ open, onClose, alert, onSubmit }: CreateAlert
         alert_scheme: "Выше значения",
         trigger_frequency: "trigger_frequency",
         message: "",
-        telegram_nicknames: [],
-        email_addresses: [],
+        telegram_nicknames: [] as string[],
+        email_addresses: [] as string[],
         include_graph: false,
         date_start: new Date().toISOString().split("T")[0],
         date_end: new Date(Date.now() + 86400000 * 2).toISOString().split("T")[0],
@@ -593,7 +592,15 @@ export const CreateAlertModal = ({ open, onClose, alert, onSubmit }: CreateAlert
     useEffect(() => {
         if (forecastData && forecastData.length > 0) {
             const models = Array.from(
-                new Set(forecastData.flatMap((e) => Object.keys(e[Object.keys(e)[0]]?.metrix_tables || {})))
+                new Set(
+                    forecastData.flatMap((e: unknown) => {
+                        const obj = e as Record<string, unknown>
+                        const firstKey = Object.keys(obj)[0]
+                        const metrixTables = (obj[firstKey] as { metrix_tables?: Record<string, unknown> })
+                            ?.metrix_tables
+                        return Object.keys(metrixTables || {})
+                    }) as string[]
+                )
             )
             setAvailableModels(models)
 
@@ -601,7 +608,7 @@ export const CreateAlertModal = ({ open, onClose, alert, onSubmit }: CreateAlert
                 setSelectedModel(models[0])
                 setFormValues((prev) => ({
                     ...prev,
-                    model: models[0],
+                    model: String(models[0]),
                 }))
             }
         }
@@ -626,31 +633,23 @@ export const CreateAlertModal = ({ open, onClose, alert, onSubmit }: CreateAlert
         }
     }, [selectedModel])
 
-    const handleChange = (field: keyof CreateAlertFormValues, value: any) => {
+    type HandleChange = <K extends keyof CreateAlertFormValues>(field: K, value: CreateAlertFormValues[K]) => void
+    const handleChange: HandleChange = (field, value) => {
         setFormValues((prev) => ({ ...prev, [field]: value }))
 
         // Special handling for sensor and model changes
         if (field === "sensor_id") {
-            setSelectedSensor(value)
+            setSelectedSensor(value as string)
         } else if (field === "model") {
-            setSelectedModel(value)
+            setSelectedModel(value as string)
         }
     }
 
-    const handleSubmit = (e?: React.FormEvent) => {
-        if (e) e.preventDefault()
+    const handleSubmit = (e?: unknown) => {
+        if (e && typeof (e as { preventDefault?: () => void }).preventDefault === "function") {
+            ;(e as { preventDefault: () => void }).preventDefault()
+        }
         if (onSubmit) {
-            const alertData = {
-                ...formValues,
-                // Ensure arrays are properly formatted
-                telegram_nicknames: Array.isArray(formValues.telegram_nicknames)
-                    ? formValues.telegram_nicknames
-                    : [formValues.telegram_nicknames].filter(Boolean),
-                email_addresses: Array.isArray(formValues.email_addresses)
-                    ? formValues.email_addresses
-                    : [formValues.email_addresses].filter(Boolean),
-            }
-
             onSubmit(formValues)
             onClose()
         }
@@ -663,8 +662,8 @@ export const CreateAlertModal = ({ open, onClose, alert, onSubmit }: CreateAlert
             alert_scheme: "Выше значения",
             trigger_frequency: "Каждый день",
             message: "",
-            telegram_nicknames: [],
-            email_addresses: [],
+            telegram_nicknames: [] as string[],
+            email_addresses: [] as string[],
             include_graph: false,
             date_start: new Date().toISOString().split("T")[0],
             date_end: new Date(Date.now() + 86400000 * 2).toISOString().split("T")[0],
@@ -674,13 +673,13 @@ export const CreateAlertModal = ({ open, onClose, alert, onSubmit }: CreateAlert
             sensor_id: sensors?.[0] || "",
             model: availableModels?.[0] || "",
         })
-        setSelectedSensor(sensors?.[0] || "")
-        setSelectedModel(availableModels?.[0] || "")
+        setSelectedSensor(Array.isArray(sensors) ? ((sensors as string[])[0] ?? "") : "")
+        setSelectedModel(Array.isArray(availableModels) ? ((availableModels as string[])[0] ?? "") : "")
     }
 
     const isEdit = !!alert
 
-    const { mode, setMode } = useColorScheme()
+    const { mode } = useColorScheme()
     const isDark = mode === "dark"
     const bgPalette = ["var(--mui-palette-secondary-dark)", "var(--mui-palette-primary-main)"]
     const bg = bgPalette[~~isDark]
@@ -711,7 +710,7 @@ export const CreateAlertModal = ({ open, onClose, alert, onSubmit }: CreateAlert
             >
                 {/**/}
                 <AlerModalForm
-                    formValues={formValues}
+                    formValues={formValues as CreateAlertFormValues}
                     handleChange={handleChange}
                     handleReset={handleReset}
                     handleSubmit={handleSubmit}

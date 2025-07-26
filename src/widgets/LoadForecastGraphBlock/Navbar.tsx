@@ -347,7 +347,10 @@ interface ModelSelectorDropdownProps {
     onRefreshSelect: (period: string) => void
 }
 
-export function Navbar({ availableModels, selectedModel, onSelect, onRefreshSelect }: ModelSelectorDropdownProps) {
+interface NavbarProps extends ModelSelectorDropdownProps {
+    fontSize?: string | number
+}
+export function Navbar({ availableModels, selectedModel, onSelect, onRefreshSelect, fontSize }: NavbarProps) {
     const refreshAt = [`1m`, `5m`, `1h`]
     const { t } = useTranslation()
     const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null)
@@ -459,7 +462,7 @@ export function Navbar({ availableModels, selectedModel, onSelect, onRefreshSele
                 Details
             </Button> */}
             <Stack direction={"row"} sx={{ alignItems: `center` }} spacing={1}>
-                <Typography variant="button" color="textPrimary">
+                <Typography variant="button" color="textPrimary" sx={{ fontSize }}>
                     {t("widgets.LoadForecastGraphBlock.navbar.sensor_label")}:
                 </Typography>
                 <IconButton
@@ -473,11 +476,7 @@ export function Navbar({ availableModels, selectedModel, onSelect, onRefreshSele
                         },
                     }}
                 >
-                    <Typography
-                        variant="button"
-                        color="textPrimary"
-                        sx={{ color: textColor, fontSize: { xs: "0.7rem", sm: "1rem" } }}
-                    >
+                    <Typography variant="button" color="textPrimary" sx={{ color: textColor, fontSize }}>
                         {selectedModel || t("widgets.LoadForecastGraphBlock.navbar.select_sensor_placeholder")}
                     </Typography>
                     <ArrowDropDownIcon sx={{ color: textColor }} />
@@ -521,11 +520,7 @@ export function Navbar({ availableModels, selectedModel, onSelect, onRefreshSele
             </Stack>
 
             <Stack direction={"row"} sx={{ alignItems: `center` }} spacing={1}>
-                <Typography
-                    variant="button"
-                    color="textPrimary"
-                    sx={{ marginRight: `1rem`, fontSize: { xs: "0.85rem", sm: "1rem" } }}
-                >
+                <Typography variant="button" color="textPrimary" sx={{ marginRight: `1rem`, fontSize }}>
                     {t("widgets.LoadForecastGraphBlock.navbar.refresh_at_label")}:
                 </Typography>
                 <IconButton
@@ -540,7 +535,7 @@ export function Navbar({ availableModels, selectedModel, onSelect, onRefreshSele
                         },
                     }}
                 >
-                    <Typography variant="button" sx={{ color: textColor, fontSize: { xs: "0.85rem", sm: "1rem" } }}>
+                    <Typography variant="button" sx={{ color: textColor, fontSize }}>
                         {refreshAt[0] || t("widgets.LoadForecastGraphBlock.navbar.select_period_placeholder")}
                     </Typography>
                     <ArrowDropDownIcon sx={{ color: textColor }} />
@@ -573,7 +568,7 @@ export function Navbar({ availableModels, selectedModel, onSelect, onRefreshSele
                                 },
                             }}
                         >
-                            <Typography variant="button" color="textPrimary">
+                            <Typography variant="button" color="textPrimary" sx={{ fontSize }}>
                                 {item}
                             </Typography>
                         </MenuItem>
