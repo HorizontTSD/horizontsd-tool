@@ -85,8 +85,8 @@ const AlerModalForm = ({
                             {t("widgets.alertsContent.create_alert_modal_sensor_label")}
                         </Typography>
                         <Select
-                            value={formValues.sensor_id}
-                            onChange={(e) => handleChange("sensor_id", e.target.value)}
+                            value={formValues.sensorId}
+                            onChange={(e) => handleChange("sensorId", e.target.value)}
                             size="small"
                             sx={{
                                 background: "white",
@@ -153,8 +153,8 @@ const AlerModalForm = ({
                         >
                             <OutlinedInput
                                 fullWidth
-                                value={formValues.threshold_value}
-                                onChange={(e) => handleChange("threshold_value", Number(e.target.value))}
+                                value={formValues.thresholdValue}
+                                onChange={(e) => handleChange("thresholdValue", Number(e.target.value))}
                                 sx={{
                                     background: "transparent",
                                     color: "black",
@@ -182,8 +182,8 @@ const AlerModalForm = ({
                                     }}
                                     onClick={() =>
                                         handleChange(
-                                            "threshold_value",
-                                            Math.max(0, Number(formValues.threshold_value) - 1)
+                                            "thresholdValue",
+                                            Math.max(0, Number(formValues.thresholdValue) - 1)
                                         )
                                     }
                                 >
@@ -202,7 +202,7 @@ const AlerModalForm = ({
                                         "&:hover": { background: "#002C50" },
                                     }}
                                     onClick={() =>
-                                        handleChange("threshold_value", Number(formValues.threshold_value) + 1)
+                                        handleChange("thresholdValue", Number(formValues.thresholdValue) + 1)
                                     }
                                 >
                                     +
@@ -215,8 +215,8 @@ const AlerModalForm = ({
                             {t("widgets.alertsContent.create_alert_modal_alert_scheme_label")}
                         </Typography>
                         <Select
-                            value={formValues.alert_scheme}
-                            onChange={(e) => handleChange("alert_scheme", e.target.value)}
+                            value={formValues.alertScheme}
+                            onChange={(e) => handleChange("alertScheme", e.target.value)}
                             size="small"
                             sx={{
                                 background: "white",
@@ -246,8 +246,8 @@ const AlerModalForm = ({
                         {t("widgets.alertsContent.create_alert_modal_trigger_frequency_label")}
                     </Typography>
                     <Select
-                        value={formValues.trigger_frequency}
-                        onChange={(e) => handleChange("trigger_frequency", e.target.value)}
+                        value={formValues.triggerFrequency}
+                        onChange={(e) => handleChange("triggerFrequency", e.target.value)}
                         size="small"
                         sx={{
                             background: "white",
