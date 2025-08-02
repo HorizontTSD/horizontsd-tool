@@ -7,7 +7,7 @@ import temp from "@/shared/lib/data/temp.json"
 import { Stack } from "@mui/material"
 import { LoadCSV, LoadJSON, LoadXLSX } from "./fileLoader"
 import tempCsvRaw from "@/shared/lib/data/temp.csv?raw"
-import tempJson from "@/shared/lib/data/morocco_energy_data.json"
+import tempJson from "@/shared/lib/data/moroccoEnergyData.json"
 import { DataGrid } from "@mui/x-data-grid"
 import { useTranslation } from "react-i18next"
 
