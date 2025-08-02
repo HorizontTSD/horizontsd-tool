@@ -23,7 +23,7 @@ export const LoadXLSX = ({ setData, setLoadData }) => {
                         row.eachCell({ includeEmpty: false }, (cell, colNumber) => {
                             // Use header row (first row) as property names
                             if (rowNumber === 1) {
-                                rowObj[`header_${colNumber}`] = cell.value
+                                rowObj[`header${colNumber}`] = cell.value
                             } else {
                                 const header = worksheet.getRow(1).getCell(colNumber).value
                                 if (header) {
