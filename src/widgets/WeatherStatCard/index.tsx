@@ -70,13 +70,13 @@ export const WeatherStatCard = () => {
                         <Typography variant="h6" gutterBottom>
                             {t(
                                 stat.title["en"] === "Temperature"
-                                    ? "widgets.weatherStatCard.title_temperature"
+                                    ? "widgets.weatherStatCard.titleTemperature"
                                     : stat.title["en"] === "Wind speed"
-                                      ? "widgets.weatherStatCard.title_wind_speed"
+                                      ? "widgets.weatherStatCard.titleWindSpeed"
                                       : stat.title["en"] === "Humidity"
-                                        ? "widgets.weatherStatCard.title_humidity"
+                                        ? "widgets.weatherStatCard.titleHumidity"
                                         : stat.title["en"] === "Pressure"
-                                          ? "widgets.weatherStatCard.title_pressure"
+                                          ? "widgets.weatherStatCard.titlePressure"
                                           : stat.title["en"]
                             )}
                         </Typography>
@@ -85,14 +85,14 @@ export const WeatherStatCard = () => {
                             <Chip
                                 sx={{ lineHeight: `1rem`, fontSize: `1rem` }}
                                 size="small"
-                                label={`${stat.percentages.value} ${t(`widgets.weatherStatCard.trend_${stat.percentages.mark}`) || trendLabels[stat.percentages.mark]}`}
+                                label={`${stat.percentages.value} ${t(`widgets.weatherStatCard.trend${stat.percentages.mark.charAt(0).toUpperCase() + stat.percentages.mark.slice(1)}`) || trendLabels[stat.percentages.mark]}`}
                                 color={chipColors[stat.percentages.mark]}
                             />
                         </Stack>
                         <Typography variant="caption" sx={{ color: "text.secondary" }}>
                             {t(
                                 stat.description["en"] === "The last 24 hours"
-                                    ? "widgets.weatherStatCard.description_last_24h"
+                                    ? "widgets.weatherStatCard.descriptionLast24h"
                                     : stat.description["en"]
                             )}
                         </Typography>

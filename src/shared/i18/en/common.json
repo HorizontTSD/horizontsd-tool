@@ -15,13 +15,13 @@
         "weatherStatCard": {
             "loading": "Loading...",
             "error_loading_charts_data": "Error loading charts data",
-            "title_temperature": "Temperature",
-            "title_wind_speed": "Wind speed",
-            "title_humidity": "Humidity",
-            "title_pressure": "Pressure",
-            "description_last_24h": "The last 24 hours",
-            "trend_positive": "↑",
-            "trend_negative": "↓"
+            "titleTemperature": "Temperature",
+            "titleWindSpeed": "Wind speed",
+            "titleHumidity": "Humidity",
+            "titlePressure": "Pressure",
+            "descriptionLast24h": "The last 24 hours",
+            "trendPositive": "↑",
+            "trendNegative": "↓"
         },
         "LoadForecastGraphBlock": {
             "title": "Forecast",

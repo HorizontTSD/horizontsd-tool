@@ -15,13 +15,13 @@
         "weatherStatCard": {
             "loading": "Загрузка...",
             "error_loading_charts_data": "Ошибка загрузки данных графиков",
-            "title_temperature": "Температура",
-            "title_wind_speed": "Скорость ветра",
-            "title_humidity": "Влажность",
-            "title_pressure": "Давление",
-            "description_last_24h": "Последние 24 часа",
-            "trend_positive": "↑",
-            "trend_negative": "↓"
+            "titleTemperature": "Температура",
+            "titleWindSpeed": "Скорость ветра",
+            "titleHumidity": "Влажность",
+            "titlePressure": "Давление",
+            "descriptionLast24h": "Последние 24 часа",
+            "trendPositive": "↑",
+            "trendNegative": "↓"
         },
         "LoadForecastGraphBlock": {
             "title": "Прогноз",
