@@ -13,17 +13,17 @@ import { useTranslation } from "react-i18next"
 
 interface ExamplePreviewProps {
     setData: (v: unknown) => void
-    setLoaddata?: (v: boolean) => void
+    setLoadData?: (v: boolean) => void
 }
 
 export const DataSample = ({
     type,
     setData,
-    setLoaddata,
+    setLoadData,
 }: {
     type: string
     setData: (v: unknown) => void
-    setLoaddata?: (v: boolean) => void
+    setLoadData?: (v: boolean) => void
 }) => {
     const loaders = {
         XLSX: LoadXLSX,
@@ -42,7 +42,7 @@ export const DataSample = ({
 
     const { loader } = loaders[type]({
         setData,
-        setLoaddata,
+        setLoadData,
     })
 
     return (
@@ -58,7 +58,7 @@ export const DataSample = ({
     )
 }
 
-export const MarkdownPreview = ({ setData, setLoaddata }: ExamplePreviewProps) => {
+export const MarkdownPreview = ({ setData, setLoadData }: ExamplePreviewProps) => {
     const { mode, setMode } = useColorScheme()
     const isDark = mode === "dark"
     const bgPalette = ["var(--mui-palette-primary-light)", "var(--mui-palette-primary-dark)"]
@@ -72,7 +72,7 @@ export const MarkdownPreview = ({ setData, setLoaddata }: ExamplePreviewProps) =
             const html = await marked.parse(markdownInput)
             setRenderedMarkdown(html)
             setData({ example: temp })
-            setLoaddata && setLoaddata(true)
+            setLoadData && setLoadData(true)
         }
         renderMarkdown()
     }, [markdownInput])
@@ -147,11 +147,11 @@ export const CsvExamplePreview = ({ setData, setLoaddata }: ExamplePreviewProps)
     )
 }
 
-export const JsonExamplePreview = ({ setData, setLoaddata }: ExamplePreviewProps) => {
+export const JsonExamplePreview = ({ setData, setLoadData }: ExamplePreviewProps) => {
     const { t } = useTranslation("common")
     useEffect(() => {
         setData({ example: tempJson })
-        setLoaddata && setLoaddata(true)
+        setLoadData && setLoadData(true)
     }, [])
     return (
         <Box sx={{ mt: 1 }}>
@@ -182,10 +182,10 @@ function normalizeCsvData(data: any[]) {
 
 export const CsvExampleTableWithDropdowns = ({
     setData,
-    setLoaddata,
+    setLoadData,
 }: {
     setData?: (v: unknown) => void
-    setLoaddata?: (v: boolean) => void
+    setLoadData?: (v: boolean) => void
 }) => {
     const { t } = useTranslation("common")
     // CSV данные (пример)
@@ -210,7 +210,7 @@ export const CsvExampleTableWithDropdowns = ({
         const normalizedData = normalizeCsvData(data)
         setCsvRows(normalizedData.map((row, idx) => ({ ...row, id: idx })))
         if (setData) setData(normalizedData)
-        if (setLoaddata) setLoaddata(true)
+        if (setLoadData) setLoadData(true)
     }, [])
     // Функция для чередования строк
     const getRowClassName = (params: any) => (params.indexRelativeToCurrentPage % 2 === 0 ? "even" : "odd")

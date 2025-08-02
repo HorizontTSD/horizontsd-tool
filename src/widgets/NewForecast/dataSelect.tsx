@@ -12,15 +12,15 @@ import FileUploadIcon from "@mui/icons-material/FileUpload"
 interface SelectDataSourceProps {
     selected_data: string | null
     setSelected: (v: string | null) => void
-    setLoaddata: (v: boolean) => void
+    setLoadData: (v: boolean) => void
     setData: (v: unknown) => void
 }
 
-export const SelectDataSource = ({ selected_data, setSelected, setLoaddata, setData }: SelectDataSourceProps) => {
+export const SelectDataSource = ({ selected_data, setSelected, setLoadData, setData }: SelectDataSourceProps) => {
     const [alignment, setAlignment] = React.useState(selected_data || null)
     const handleChange = (event: React.MouseEvent<HTMLElement>, newAlignment: string) => {
         setAlignment(newAlignment)
-        if (newAlignment == null) setLoaddata(false)
+        if (newAlignment == null) setLoadData(false)
         setSelected(newAlignment)
     }
     return (
@@ -70,11 +70,11 @@ export const SelectDataSource = ({ selected_data, setSelected, setLoaddata, setD
                     <Typography sx={{ fontSize: { xs: "0.85rem", sm: "1rem" } }}>XLSX</Typography>
                 </ToggleButton>
             </ToggleButtonGroup>
-            {alignment == "ExampleCSV" && <CsvExampleTableWithDropdowns setData={setData} setLoaddata={setLoaddata} />}
-            {alignment == "ExampleJSON" && <JsonExamplePreview setData={setData} setLoaddata={setLoaddata} />}
-            {alignment == "JSON" && <DataSample type={"JSON"} setData={setData} setLoaddata={setLoaddata} />}
-            {alignment == "CSV" && <DataSample type={"CSV"} setData={setData} setLoaddata={setLoaddata} />}
-            {alignment == "XLSX" && <DataSample type={"XLSX"} setData={setData} setLoaddata={setLoaddata} />}
+            {alignment == "ExampleCSV" && <CsvExampleTableWithDropdowns setData={setData} setLoadData={setLoadData} />}
+            {alignment == "ExampleJSON" && <JsonExamplePreview setData={setData} setLoadData={setLoadData} />}
+            {alignment == "JSON" && <DataSample type={"JSON"} setData={setData} setLoadData={setLoadData} />}
+            {alignment == "CSV" && <DataSample type={"CSV"} setData={setData} setLoadData={setLoadData} />}
+            {alignment == "XLSX" && <DataSample type={"XLSX"} setData={setData} setLoadData={setLoadData} />}
         </Stack>
     )
 }

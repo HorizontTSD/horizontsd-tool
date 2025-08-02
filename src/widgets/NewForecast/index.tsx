@@ -325,37 +325,7 @@ export const NewForecast = () => {
         useFuncGeneratePossibleDateBackendV1GeneratePossibleDatePostMutation()
     const [dateLimits, setDateLimits] = useState<{ min: string; max: string } | null>(null)
     const [minForecastHorizon, setMinForecastHorizon] = useState<string | null>(null)
-
-    // Effects
     const [generateForecast, result] = useFuncGenerateForecastBackendV1GenerateForecastPostMutation()
-
-    useEffect(() => {
-        if (
-            selected_data != null &&
-            selected_axis.every((value) => value.length !== 0) &&
-            completedSteps() === totalSteps() &&
-            data != null
-        ) {
-            generateForecast({
-                predictRequest: {
-                    df: data ? normalizeDataRows(data, selected_axis[0]) : [],
-                    col_target: selected_axis[1],
-                    time_column: selected_axis[0],
-                    forecast_horizon_time: forecast_horizon_time
-                        ? dayjs(forecast_horizon_time).toISOString().replace(`T`, ` `).replace(`.000Z`, ``)
-                        : "",
-                    lag_search_depth: 1,
-                },
-            })
-                .unwrap()
-                .then((payload) => {
-                    return payload
-                })
-                .catch((error) => {
-                    console.error(t("widgets.newForecast.error_generating_forecast"), error)
-                })
-        }
-    }, [selected_data, selected_axis, completed, data, forecast_horizon_time, t])
 
     useEffect(() => {
         setDataChartLoading(result.isLoading)
@@ -407,6 +377,34 @@ export const NewForecast = () => {
         handleNext()
     }
 
+    const handleSend = () => {
+        if (
+            selected_data != null &&
+            selected_axis.every((value) => value.length !== 0) &&
+            data != null &&
+            forecast_horizon_time != null
+        ) {
+            generateForecast({
+                predictRequest: {
+                    df: data ? normalizeDataRows(data, selected_axis[0]) : [],
+                    col_target: selected_axis[1],
+                    time_column: selected_axis[0],
+                    forecast_horizon_time: forecast_horizon_time
+                        ? dayjs(forecast_horizon_time).toISOString().replace(`T`, ` `).replace(`.000Z`, ``)
+                        : "",
+                    lag_search_depth: 1,
+                },
+            })
+                .unwrap()
+                .then((payload) => {
+                    return payload
+                })
+                .catch((error) => {
+                    console.error(t("widgets.newForecast.error_generating_forecast"), error)
+                })
+        }
+    }
+
     const handleReset = () => {
         setActiveStep(0)
         setCompleted({})
@@ -431,15 +429,10 @@ export const NewForecast = () => {
         }
     }
 
-    const steps_requrements = [
+    const steps_requirements = [
         [selected_data != null, loadData == true || selected_data == "Example" || selected_data == "ExampleCSV"],
         [selected_axis.every((value) => value.length !== 0)],
-        [
-            selected_data != null,
-            selected_axis.every((value) => value.length !== 0),
-            dateLimits !== null,
-            !possibleDateError,
-        ],
+        [selected_data != null, selected_axis.every((value) => value.length !== 0), forecast_horizon_time !== null],
     ]
 
     const steps_description = [
@@ -603,12 +596,10 @@ export const NewForecast = () => {
                                         </Typography>
                                     ) : (
                                         <Button
-                                            onClick={
-                                                completedSteps() < totalSteps() - 1 ? handleComplete : handleComplete
-                                            }
+                                            onClick={completedSteps() < totalSteps() - 1 ? handleComplete : handleSend}
                                             variant="contained"
                                             disabled={
-                                                steps_requrements[activeStep].some((value) => value == false) ||
+                                                steps_requirements[activeStep].some((value) => value == false) ||
                                                 isPossibleDateLoading
                                             }
                                             sx={{
