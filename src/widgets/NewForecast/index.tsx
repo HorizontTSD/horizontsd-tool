@@ -47,7 +47,7 @@ const UserDataChart = ({ data, XY }: { data: DataRow[]; XY: string[] }) => {
     const toTS = (s: string | number): number => new Date(s).valueOf()
     const xs = data.map((row) => toTS(row[timeKey]) / 1000)
     const ys = data.map((row) => (typeof row[valueKey] === "number" ? row[valueKey] : Number(row[valueKey])))
-    const chart_data = [xs, ys]
+    const chartData = [xs, ys]
 
     // Create a function to generate options based on current mode
     const getOptions = (width: number, height: number): Options => ({
@@ -136,9 +136,9 @@ const UserDataChart = ({ data, XY }: { data: DataRow[]; XY: string[] }) => {
                     height: "480px",
                 }}
             >
-                {chart_data && (
+                {chartData && (
                     <UPlotChart
-                        data={chart_data}
+                        data={chartData}
                         opts={opts}
                         callback={(u: uPlot) => {
                             plotRef.current = u
@@ -189,7 +189,7 @@ const LoadData = ({
         }
         return new Date(Number(s)).valueOf()
     }
-    const newest_date =
+    const newestDate =
         data && data.length > 0
             ? data.slice().sort((a: DataRow, b: DataRow) => {
                   const dateA = a[XY[0]]
@@ -199,7 +199,7 @@ const LoadData = ({
             : undefined
 
     const [value, setValue] = React.useState<Dayjs | null>(
-        newest_date && newest_date[XY[0]] ? dayjs(newest_date[XY[0]]) : null
+        newestDate && newestDate[XY[0]] ? dayjs(newestDate[XY[0]]) : null
     )
 
     const { t } = useTranslation("common")
@@ -429,13 +429,13 @@ export const NewForecast = () => {
         }
     }
 
-    const steps_requirements = [
+    const stepsRequirements = [
         [selected_data != null, loadData == true || selected_data == "Example" || selected_data == "ExampleCSV"],
         [selected_axis.every((value) => value.length !== 0)],
         [selected_data != null, selected_axis.every((value) => value.length !== 0), forecast_horizon_time !== null],
     ]
 
-    const steps_description = [
+    const stepsDescription = [
         () => (
             <Stack direction={"column"}>
                 <Stack direction={"row"}>
@@ -547,7 +547,7 @@ export const NewForecast = () => {
                                         justifyContent: `center`,
                                     }}
                                 >
-                                    {steps_description[index]()}
+                                    {stepsDescription[index]()}
                                 </Stack>
                             )}
                         </Step>
@@ -599,7 +599,7 @@ export const NewForecast = () => {
                                             onClick={completedSteps() < totalSteps() - 1 ? handleComplete : handleSend}
                                             variant="contained"
                                             disabled={
-                                                steps_requirements[activeStep].some((value) => value == false) ||
+                                                stepsRequirements[activeStep].some((value) => value == false) ||
                                                 isPossibleDateLoading
                                             }
                                             sx={{

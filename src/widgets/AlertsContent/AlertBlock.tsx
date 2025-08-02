@@ -60,23 +60,23 @@ const AlertBlock = ({
 
     const { mode } = useColorScheme()
     const isDark = mode === "dark"
-    const bgPalett_exp = ["var(--mui-palette-secondary-main)", "var(--mui-palette-primary-main)"]
+    const bgPalettExp = ["var(--mui-palette-secondary-main)", "var(--mui-palette-primary-main)"]
     const bgPalette = ["var(--mui-palette-primary-light)", "var(--mui-palette-primary-light)"]
     const bg = bgPalette[~~isDark]
-    const bg_exp = bgPalett_exp[~~isDark]
+    const bgExp = bgPalettExp[~~isDark]
 
     const colorPalette = ["var(--mui-palette-text-primary)", "var(--mui-palette-secondary-dark)"]
-    const colorPalette_exp = ["var(--mui-palette-secondary-light)", "var(--mui-palette-secondary-light)"]
+    const colorPaletteExp = ["var(--mui-palette-secondary-light)", "var(--mui-palette-secondary-light)"]
 
     const color = colorPalette[~~isDark]
-    const color_exp = colorPalette_exp[~~isDark]
+    const colorExp = colorPaletteExp[~~isDark]
 
     const { t } = useTranslation()
 
     return (
         <Box
             sx={{
-                background: expanded ? bg_exp : bg,
+                background: expanded ? bgExp : bg,
                 borderRadius: `var(--mui-shape-borderRadius)`,
                 padding: `1rem`,
                 margin: `0.5rem 0`,
@@ -87,7 +87,7 @@ const AlertBlock = ({
                         : "0 2px 12px 0 rgba(0,0,0,0.10)"
                     : "none",
                 overflow: "hidden",
-                color: expanded ? color_exp : color,
+                color: expanded ? colorExp : color,
             }}
             onClick={onToggle}
         >

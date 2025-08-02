@@ -147,12 +147,12 @@ export function SplitButton() {
         setOpen(false)
     }
 
-    const timezone_list = [`UTC`].concat(
+    const timezoneList = [`UTC`].concat(
         Array.from(new Array(10)).map((_, index) => `GMT+${index < 9 ? "0" + (index + 1) : index + 1}`)
     )
 
     // eslint-disable-next-line
-    const [selectedTimezone, setSelectedTimezone] = React.useState(timezone_list[0])
+    const [selectedTimezone, setSelectedTimezone] = React.useState(timezoneList[0])
 
     const [anchorEl2, setAnchorEl2] = useState<null | HTMLElement>(null)
 
@@ -287,7 +287,7 @@ export function SplitButton() {
                                                 }}
                                             >
                                                 <Typography variant="button" color="textPrimary">
-                                                    {timezone_list[0] ||
+                                                    {timezoneList[0] ||
                                                         t(
                                                             "widgets.LoadForecastGraphBlock.navbar.selectPeriodPlaceholder"
                                                         )}
@@ -308,7 +308,7 @@ export function SplitButton() {
                                                     },
                                                 }}
                                             >
-                                                {timezone_list.map((item) => (
+                                                {timezoneList.map((item) => (
                                                     <MenuItem
                                                         key={item}
                                                         selected={item === selectedTimezone}
