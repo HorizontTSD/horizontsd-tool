@@ -189,18 +189,18 @@ export const DataChart = ({ payload }: ForecastPureGraphProps) => {
     const xsForecast = predictions.map(toTS)
     const ysForecast = predictions.map((e: unknown) => (e as Record<string, unknown>)[target_value] ?? null)
 
-    let chart_data: any[]
+    let chartData: any[]
     let series: any[]
     if (predictions.length === 0) {
         // Только история
-        chart_data = [xsHistory, ysHistory]
+        chartData = [xsHistory, ysHistory]
         series = [{}, { label: "История", stroke: "#1976d2" }]
     } else {
         // История + прогноз
         const xs = [...xsHistory, ...xsForecast]
         const ys1 = [...ysHistory, ...Array(xsForecast.length).fill(null)]
         const ys2 = [...Array(xsHistory.length).fill(null), ...ysForecast]
-        chart_data = [xs, ys1, ys2]
+        chartData = [xs, ys1, ys2]
         series = [{}, { label: "История", stroke: "#1976d2" }, { label: "Прогноз", stroke: "#ff9800" }]
     }
 
@@ -301,9 +301,9 @@ export const DataChart = ({ payload }: ForecastPureGraphProps) => {
                     height: "480px",
                 }}
             >
-                {chart_data && (
+                {chartData && (
                     <UPlotChart
-                        data={chart_data}
+                        data={chartData}
                         opts={opts}
                         plugins={[
                             // box_whisker__legendAsTooltipPlugin()

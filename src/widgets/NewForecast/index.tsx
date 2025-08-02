@@ -311,13 +311,13 @@ export const NewForecast = () => {
     ]
 
     // State declarations
-    const [selected_data, setSelected] = useState<string | null>(null)
+    const [selectedData, setSelected] = useState<string | null>(null)
     const [loadData, setLoadData] = useState(false)
     const [data, setData] = useState<DataRow[] | null>(null)
-    const [selected_axis, setSelected_axis] = useState<string[]>(["", ""])
+    const [selectedAxis, setSelectedAxis] = useState<string[]>(["", ""])
     const [dataChartLoading, setDataChartLoading] = useState(true)
     const [activeStep, setActiveStep] = React.useState(0)
-    const [forecast_horizon_time, setForecast_horizon_time] = React.useState<string | Dayjs | null>(null)
+    const [forecast_horizon_time, setForecastHorizonTime] = React.useState<string | Dayjs | null>(null)
     const [completed, setCompleted] = React.useState<{
         [k: number]: boolean
     }>({})
@@ -332,11 +332,11 @@ export const NewForecast = () => {
     }, [result.isLoading])
 
     useEffect(() => {
-        if (selected_axis.every((value) => value.length !== 0) && data && data.length > 0) {
+        if (selectedAxis.every((value) => value.length !== 0) && data && data.length > 0) {
             generatePossibleDate({
                 convertRequest: {
                     df: data,
-                    time_column: selected_axis[0],
+                    time_column: selectedAxis[0],
                 },
             })
                 .unwrap()
@@ -351,7 +351,7 @@ export const NewForecast = () => {
                     setMinForecastHorizon(null)
                 })
         }
-    }, [selected_axis, data])
+    }, [selectedAxis, data])
 
     const totalSteps = () => steps.length
 
@@ -379,16 +379,16 @@ export const NewForecast = () => {
 
     const handleSend = () => {
         if (
-            selected_data != null &&
-            selected_axis.every((value) => value.length !== 0) &&
+            selectedData != null &&
+            selectedAxis.every((value) => value.length !== 0) &&
             data != null &&
             forecast_horizon_time != null
         ) {
             generateForecast({
                 predictRequest: {
-                    df: data ? normalizeDataRows(data, selected_axis[0]) : [],
-                    col_target: selected_axis[1],
-                    time_column: selected_axis[0],
+                    df: data ? normalizeDataRows(data, selectedAxis[0]) : [],
+                    col_target: selectedAxis[1],
+                    time_column: selectedAxis[0],
                     forecast_horizon_time: forecast_horizon_time
                         ? dayjs(forecast_horizon_time).toISOString().replace(`T`, ` `).replace(`.000Z`, ``)
                         : "",
@@ -410,7 +410,7 @@ export const NewForecast = () => {
         setCompleted({})
         setSelected(null)
         setLoadData(false)
-        setSelected_axis(["", ""])
+        setSelectedAxis(["", ""])
         setDataChartLoading(true)
     }
 
@@ -430,22 +430,22 @@ export const NewForecast = () => {
     }
 
     const stepsRequirements = [
-        [selected_data != null, loadData == true || selected_data == "Example" || selected_data == "ExampleCSV"],
-        [selected_axis.every((value) => value.length !== 0)],
-        [selected_data != null, selected_axis.every((value) => value.length !== 0), forecast_horizon_time !== null],
+        [selectedData != null, loadData == true || selectedData == "Example" || selectedData == "ExampleCSV"],
+        [selectedAxis.every((value) => value.length !== 0)],
+        [selectedData != null, selectedAxis.every((value) => value.length !== 0), forecast_horizon_time !== null],
     ]
 
     const stepsDescription = [
         () => (
             <Stack direction={"column"}>
                 <Stack direction={"row"}>
-                    {selected_data != null && <CheckCircleIcon color="success" fontSize="small" />}
+                    {selectedData != null && <CheckCircleIcon color="success" fontSize="small" />}
                     <Typography variant="overline" sx={{ marginLeft: `0.3rem`, lineHeight: `1.4rem` }}>
                         {t("widgets.newForecast.selectDataDescription")}
                     </Typography>
                 </Stack>
                 <Stack direction={"row"}>
-                    {loadData || selected_data == "Example" ? (
+                    {loadData || selectedData == "Example" ? (
                         <CheckCircleIcon color="success" fontSize="small" />
                     ) : (
                         <ErrorIcon color="error" fontSize="small" />
@@ -459,11 +459,11 @@ export const NewForecast = () => {
         () => (
             <Stack direction={"column"}>
                 <Stack direction={"row"}>
-                    {selected_axis[0].length != 0 && <CheckCircleIcon color="success" fontSize="small" />}
+                    {selectedAxis[0].length != 0 && <CheckCircleIcon color="success" fontSize="small" />}
                     <Typography>{t("widgets.newForecast.selectXAxisDescription")}</Typography>
                 </Stack>
                 <Stack direction={"row"}>
-                    {selected_axis[1].length != 0 && <CheckCircleIcon color="success" fontSize="small" />}
+                    {selectedAxis[1].length != 0 && <CheckCircleIcon color="success" fontSize="small" />}
                     <Typography>{t("widgets.newForecast.selectYAxisDescription")}</Typography>
                 </Stack>
             </Stack>
@@ -477,7 +477,7 @@ export const NewForecast = () => {
     ]
 
     const MsetData = (args: unknown) => {
-        const timeColumn = selected_axis[0]
+        const timeColumn = selectedAxis[0]
         if (Array.isArray(args)) {
             setData(normalizeDataRows(args, timeColumn))
         } else if (args && typeof args === "object") {
@@ -625,19 +625,19 @@ export const NewForecast = () => {
                 {
                     [
                         <SelectDataSource
-                            selected_data={selected_data}
+                            selectedData={selectedData}
                             setSelected={setSelected}
                             setLoadData={setLoadData}
                             setData={MsetData}
                         />,
-                        <DataTable selectedAxis={selected_axis} setSelectedAxis={setSelected_axis} data={data} />,
+                        <DataTable selectedAxis={selectedAxis} setSelectedAxis={setSelectedAxis} data={data} />,
                         <LoadData
                             dataChartLoading={dataChartLoading}
                             data={data}
                             forecast={result}
-                            XY={selected_axis}
+                            XY={selectedAxis}
                             forecast_horizon_time={forecast_horizon_time}
-                            setForecast_horizon_time={setForecast_horizon_time}
+                            setForecast_horizon_time={setForecastHorizonTime}
                             dateLimits={dateLimits}
                             minForecastHorizon={minForecastHorizon}
                         />,

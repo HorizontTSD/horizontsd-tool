@@ -10,14 +10,14 @@ import AddchartIcon from "@mui/icons-material/Addchart"
 import FileUploadIcon from "@mui/icons-material/FileUpload"
 
 interface SelectDataSourceProps {
-    selected_data: string | null
+    selectedData: string | null
     setSelected: (v: string | null) => void
     setLoadData: (v: boolean) => void
     setData: (v: unknown) => void
 }
 
-export const SelectDataSource = ({ selected_data, setSelected, setLoadData, setData }: SelectDataSourceProps) => {
-    const [alignment, setAlignment] = React.useState(selected_data || null)
+export const SelectDataSource = ({ selectedData, setSelected, setLoadData, setData }: SelectDataSourceProps) => {
+    const [alignment, setAlignment] = React.useState(selectedData || null)
     const handleChange = (event: React.MouseEvent<HTMLElement>, newAlignment: string) => {
         setAlignment(newAlignment)
         if (newAlignment == null) setLoadData(false)
