@@ -135,7 +135,7 @@ function useSkipper() {
     return [shouldSkip, skip] as const
 }
 
-export const DataTable = ({ data: original, selected_axis, setSelected_axis }) => {
+export const DataTable = ({ data: original, selectedAxis, setSelectedAxis }) => {
     console.log("DataTable original:", original)
     if (
         !Array.isArray(original) ||
@@ -150,7 +150,7 @@ export const DataTable = ({ data: original, selected_axis, setSelected_axis }) =
             </Typography>
         )
     }
-    const [XY, setXY] = useState(selected_axis)
+    const [XY, setXY] = useState(selectedAxis)
     // Use makeForecastData to initialize data
     const [data, setData] = useState(original)
     // const refreshData = () => setData(() => makeForecastData(1000))
@@ -225,19 +225,19 @@ export const DataTable = ({ data: original, selected_axis, setSelected_axis }) =
             </Typography>
             <Stack direction={"row"} spacing={1}>
                 <BasicSelect
-                    list={headers.filter((v) => v != XY[1])}
-                    selected={XY[0]}
+                    list={headers.filter((v) => v != XY?.[1])}
+                    selected={XY?.[0] || ""}
                     setSelected={(value) => {
-                        setXY([value, XY[1]])
-                        setSelected_axis([value, XY[1]])
+                        setXY([value, XY?.[1] || ""])
+                        setSelectedAxis([value, XY?.[1] || ""])
                     }}
                 />
                 <BasicSelect
-                    list={headers.filter((v) => v != XY[0])}
-                    selected={XY[1]}
+                    list={headers.filter((v) => v != XY?.[0])}
+                    selected={XY?.[1] || ""}
                     setSelected={(value) => {
-                        setXY([XY[0], value])
-                        setSelected_axis([XY[0], value])
+                        setXY([XY?.[0] || "", value])
+                        setSelectedAxis([XY?.[0] || "", value])
                     }}
                 />
             </Stack>

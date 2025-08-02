@@ -641,7 +641,7 @@ export const NewForecast = () => {
                             setLoaddata={setLoaddata}
                             setData={MsetData}
                         />,
-                        <DataTable selected_axis={selected_axis} setSelected_axis={setSelected_axis} data={data} />,
+                        <DataTable selectedAxis={selected_axis} setSelectedAxis={setSelected_axis} data={data} />,
                         <LoadData
                             dataChartLoading={dataChartLoading}
                             data={data}
