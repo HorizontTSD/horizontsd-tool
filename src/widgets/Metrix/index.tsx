@@ -25,22 +25,22 @@ type MetricConfig = {
 const METRIC_CONFIG: MetricConfig[] = [
     {
         key: "MAE",
-        titleKey: "widgets.metrix_bloc.mae",
+        titleKey: "widgets.metrixBloc.mae",
         equation: "MAE = (1/n) ∑|y_i - ŷ_i|",
     },
     {
         key: "RMSE",
-        titleKey: "widgets.metrix_bloc.rmse",
+        titleKey: "widgets.metrixBloc.rmse",
         equation: "RMSE = √(1/n ∑(y_i - ŷ_i)²)",
     },
     {
         key: "R2",
-        titleKey: "widgets.metrix_bloc.r2",
+        titleKey: "widgets.metrixBloc.r2",
         equation: "R² = 1 - (∑(y_i - ŷ_i)²) / (∑(y_i - ȳ)²)",
     },
     {
         key: "MAPE",
-        titleKey: "widgets.metrix_bloc.mape",
+        titleKey: "widgets.metrixBloc.mape",
         equation: "MAPE = (1/n) ∑ |(y_i - ŷ_i) / y_i| × 100",
         unit: "%",
     },
@@ -231,7 +231,7 @@ export const Metrix = () => {
                             }}
                         >
                             <Stack>
-                                <Typography>{t("widgets.Metrix.sensor_selection")}</Typography>
+                                <Typography>{t("widgets.Metrix.sensorSelection")}</Typography>
                                 <GridDropdown
                                     list={sensors || []}
                                     selected={selectedSensor || ""}
@@ -239,7 +239,7 @@ export const Metrix = () => {
                                 />
                             </Stack>
                             <Stack>
-                                <Typography>{t("widgets.Metrix.model_selection")}</Typography>
+                                <Typography>{t("widgets.Metrix.modelSelection")}</Typography>
                                 <GridDropdown
                                     list={availableModels}
                                     selected={selectedModel || ""}
@@ -249,14 +249,14 @@ export const Metrix = () => {
                         </Box>
 
                         <Typography variant="h6" sx={{ mb: 3 }}>
-                            {t("widgets.Metrix.select_data_range")}
+                            {t("widgets.Metrix.selectDataRange")}
                         </Typography>
 
                         <LocalizationProvider dateAdapter={AdapterDateFns} adapterLocale={ru}>
                             <Grid container spacing={2}>
                                 <Grid item xs={12} sm={6}>
                                     <DateTimePicker
-                                        label={t("widgets.Metrix.start_date")}
+                                        label={t("widgets.Metrix.startDate")}
                                         ampm={false}
                                         format="dd.MM.yyyy HH:mm"
                                         value={startDate}
@@ -270,7 +270,7 @@ export const Metrix = () => {
                                 </Grid>
                                 <Grid item xs={12} sm={6}>
                                     <DateTimePicker
-                                        label={t("widgets.Metrix.end_date")}
+                                        label={t("widgets.Metrix.endDate")}
                                         ampm={false}
                                         format="dd.MM.yyyy HH:mm"
                                         value={endDate}
@@ -288,7 +288,7 @@ export const Metrix = () => {
                         <Box sx={{ mt: 2 }}>
                             {error && (
                                 <Alert severity="error" sx={{ mb: 3 }}>
-                                    {t("widgets.metrix_bloc.error_1")}: {error.toString()}
+                                    {t("widgets.metrixBloc.error1")}: {error.toString()}
                                 </Alert>
                             )}
 

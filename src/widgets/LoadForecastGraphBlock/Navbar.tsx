@@ -243,13 +243,13 @@ export function SplitButton() {
                                                 </Typography>
                                                 <Box>
                                                     <Typography>
-                                                        {t("widgets.LoadForecastGraphBlock.navbar.from_label")}:
+                                                        {t("widgets.LoadForecastGraphBlock.navbar.fromLabel")}:
                                                     </Typography>
                                                     <DisabledOptions />
                                                 </Box>
                                                 <Box>
                                                     <Typography>
-                                                        {t("widgets.LoadForecastGraphBlock.navbar.to_label")}:
+                                                        {t("widgets.LoadForecastGraphBlock.navbar.toLabel")}:
                                                     </Typography>
                                                     <DisabledOptions />
                                                 </Box>

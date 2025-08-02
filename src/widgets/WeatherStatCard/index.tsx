@@ -34,7 +34,7 @@ export const WeatherStatCard = () => {
     const isMobile = useMediaQuery(theme.breakpoints.down("md"))
 
     if (isLoading) return <WeatherStatCardSkeleton />
-    if (error) return <div>{t("widgets.weatherStatCard.error_loading_charts_data")}</div>
+    if (error) return <div>{t("widgets.weatherStatCard.errorLoadingChartsData")}</div>
     if (!charts) return null
 
     return (

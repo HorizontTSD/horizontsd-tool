@@ -215,10 +215,10 @@ const LoadData = ({
     return (
         <Stack>
             <Stack spacing={1} sx={{ padding: `1rem 0`, width: "240px" }}>
-                <Typography>{t("widgets.newForecast.controlled_picker_label")}</Typography>
+                <Typography>{t("widgets.newForecast.controlledPickerLabel")}</Typography>
                 <LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale={"en-gb"}>
                     <DateTimePicker
-                        label={t("widgets.newForecast.controlled_picker_label")}
+                        label={t("widgets.newForecast.controlledPickerLabel")}
                         value={value}
                         onChange={(newValue) => {
                             setValue(newValue as Dayjs | null)
@@ -305,9 +305,9 @@ export const NewForecast = () => {
 
     const { t } = useTranslation("common")
     const steps = [
-        t("widgets.newForecast.steps.select_data"),
-        t("widgets.newForecast.steps.choose_xy"),
-        t("widgets.newForecast.steps.choose_time"),
+        t("widgets.newForecast.steps.selectData"),
+        t("widgets.newForecast.steps.chooseXy"),
+        t("widgets.newForecast.steps.chooseTime"),
     ]
 
     // State declarations
@@ -400,7 +400,7 @@ export const NewForecast = () => {
                     return payload
                 })
                 .catch((error) => {
-                    console.error(t("widgets.newForecast.error_generating_forecast"), error)
+                    console.error(t("widgets.newForecast.errorGeneratingForecast"), error)
                 })
         }
     }
@@ -441,7 +441,7 @@ export const NewForecast = () => {
                 <Stack direction={"row"}>
                     {selected_data != null && <CheckCircleIcon color="success" fontSize="small" />}
                     <Typography variant="overline" sx={{ marginLeft: `0.3rem`, lineHeight: `1.4rem` }}>
-                        {t("widgets.newForecast.select_data_description")}
+                        {t("widgets.newForecast.selectDataDescription")}
                     </Typography>
                 </Stack>
                 <Stack direction={"row"}>
@@ -451,7 +451,7 @@ export const NewForecast = () => {
                         <ErrorIcon color="error" fontSize="small" />
                     )}
                     <Typography variant="overline" sx={{ marginLeft: `0.3rem`, lineHeight: `1.4rem` }}>
-                        {t("widgets.newForecast.load_data_description")}
+                        {t("widgets.newForecast.loadDataDescription")}
                     </Typography>
                 </Stack>
             </Stack>
@@ -460,18 +460,18 @@ export const NewForecast = () => {
             <Stack direction={"column"}>
                 <Stack direction={"row"}>
                     {selected_axis[0].length != 0 && <CheckCircleIcon color="success" fontSize="small" />}
-                    <Typography>{t("widgets.newForecast.select_x_axis_description")}</Typography>
+                    <Typography>{t("widgets.newForecast.selectXAxisDescription")}</Typography>
                 </Stack>
                 <Stack direction={"row"}>
                     {selected_axis[1].length != 0 && <CheckCircleIcon color="success" fontSize="small" />}
-                    <Typography>{t("widgets.newForecast.select_y_axis_description")}</Typography>
+                    <Typography>{t("widgets.newForecast.selectYAxisDescription")}</Typography>
                 </Stack>
             </Stack>
         ),
         () => (
             <>
-                <Typography>{t("widgets.newForecast.select_forecast_date_description")}</Typography>
-                <Typography>{t("widgets.newForecast.send_button_description")}</Typography>
+                <Typography>{t("widgets.newForecast.selectForecastDateDescription")}</Typography>
+                <Typography>{t("widgets.newForecast.sendButtonDescription")}</Typography>
             </>
         ),
     ]
@@ -556,16 +556,14 @@ export const NewForecast = () => {
                 <div>
                     {allStepsCompleted() ? (
                         <React.Fragment>
-                            <Typography sx={{ mt: 2, mb: 1 }}>
-                                {t("widgets.newForecast.all_steps_completed")}
-                            </Typography>
+                            <Typography sx={{ mt: 2, mb: 1 }}>{t("widgets.newForecast.allStepsCompleted")}</Typography>
                             <Stack direction={"row"} spacing={1}>
                                 <Box sx={{ flex: "1 1 auto" }} />
                                 <Button variant="contained" onClick={handleReset}>
-                                    {t("widgets.newForecast.reset_button")}
+                                    {t("widgets.newForecast.resetButton")}
                                 </Button>
                                 <Button variant="contained" onClick={handleDownload}>
-                                    {t("widgets.newForecast.download_button")}
+                                    {t("widgets.newForecast.downloadButton")}
                                 </Button>
                             </Stack>
                         </React.Fragment>
@@ -579,18 +577,18 @@ export const NewForecast = () => {
                                     onClick={handleBack}
                                     sx={{ mr: 1 }}
                                 >
-                                    {t("widgets.newForecast.back_button")}
+                                    {t("widgets.newForecast.backButton")}
                                 </Button>
                                 <Box sx={{ flex: "1 1 auto" }} />
                                 {completed[activeStep] && (
                                     <Button onClick={handleNext} sx={{ mr: 1 }} variant="contained">
-                                        {t("widgets.newForecast.next_button")}
+                                        {t("widgets.newForecast.nextButton")}
                                     </Button>
                                 )}
                                 {activeStep !== steps.length &&
                                     (completed[activeStep] ? (
                                         <Typography variant="caption" sx={{ display: "inline-block" }}>
-                                            {t("widgets.newForecast.step_completed_message", {
+                                            {t("widgets.newForecast.stepCompletedMessage", {
                                                 stepNumber: activeStep + 1,
                                             })}
                                         </Typography>
@@ -612,9 +610,9 @@ export const NewForecast = () => {
                                             {isPossibleDateLoading ? (
                                                 <CircularProgress size={24} color="inherit" />
                                             ) : completedSteps() < totalSteps() - 1 ? (
-                                                t("widgets.newForecast.complete_step_button")
+                                                t("widgets.newForecast.completeStepButton")
                                             ) : (
-                                                t("widgets.newForecast.send_button")
+                                                t("widgets.newForecast.sendButton")
                                             )}
                                         </Button>
                                     ))}
@@ -648,7 +646,7 @@ export const NewForecast = () => {
             </section>
             <footer>
                 <Typography sx={{ mt: 2, mb: 1, py: 1 }}>
-                    {t("widgets.newForecast.current_step_message", { stepNumber: activeStep + 1 })}
+                    {t("widgets.newForecast.currentStepMessage", { stepNumber: activeStep + 1 })}
                 </Typography>
             </footer>
         </Stack>

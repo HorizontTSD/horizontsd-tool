@@ -121,7 +121,7 @@ export const CsvExamplePreview = ({ setData, setLoaddata }: ExamplePreviewProps)
     return (
         <Box sx={{ mt: 1 }}>
             <Typography variant="h6" gutterBottom>
-                {t("widgets.newForecast.example_csv")}:
+                {t("widgets.newForecast.exampleCsv")}:
             </Typography>
             <Box sx={{ overflowX: "auto", maxHeight: 400 }}>
                 <table className="data-table">
@@ -156,7 +156,7 @@ export const JsonExamplePreview = ({ setData, setLoadData }: ExamplePreviewProps
     return (
         <Box sx={{ mt: 1 }}>
             <Typography variant="h6" gutterBottom>
-                {t("widgets.newForecast.example_json")}:
+                {t("widgets.newForecast.exampleJson")}:
             </Typography>
             <pre style={{ maxHeight: 400, overflow: "auto", background: "#f5f5f5", padding: 8 }}>
                 {JSON.stringify(tempJson, null, 2)}
@@ -217,7 +217,7 @@ export const CsvExampleTableWithDropdowns = ({
     return (
         <Box sx={{ mt: 1 }}>
             <Typography variant="h6" gutterBottom>
-                {t("widgets.newForecast.example_csv")}:
+                {t("widgets.newForecast.exampleCsv")}:
             </Typography>
             <Box
                 sx={{

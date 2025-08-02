@@ -68,7 +68,7 @@ export const CustomizedDataGrid: React.FC = () => {
 
         return columnKeys.map((key) => ({
             field: key,
-            headerName: key === "Time" ? t("widgets.GridDetails.date_time_header") : key,
+            headerName: key === "Time" ? t("widgets.GridDetails.dateTimeHeader") : key,
             flex: 1,
             minWidth: 120,
             sortable: true,
@@ -105,7 +105,7 @@ export const CustomizedDataGrid: React.FC = () => {
     return (
         <Stack direction={"column"} sx={{ margin: `1rem 0` }}>
             <Stack direction={"column"} sx={{ margin: `1rem 0` }}>
-                <Typography variant="h4">{t("widgets.GridDetails.table_title")}</Typography>
+                <Typography variant="h4">{t("widgets.GridDetails.tableTitle")}</Typography>
             </Stack>
             <Box
                 sx={{
@@ -130,7 +130,7 @@ export const CustomizedDataGrid: React.FC = () => {
                     ) : (
                         <>
                             <Stack>
-                                <Typography>{t("widgets.GridDetails.sensor_selection_label")}</Typography>
+                                <Typography>{t("widgets.GridDetails.sensorSelectionLabel")}</Typography>
                                 <GridDropdown
                                     list={sensors || []}
                                     selected={selectedSensor || ""}
@@ -139,7 +139,7 @@ export const CustomizedDataGrid: React.FC = () => {
                             </Stack>
 
                             <Stack>
-                                <Typography>{t("widgets.GridDetails.model_selection_label")}</Typography>
+                                <Typography>{t("widgets.GridDetails.modelSelectionLabel")}</Typography>
                                 {selectedSensor && (
                                     <GridDropdown
                                         list={Object.keys(metricsTables) || []}
@@ -153,9 +153,9 @@ export const CustomizedDataGrid: React.FC = () => {
                 </Box>
 
                 {/* Loading and Error States */}
-                {sensorsError && <Typography color="error">{t("widgets.GridDetails.sensor_fetch_error")}</Typography>}
+                {sensorsError && <Typography color="error">{t("widgets.GridDetails.sensorFetchError")}</Typography>}
                 {forecastError && (
-                    <Typography color="error">{`${t("widgets.GridDetails.forecast_fetch_error_prefix")} ${JSON.stringify(forecastError)}`}</Typography>
+                    <Typography color="error">{`${t("widgets.GridDetails.forecastFetchErrorPrefix")} ${JSON.stringify(forecastError)}`}</Typography>
                 )}
 
                 {/* <GridDetailsSkeleton /> */}
