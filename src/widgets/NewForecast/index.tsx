@@ -312,7 +312,7 @@ export const NewForecast = () => {
 
     // State declarations
     const [selected_data, setSelected] = useState<string | null>(null)
-    const [load_data, setLoaddata] = useState(false)
+    const [loadData, setLoadData] = useState(false)
     const [data, setData] = useState<DataRow[] | null>(null)
     const [selected_axis, setSelected_axis] = useState<string[]>(["", ""])
     const [dataChartLoading, setDataChartLoading] = useState(true)
@@ -411,7 +411,7 @@ export const NewForecast = () => {
         setActiveStep(0)
         setCompleted({})
         setSelected(null)
-        setLoaddata(false)
+        setLoadData(false)
         setSelected_axis(["", ""])
         setDataChartLoading(true)
     }
@@ -432,7 +432,7 @@ export const NewForecast = () => {
     }
 
     const steps_requrements = [
-        [selected_data != null, load_data == true || selected_data == "Example" || selected_data == "ExampleCSV"],
+        [selected_data != null, loadData == true || selected_data == "Example" || selected_data == "ExampleCSV"],
         [selected_axis.every((value) => value.length !== 0)],
         [
             selected_data != null,
@@ -452,7 +452,7 @@ export const NewForecast = () => {
                     </Typography>
                 </Stack>
                 <Stack direction={"row"}>
-                    {load_data || selected_data == "Example" ? (
+                    {loadData || selected_data == "Example" ? (
                         <CheckCircleIcon color="success" fontSize="small" />
                     ) : (
                         <ErrorIcon color="error" fontSize="small" />
@@ -638,7 +638,7 @@ export const NewForecast = () => {
                         <SelectDataSource
                             selected_data={selected_data}
                             setSelected={setSelected}
-                            setLoaddata={setLoaddata}
+                            setLoadData={setLoadData}
                             setData={MsetData}
                         />,
                         <DataTable selectedAxis={selected_axis} setSelectedAxis={setSelected_axis} data={data} />,
