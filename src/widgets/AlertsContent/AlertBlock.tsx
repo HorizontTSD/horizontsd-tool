@@ -8,15 +8,14 @@ const AlertBlock = ({
     name,
     threshold,
     scheme,
-    trigger_frequency,
+    triggerFrequency,
     message,
     notifications: { email, telegram },
-    include_graph,
-    time_interval: { start_date, end_date },
-    start_warning_interval,
-    sensor_id,
+    includeGraph,
+    timeInterval,
+    startWarningInterval,
+    sensorId,
     model,
-    //
     expanded,
     onToggle,
     onEdit,
@@ -25,21 +24,20 @@ const AlertBlock = ({
     name: string
     threshold: string | number
     scheme: string
-    trigger_frequency: string | number
+    triggerFrequency: string | number
     message: string
     notifications: {
         email: string[]
         telegram: string[]
     }
-    include_graph: boolean
-    time_interval: {
-        end_date: string
-        start_date: string
+    includeGraph: boolean
+    timeInterval?: {
+        endDate: string
+        startDate: string
     }
-    start_warning_interval: string | number
-    sensor_id: string
+    startWarningInterval: string | number
+    sensorId: string
     model: string
-    //
     expanded: boolean
     onToggle: () => void
     onEdit?: () => void
@@ -103,7 +101,7 @@ const AlertBlock = ({
                         <Typography variant="caption">
                             {t("widgets.alertsContent.alert_block_trigger_frequency")}
                         </Typography>
-                        <Typography variant="body2">{trigger_frequency}</Typography>
+                        <Typography variant="body2">{triggerFrequency}</Typography>
                     </Stack>
                     <Stack direction="column">
                         <Typography variant="caption">{t("widgets.alertsContent.alert_block_message")}</Typography>
@@ -111,17 +109,21 @@ const AlertBlock = ({
                     </Stack>
                     <Stack direction="column">
                         <Typography variant="caption">{t("widgets.alertsContent.alert_block_start_date")}</Typography>
-                        <Typography variant="body2">{new Date(start_date).toUTCString()}</Typography>
+                        <Typography variant="body2">
+                            {timeInterval?.startDate ? new Date(timeInterval.startDate).toUTCString() : ""}
+                        </Typography>
                         <Typography variant="caption">{t("widgets.alertsContent.alert_block_end_date")}</Typography>
-                        <Typography variant="body2">{new Date(start_date).toUTCString()}</Typography>
+                        <Typography variant="body2">
+                            {timeInterval?.startDate ? new Date(timeInterval.startDate).toUTCString() : ""}
+                        </Typography>
                     </Stack>
                     <Stack direction="column">
                         <Typography variant="caption">
                             {t("widgets.alertsContent.alert_block_start_warning_interval")}
                         </Typography>
-                        <Typography variant="body2">{start_warning_interval}</Typography>
+                        <Typography variant="body2">{startWarningInterval}</Typography>
                         <Typography variant="caption">{t("widgets.alertsContent.alert_block_sensor_id")}</Typography>
-                        <Typography variant="body2">{sensor_id}</Typography>
+                        <Typography variant="body2">{sensorId}</Typography>
                     </Stack>
                     <Stack direction="column">
                         <Typography variant="caption">{t("widgets.alertsContent.alert_block_model")}</Typography>
@@ -152,37 +154,41 @@ const AlertBlock = ({
                             <Typography variant="caption">
                                 {t("widgets.alertsContent.alert_block_trigger_frequency")}
                             </Typography>
-                            <Typography variant="body2">{trigger_frequency}</Typography>
+                            <Typography variant="body2">{triggerFrequency}</Typography>
                         </Stack>
                         <Stack direction="column">
                             <Typography variant="caption">{t("widgets.alertsContent.alert_block_message")}</Typography>
                             <Typography variant="body2">{message}</Typography>
                             <Typography variant="caption">{t("widgets.alertsContent.alert_block_telegram")}</Typography>
-                            <Typography variant="body2">{telegram.join(" ")}</Typography>
+                            <Typography variant="body2">{telegram?.join(" ") || ""}</Typography>
                             <Typography variant="caption">{t("widgets.alertsContent.alert_block_email")}</Typography>
-                            <Typography variant="body2">{email.join(" ")}</Typography>
+                            <Typography variant="body2">{email?.join(" ") || ""}</Typography>
                             <Typography variant="caption">
                                 {t("widgets.alertsContent.alert_block_include_graph")}
                             </Typography>
-                            {include_graph}
+                            {includeGraph}
                         </Stack>
                         <Stack direction="column">
                             <Typography variant="caption">
                                 {t("widgets.alertsContent.alert_block_start_date")}
                             </Typography>
-                            <Typography variant="body2">{new Date(start_date).toUTCString()}</Typography>
+                            <Typography variant="body2">
+                                {timeInterval?.startDate ? new Date(timeInterval.startDate).toUTCString() : ""}
+                            </Typography>
                             <Typography variant="caption">{t("widgets.alertsContent.alert_block_end_date")}</Typography>
-                            <Typography variant="body2">{new Date(end_date).toUTCString()}</Typography>
+                            <Typography variant="body2">
+                                {timeInterval?.endDate ? new Date(timeInterval.endDate).toUTCString() : ""}
+                            </Typography>
                         </Stack>
                         <Stack direction="column">
                             <Typography variant="caption">
                                 {t("widgets.alertsContent.alert_block_start_warning_interval")}
                             </Typography>
-                            <Typography variant="body2">{start_warning_interval}</Typography>
+                            <Typography variant="body2">{startWarningInterval}</Typography>
                             <Typography variant="caption">
                                 {t("widgets.alertsContent.alert_block_sensor_id")}
                             </Typography>
-                            <Typography variant="body2">{sensor_id}</Typography>
+                            <Typography variant="body2">{sensorId}</Typography>
                             <Typography variant="caption">{t("widgets.alertsContent.alert_block_model")}</Typography>
                             <Typography variant="body2">{model}</Typography>
                         </Stack>
