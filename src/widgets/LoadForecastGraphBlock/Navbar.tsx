@@ -74,7 +74,7 @@ export function DisabledOptions() {
             getOptionDisabled={(option) => option === timeSlots[0] || option === timeSlots[2]}
             sx={{ width: 300 }}
             renderInput={(params) => (
-                <TextField {...params} label={t("widgets.LoadForecastGraphBlock.navbar.disabled_options_label")} />
+                <TextField {...params} label={t("widgets.LoadForecastGraphBlock.navbar.disabledOptionsLabel")} />
             )}
         />
     )
@@ -99,14 +99,14 @@ export function PinnedSubheaderList() {
                 <li key={`section-${index}`}>
                     <ul>
                         <ListSubheader sx={{ bgcolor: "background.paper" }}>
-                            {`${t(`widgets.LoadForecastGraphBlock.navbar.time_units.${sectionId}`)}:`.toUpperCase()}
+                            {`${t(`widgets.LoadForecastGraphBlock.navbar.timeUnits.${sectionId}`)}:`.toUpperCase()}
                         </ListSubheader>
                         {[0, 1, 2, 3, 4].map((item) => (
                             <ListItem key={`item-${index}-${item}`}>
                                 <ListItemText
-                                    primary={t("widgets.LoadForecastGraphBlock.navbar.last_time_unit", {
+                                    primary={t("widgets.LoadForecastGraphBlock.navbar.lastTimeUnit", {
                                         count: item + 1,
-                                        unit: t(`widgets.LoadForecastGraphBlock.navbar.time_units.${sectionId}`),
+                                        unit: t(`widgets.LoadForecastGraphBlock.navbar.timeUnits.${sectionId}`),
                                     })}
                                 />
                             </ListItem>
@@ -183,10 +183,10 @@ export function SplitButton() {
                     title={
                         <React.Fragment>
                             <Typography color="inherit">
-                                {t("widgets.LoadForecastGraphBlock.navbar.from_label")}: {new Date().toUTCString()}
+                                {t("widgets.LoadForecastGraphBlock.navbar.fromLabel")}: {new Date().toUTCString()}
                             </Typography>
                             <Typography color="inherit">
-                                {t("widgets.LoadForecastGraphBlock.navbar.to_label")}: {new Date().toUTCString()}
+                                {t("widgets.LoadForecastGraphBlock.navbar.toLabel")}: {new Date().toUTCString()}
                             </Typography>
                             <Typography color="warning">UTC</Typography>
                         </React.Fragment>
@@ -238,7 +238,7 @@ export function SplitButton() {
                                             <Box>
                                                 <Typography variant="h6">
                                                     {t(
-                                                        "widgets.LoadForecastGraphBlock.navbar.absolute_time_range_heading"
+                                                        "widgets.LoadForecastGraphBlock.navbar.absoluteTimeRangeHeading"
                                                     )}
                                                 </Typography>
                                                 <Box>
@@ -255,7 +255,7 @@ export function SplitButton() {
                                                 </Box>
                                             </Box>
                                             <Button variant="contained">
-                                                {t("widgets.LoadForecastGraphBlock.navbar.apply_time_range_button")}
+                                                {t("widgets.LoadForecastGraphBlock.navbar.applyTimeRangeButton")}
                                             </Button>
                                         </Stack>
                                         <Divider />
@@ -266,7 +266,7 @@ export function SplitButton() {
                                     <Divider />
                                     <Stack sx={{ padding: `1rem` }}>
                                         <Typography variant="caption">
-                                            {t("widgets.LoadForecastGraphBlock.navbar.timezone_caption")}
+                                            {t("widgets.LoadForecastGraphBlock.navbar.timezoneCaption")}
                                         </Typography>
                                         <Stack direction={"row"} sx={{ alignItems: `center` }}>
                                             <Typography
@@ -274,7 +274,7 @@ export function SplitButton() {
                                                 color="textPrimary"
                                                 sx={{ marginRight: `1rem` }}
                                             >
-                                                {t("widgets.LoadForecastGraphBlock.navbar.timezone_label")}:
+                                                {t("widgets.LoadForecastGraphBlock.navbar.timezoneLabel")}:
                                             </Typography>
                                             <IconButton
                                                 onClick={handleClick2}
@@ -289,7 +289,7 @@ export function SplitButton() {
                                                 <Typography variant="button" color="textPrimary">
                                                     {timezone_list[0] ||
                                                         t(
-                                                            "widgets.LoadForecastGraphBlock.navbar.select_period_placeholder"
+                                                            "widgets.LoadForecastGraphBlock.navbar.selectPeriodPlaceholder"
                                                         )}
                                                 </Typography>
                                                 <ArrowDropDownIcon />
@@ -463,7 +463,7 @@ export function Navbar({ availableModels, selectedModel, onSelect, onRefreshSele
             </Button> */}
             <Stack direction={"row"} sx={{ alignItems: `center` }} spacing={1}>
                 <Typography variant="button" color="textPrimary" sx={{ fontSize }}>
-                    {t("widgets.LoadForecastGraphBlock.navbar.sensor_label")}:
+                    {t("widgets.LoadForecastGraphBlock.navbar.sensorLabel")}:
                 </Typography>
                 <IconButton
                     onClick={handleClick}
@@ -477,7 +477,7 @@ export function Navbar({ availableModels, selectedModel, onSelect, onRefreshSele
                     }}
                 >
                     <Typography variant="button" color="textPrimary" sx={{ color: textColor, fontSize }}>
-                        {selectedModel || t("widgets.LoadForecastGraphBlock.navbar.select_sensor_placeholder")}
+                        {selectedModel || t("widgets.LoadForecastGraphBlock.navbar.selectSensorPlaceholder")}
                     </Typography>
                     <ArrowDropDownIcon sx={{ color: textColor }} />
                 </IconButton>
@@ -521,7 +521,7 @@ export function Navbar({ availableModels, selectedModel, onSelect, onRefreshSele
 
             <Stack direction={"row"} sx={{ alignItems: `center` }} spacing={1}>
                 <Typography variant="button" color="textPrimary" sx={{ marginRight: `1rem`, fontSize }}>
-                    {t("widgets.LoadForecastGraphBlock.navbar.refresh_at_label")}:
+                    {t("widgets.LoadForecastGraphBlock.navbar.refreshAtLabel")}:
                 </Typography>
                 <IconButton
                     onClick={handleClick2}
@@ -536,7 +536,7 @@ export function Navbar({ availableModels, selectedModel, onSelect, onRefreshSele
                     }}
                 >
                     <Typography variant="button" sx={{ color: textColor, fontSize }}>
-                        {refreshAt[0] || t("widgets.LoadForecastGraphBlock.navbar.select_period_placeholder")}
+                        {refreshAt[0] || t("widgets.LoadForecastGraphBlock.navbar.selectPeriodPlaceholder")}
                     </Typography>
                     <ArrowDropDownIcon sx={{ color: textColor }} />
                 </IconButton>

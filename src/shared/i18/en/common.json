@@ -31,28 +31,28 @@
             "error_prefix": "Error: ",
             "unknown_error": "Unknown error",
             "navbar": {
-                "disabled_options_label": "Disabled options",
+                "disabledOptionsLabel": "Disabled options",
                 "time_range_options": {
                     "option1": "now-1d to now+1d",
                     "yesterday": "yesterday",
                     "tommorow": "tommorow"
                 },
-                "from_label": "from:",
-                "to_label": "to:",
-                "absolute_time_range_heading": "Absolute time range",
-                "apply_time_range_button": "Apply time range",
-                "time_units": {
+                "fromLabel": "from:",
+                "toLabel": "to:",
+                "absoluteTimeRangeHeading": "Absolute time range",
+                "applyTimeRangeButton": "Apply time range",
+                "timeUnits": {
                     "minute": "minute",
                     "hour": "hour",
                     "day": "day"
                 },
-                "last_time_unit": "Last: {{count}} {{unit}}",
-                "timezone_caption": "Coordinated Universal Time UTC, GMT UTC+00:00",
-                "timezone_label": "timezone:",
-                "select_period_placeholder": "Select period",
-                "sensor_label": "data source",
-                "select_sensor_placeholder": "Select sensor",
-                "refresh_at_label": "refresh at"
+                "lastTimeUnit": "Last: {{count}} {{unit}}",
+                "timezoneCaption": "Coordinated Universal Time UTC, GMT UTC+00:00",
+                "timezoneLabel": "timezone:",
+                "selectPeriodPlaceholder": "Select period",
+                "sensorLabel": "data source",
+                "selectSensorPlaceholder": "Select sensor",
+                "refreshAtLabel": "refresh at"
             }
         },
         "Metrix": {

@@ -31,28 +31,28 @@
             "error_prefix": "Ошибка: ",
             "unknown_error": "Неизвестная ошибка",
             "navbar": {
-                "disabled_options_label": "Отключенные опции",
+                "disabledOptionsLabel": "Отключенные опции",
                 "time_range_options": {
                     "option1": "сейчас-1д до сейчас+1д",
                     "yesterday": "вчера",
                     "tommorow": "завтра"
                 },
-                "from_label": "с:",
-                "to_label": "по:",
-                "absolute_time_range_heading": "Абсолютный временной диапазон",
-                "apply_time_range_button": "Применить временной диапазон",
-                "time_units": {
+                "fromLabel": "с:",
+                "toLabel": "по:",
+                "absoluteTimeRangeHeading": "Абсолютный временной диапазон",
+                "applyTimeRangeButton": "Применить временной диапазон",
+                "timeUnits": {
                     "minute": "минута",
                     "hour": "час",
                     "day": "день"
                 },
-                "last_time_unit": "Последние: {{count}} {{unit}}",
-                "timezone_caption": "Всемирное координированное время UTC, GMT UTC+00:00",
-                "timezone_label": "часовой пояс:",
-                "select_period_placeholder": "Выберите период",
-                "sensor_label": "источник данных",
-                "select_sensor_placeholder": "Выберите датчик",
-                "refresh_at_label": "частота обновления"
+                "lastTimeUnit": "Последние: {{count}} {{unit}}",
+                "timezoneCaption": "Всемирное координированное время UTC, GMT UTC+00:00",
+                "timezoneLabel": "часовой пояс:",
+                "selectPeriodPlaceholder": "Выберите период",
+                "sensorLabel": "источник данных",
+                "selectSensorPlaceholder": "Выберите датчик",
+                "refreshAtLabel": "частота обновления"
             }
         },
         "Metrix": {

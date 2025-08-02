@@ -31,28 +31,28 @@
             "error_prefix": "Errore: ",
             "unknown_error": "Errore sconosciuto",
             "navbar": {
-                "disabled_options_label": "Opzioni disabilitate",
+                "disabledOptionsLabel": "Opzioni disabilitate",
                 "time_range_options": {
                     "option1": "adesso-1g a adesso+1g",
                     "yesterday": "ieri",
                     "tommorow": "domani"
                 },
-                "from_label": "da:",
-                "to_label": "a:",
-                "absolute_time_range_heading": "Intervallo di tempo assoluto",
-                "apply_time_range_button": "Applica intervallo di tempo",
-                "time_units": {
+                "fromLabel": "da:",
+                "toLabel": "a:",
+                "absoluteTimeRangeHeading": "Intervallo di tempo assoluto",
+                "applyTimeRangeButton": "Applica intervallo di tempo",
+                "timeUnits": {
                     "minute": "minuto",
                     "hour": "ora",
                     "day": "giorno"
                 },
-                "last_time_unit": "Ultimi: {{count}} {{unit}}",
-                "timezone_caption": "Tempo Universale Coordinato UTC, GMT UTC+00:00",
-                "timezone_label": "fuso orario:",
-                "select_period_placeholder": "Seleziona periodo",
-                "sensor_label": "sensore",
-                "select_sensor_placeholder": "Seleziona sensore",
-                "refresh_at_label": "aggiorna alle"
+                "lastTimeUnit": "Ultimi: {{count}} {{unit}}",
+                "timezoneCaption": "Tempo Universale Coordinato UTC, GMT UTC+00:00",
+                "timezoneLabel": "fuso orario:",
+                "selectPeriodPlaceholder": "Seleziona periodo",
+                "sensorLabel": "sensore",
+                "selectSensorPlaceholder": "Seleziona sensore",
+                "refreshAtLabel": "aggiorna alle"
             }
         },
         "Metrix": {
