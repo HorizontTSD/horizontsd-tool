@@ -109,7 +109,7 @@ const SensorAndModelSelection: React.FC<SensorAndModelSelectionProps> = ({
     return (
         <Stack direction={{ xs: "column", sm: "row" }} spacing={1} sx={{ width: "100%" }}>
             <Stack sx={{ width: { xs: "100%", sm: 220 } }}>
-                <Typography>{t("widgets.alertsContent.sensor_selection")}</Typography>
+                <Typography>{t("widgets.alertsContent.sensorSelection")}</Typography>
                 <MultipleSelectCheckmarks
                     width={220}
                     list={sensors || []}
@@ -119,7 +119,7 @@ const SensorAndModelSelection: React.FC<SensorAndModelSelectionProps> = ({
                 />
             </Stack>
             <Stack sx={{ width: { xs: "100%", sm: 140 } }}>
-                <Typography>{t("widgets.alertsContent.model_selection")}</Typography>
+                <Typography>{t("widgets.alertsContent.modelSelection")}</Typography>
                 <MultipleSelectCheckmarks
                     width={140}
                     list={availableModels || []}
@@ -137,7 +137,7 @@ const Header = () => {
 
     return (
         <Stack>
-            <Typography variant="h4">{t("widgets.alertsContent.alert_rules")}</Typography>
+            <Typography variant="h4">{t("widgets.alertsContent.alertRules")}</Typography>
         </Stack>
     )
 }
@@ -224,7 +224,7 @@ const FiltersBar = ({
                             <TextField
                                 value={search}
                                 onChange={(e) => setSearch(e.target.value)}
-                                placeholder={t("widgets.alertsContent.search_alerts_placeholder")}
+                                placeholder={t("widgets.alertsContent.searchAlertsPlaceholder")}
                                 sx={{
                                     minWidth: `160px`,
                                     background: theme.palette.background.paper,
@@ -271,7 +271,7 @@ const FiltersBar = ({
                     onClick={() => setOpenCreate(true)}
                     sx={{ width: { xs: "100%", sm: "auto" }, ml: { xs: 0, sm: 2 } }}
                 >
-                    {t("widgets.alertsContent.create_button")}
+                    {t("widgets.alertsContent.createButton")}
                 </Button>
             </Stack>
         </Stack>
@@ -465,7 +465,7 @@ export const AlertsContent = () => {
             await refetchAlerts()
             setOpenCreate(false)
         } catch (error) {
-            console.error(t("widgets.alertsContent.error_creating_alert"), error)
+            console.error(t("widgets.alertsContent.errorCreatingAlert"), error)
             // TODO toast
         }
     }
@@ -483,7 +483,7 @@ export const AlertsContent = () => {
             setOpenEdit(false)
             setSelectedAlert(null)
         } catch (error) {
-            console.error(t("widgets.alertsContent.error_deleting_alert"), error)
+            console.error(t("widgets.alertsContent.errorDeletingAlert"), error)
             // TODO toast
         }
     }

@@ -55,14 +55,14 @@ const AlerModalForm = ({
         <Box sx={{ flex: 1, pr: 2 }}>
             <Typography variant="h4" sx={{ color: "white", mb: 2 }}>
                 {isEdit
-                    ? t("widgets.alertsContent.create_alert_modal_title_edit")
-                    : t("widgets.alertsContent.create_alert_modal_title_create")}
+                    ? t("widgets.alertsContent.createAlertModalTitleEdit")
+                    : t("widgets.alertsContent.createAlertModalTitleCreate")}
             </Typography>
             <Stack spacing={1}>
                 {/**/}
                 <Box>
                     <Typography sx={{ color: "white", mb: 1, fontSize: 15 }}>
-                        {t("widgets.alertsContent.create_alert_modal_alert_name_label")}
+                        {t("widgets.alertsContent.createAlertModalAlertNameLabel")}
                     </Typography>
                     <OutlinedInput
                         fullWidth
@@ -82,11 +82,11 @@ const AlerModalForm = ({
                 <Stack direction="row" spacing={2} alignItems="flex-end">
                     <Box sx={{ flex: 1 }}>
                         <Typography sx={{ color: "white", mb: 1, fontSize: 15 }}>
-                            {t("widgets.alertsContent.create_alert_modal_sensor_label")}
+                            {t("widgets.alertsContent.createAlertModalSensorLabel")}
                         </Typography>
                         <Select
-                            value={formValues.sensor_id}
-                            onChange={(e) => handleChange("sensor_id", e.target.value)}
+                            value={formValues.sensorId}
+                            onChange={(e) => handleChange("sensorId", e.target.value)}
                             size="small"
                             sx={{
                                 background: "white",
@@ -108,7 +108,7 @@ const AlerModalForm = ({
                     </Box>
                     <Box sx={{ flex: 1 }}>
                         <Typography sx={{ color: "white", mb: 1, fontSize: 15 }}>
-                            {t("widgets.alertsContent.create_alert_modal_model_label")}
+                            {t("widgets.alertsContent.createAlertModalModelLabel")}
                         </Typography>
                         <Select
                             value={formValues.model}
@@ -138,7 +138,7 @@ const AlerModalForm = ({
                 <Stack direction="row" spacing={4} alignItems="flex-end">
                     <Box>
                         <Typography sx={{ color: "white", mb: 1, fontSize: 15 }}>
-                            {t("widgets.alertsContent.create_alert_modal_threshold_value_label")}
+                            {t("widgets.alertsContent.createAlertModalThresholdValueLabel")}
                         </Typography>
                         <Box
                             sx={{
@@ -153,8 +153,8 @@ const AlerModalForm = ({
                         >
                             <OutlinedInput
                                 fullWidth
-                                value={formValues.threshold_value}
-                                onChange={(e) => handleChange("threshold_value", Number(e.target.value))}
+                                value={formValues.thresholdValue}
+                                onChange={(e) => handleChange("thresholdValue", Number(e.target.value))}
                                 sx={{
                                     background: "transparent",
                                     color: "black",
@@ -182,8 +182,8 @@ const AlerModalForm = ({
                                     }}
                                     onClick={() =>
                                         handleChange(
-                                            "threshold_value",
-                                            Math.max(0, Number(formValues.threshold_value) - 1)
+                                            "thresholdValue",
+                                            Math.max(0, Number(formValues.thresholdValue) - 1)
                                         )
                                     }
                                 >
@@ -202,7 +202,7 @@ const AlerModalForm = ({
                                         "&:hover": { background: "#002C50" },
                                     }}
                                     onClick={() =>
-                                        handleChange("threshold_value", Number(formValues.threshold_value) + 1)
+                                        handleChange("thresholdValue", Number(formValues.thresholdValue) + 1)
                                     }
                                 >
                                     +
@@ -212,11 +212,11 @@ const AlerModalForm = ({
                     </Box>
                     <Box>
                         <Typography sx={{ color: "white", mb: 1, fontSize: 15 }}>
-                            {t("widgets.alertsContent.create_alert_modal_alert_scheme_label")}
+                            {t("widgets.alertsContent.createAlertModalAlertSchemeLabel")}
                         </Typography>
                         <Select
-                            value={formValues.alert_scheme}
-                            onChange={(e) => handleChange("alert_scheme", e.target.value)}
+                            value={formValues.alertScheme}
+                            onChange={(e) => handleChange("alertScheme", e.target.value)}
                             size="small"
                             sx={{
                                 background: "white",
@@ -230,10 +230,10 @@ const AlerModalForm = ({
                             }}
                         >
                             <MenuItem value="Выше значения">
-                                {t("widgets.alertsContent.create_alert_modal_alert_scheme_above_value")}
+                                {t("widgets.alertsContent.createAlertModalAlertSchemeAboveValue")}
                             </MenuItem>
                             <MenuItem value="Ниже значения">
-                                {t("widgets.alertsContent.create_alert_modal_alert_scheme_below_value")}
+                                {t("widgets.alertsContent.createAlertModalAlertSchemeBelowValue")}
                             </MenuItem>
                         </Select>
                     </Box>
@@ -243,11 +243,11 @@ const AlerModalForm = ({
                 {/**/}
                 <Box>
                     <Typography sx={{ color: "white", mb: 1, fontSize: 15 }}>
-                        {t("widgets.alertsContent.create_alert_modal_trigger_frequency_label")}
+                        {t("widgets.alertsContent.createAlertModalTriggerFrequencyLabel")}
                     </Typography>
                     <Select
-                        value={formValues.trigger_frequency}
-                        onChange={(e) => handleChange("trigger_frequency", e.target.value)}
+                        value={formValues.triggerFrequency}
+                        onChange={(e) => handleChange("triggerFrequency", e.target.value)}
                         size="small"
                         sx={{
                             background: "white",
@@ -270,7 +270,7 @@ const AlerModalForm = ({
                 <Stack direction="row" spacing={2}>
                     <Box>
                         <Typography sx={{ color: "white", mb: 1, fontSize: 15 }}>
-                            {t("widgets.alertsContent.create_alert_modal_start_date_label")}
+                            {t("widgets.alertsContent.createAlertModalStartDateLabel")}
                         </Typography>
                         <OutlinedInput
                             type="date"
@@ -288,7 +288,7 @@ const AlerModalForm = ({
                     </Box>
                     <Box>
                         <Typography sx={{ color: "white", mb: 1, fontSize: 15 }}>
-                            {t("widgets.alertsContent.create_alert_modal_start_time_label")}
+                            {t("widgets.alertsContent.createAlertModalStartTimeLabel")}
                         </Typography>
                         <OutlinedInput
                             type="time"
@@ -309,7 +309,7 @@ const AlerModalForm = ({
                 <Stack direction="row" spacing={2}>
                     <Box>
                         <Typography sx={{ color: "white", mb: 1, fontSize: 15 }}>
-                            {t("widgets.alertsContent.create_alert_modal_end_date_label")}
+                            {t("widgets.alertsContent.createAlertModalEndDateLabel")}
                         </Typography>
                         <OutlinedInput
                             type="date"
@@ -327,7 +327,7 @@ const AlerModalForm = ({
                     </Box>
                     <Box>
                         <Typography sx={{ color: "white", mb: 1, fontSize: 15 }}>
-                            {t("widgets.alertsContent.create_alert_modal_end_time_label")}
+                            {t("widgets.alertsContent.createAlertModalEndTimeLabel")}
                         </Typography>
                         <OutlinedInput
                             type="time"
@@ -349,7 +349,7 @@ const AlerModalForm = ({
                 <Stack direction="row" spacing={2} mt={2}>
                     <Box sx={{ flex: 1 }}>
                         <Typography sx={{ color: "white", mb: 1, fontSize: 15 }}>
-                            {t("widgets.alertsContent.create_alert_modal_email_addresses_label")}
+                            {t("widgets.alertsContent.createAlertModalEmailAddressesLabel")}
                         </Typography>
                         <OutlinedInput
                             fullWidth
@@ -367,12 +367,12 @@ const AlerModalForm = ({
                                 height: 30,
                             }}
                             size="small"
-                            placeholder={t("widgets.alertsContent.create_alert_modal_email_addresses_placeholder")}
+                            placeholder={t("widgets.alertsContent.createAlertModalEmailAddressesPlaceholder")}
                         />
                     </Box>
                     <Box sx={{ flex: 1 }}>
                         <Typography sx={{ color: "white", mb: 1, fontSize: 15 }}>
-                            {t("widgets.alertsContent.create_alert_modal_telegram_nicknames_label")}
+                            {t("widgets.alertsContent.createAlertModalTelegramNicknamesLabel")}
                         </Typography>
                         <OutlinedInput
                             fullWidth
@@ -390,7 +390,7 @@ const AlerModalForm = ({
                                 height: 30,
                             }}
                             size="small"
-                            placeholder={t("widgets.alertsContent.create_alert_modal_telegram_nicknames_placeholder")}
+                            placeholder={t("widgets.alertsContent.createAlertModalTelegramNicknamesPlaceholder")}
                         />
                     </Box>
                 </Stack>
@@ -403,14 +403,14 @@ const AlerModalForm = ({
                         sx={{ color: "white", "&.Mui-checked": { color: "white" } }}
                     />
                     <Typography sx={{ color: "white", fontSize: 15 }}>
-                        {t("widgets.alertsContent.create_alert_modal_include_graph_label")}
+                        {t("widgets.alertsContent.createAlertModalIncludeGraphLabel")}
                     </Typography>
                 </Box>
 
                 {/**/}
                 <Box>
                     <Typography sx={{ color: "white", mb: 1, fontSize: 15 }}>
-                        {t("widgets.alertsContent.create_alert_modal_message_label")}
+                        {t("widgets.alertsContent.createAlertModalMessageLabel")}
                     </Typography>
                     <OutlinedInput
                         fullWidth
@@ -447,7 +447,7 @@ const AlerModalForm = ({
                                 }}
                                 onClick={handleSubmit}
                             >
-                                {t("widgets.alertsContent.create_alert_modal_save_button")}
+                                {t("widgets.alertsContent.createAlertModalSaveButton")}
                             </Button>
                             <Button
                                 variant="contained"
@@ -462,7 +462,7 @@ const AlerModalForm = ({
                                 }}
                                 onClick={onClose}
                             >
-                                {t("widgets.alertsContent.create_alert_modal_delete_button")}
+                                {t("widgets.alertsContent.createAlertModalDeleteButton")}
                             </Button>
                         </>
                     ) : (
@@ -480,7 +480,7 @@ const AlerModalForm = ({
                                 }}
                                 onClick={handleSubmit}
                             >
-                                {t("widgets.alertsContent.create_alert_modal_create_button")}
+                                {t("widgets.alertsContent.createAlertModalCreateButton")}
                             </Button>
                             <Button
                                 variant="contained"
@@ -495,7 +495,7 @@ const AlerModalForm = ({
                                 }}
                                 onClick={handleReset}
                             >
-                                {t("widgets.alertsContent.create_alert_modal_reset_button")}
+                                {t("widgets.alertsContent.createAlertModalResetButton")}
                             </Button>
                             <Button
                                 variant="contained"
@@ -510,7 +510,7 @@ const AlerModalForm = ({
                                 }}
                                 onClick={onClose}
                             >
-                                {t("widgets.alertsContent.create_alert_modal_cancel_button")}
+                                {t("widgets.alertsContent.createAlertModalCancelButton")}
                             </Button>
                         </>
                     )}

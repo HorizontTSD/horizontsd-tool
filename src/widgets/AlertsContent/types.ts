@@ -13,19 +13,19 @@ export interface Alert {
 
 export interface CreateAlertFormValues {
     name: string
-    threshold_value: string | number
-    alert_scheme: "Выше значения" | "Ниже значения"
-    trigger_frequency: string | number
+    thresholdValue: string | number
+    alertScheme: "Выше значения" | "Ниже значения"
+    triggerFrequency: string | number
     message: string
-    telegram_nicknames: string[]
-    email_addresses: string[]
-    include_graph: boolean
-    date_start: string // Формат: 'YYYY-MM-DD'
-    date_end: string // Формат: 'YYYY-MM-DD'
-    time_start: string // Формат: 'HH:MM'
-    time_end: string // Формат: 'HH:MM'
-    start_warning_interval: string | number // Пример: '60m', '1h'
-    sensor_id: string
+    telegramNicknames: string[]
+    emailAddresses: string[]
+    includeGraph: boolean
+    dateStart: string // Формат: 'YYYY-MM-DD'
+    dateEnd: string // Формат: 'YYYY-MM-DD'
+    timeStart: string // Формат: 'HH:MM'
+    timeEnd: string // Формат: 'HH:MM'
+    startWarningInterval: string | number // Пример: '60m', '1h'
+    sensorId: string
     model: string
     atValue: number | string
     betweenValue1: number | string
@@ -49,8 +49,8 @@ export interface AlertNotifications {
  * Time interval for an alert (start and end date)
  */
 export interface AlertTimeInterval {
-    start_date: string
-    end_date: string
+    startDate: string
+    endDate: string
 }
 
 /**
@@ -60,13 +60,13 @@ export interface AlertBlockProps {
     name: string
     threshold: string | number
     scheme: string
-    trigger_frequency: string | number
+    triggerFrequency: string | number
     message: string
     notifications: AlertNotifications
-    include_graph: boolean
-    time_interval: AlertTimeInterval
-    start_warning_interval: string | number
-    sensor_id: string
+    includeGraph: boolean
+    timeInterval: AlertTimeInterval
+    startWarningInterval: string | number
+    sensorId: string
     model: string
     expanded: boolean
     onToggle: () => void

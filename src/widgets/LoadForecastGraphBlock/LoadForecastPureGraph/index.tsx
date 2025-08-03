@@ -151,7 +151,7 @@ function populate({ point, amount, offset }: { [key: string]: number }) {
     if (point !== null && amount > 0) {
         let amp = [point, point]
         // eslint-disable-next-line
-        const gen_val = (v, i = 1) => {
+        const genVal = (v, i = 1) => {
             const func = [Math.random, Math.log1p, Math.cosh, Math.tan, Math.cos, Math.asin][~~(Math.random() * 5)]
 
             return clamp(func(v), amp[0], amp[1])
@@ -163,14 +163,14 @@ function populate({ point, amount, offset }: { [key: string]: number }) {
         }
 
         if (result.length == 0) {
-            result.push(gen_val(point))
+            result.push(genVal(point))
             amount--
         }
 
         for (let i = 0; i < amount; i++) {
             amp[0] -= 0.6
             amp[1] += 0.6
-            result.push(gen_val(result[result.length - 1]))
+            result.push(genVal(result[result.length - 1]))
         }
     }
 
@@ -191,57 +191,57 @@ export const LoadForecastPureGraph = ({ initialData }: LoadForecastPureGraphProp
     const [dimensions, setDimensions] = useState({ width: 0, height: 0 })
     const plotRef = useRef<uPlot | null>(null)
     const animFrame = useRef<number | null>(null)
-    const series_data = Object.entries(initialData.map_data.legend).slice(1)
+    const seriesData = Object.entries(initialData.map_data.legend).slice(1)
 
     // global setup
-    const total_hours = 24
-    const past_offset = Math.floor(total_hours / 2)
+    const totalHours = 24
+    const pastOffset = Math.floor(totalHours / 2)
     // eslint-disable-next-line
-    const now_offset = total_hours - past_offset
-    const plugin_refresh_rate = 1000 // 1000ms
+    const nowOffset = totalHours - pastOffset
+    const pluginRefreshRate = 1000 // 1000ms
 
     //
     const { map_data } = initialData
     const { last_real_data, actual_prediction_lstm, actual_prediction_xgboost, ensemble } = map_data.data
-    const real_data = [...last_real_data].reverse()
-    const prediction_lstm = [...actual_prediction_lstm].reverse()
-    const prediction_xgboost = [...actual_prediction_xgboost].reverse()
-    const prediction_ensemble = [...ensemble].reverse()
-    let min_ts = real_data[0].datetime
-    let max_ts = real_data[0].datetime
-    const max_timeline_length =
-        real_data.length + Math.max(prediction_lstm.length, prediction_xgboost.length, prediction_ensemble.length)
+    const realData = [...last_real_data].reverse()
+    const predictionLstm = [...actual_prediction_lstm].reverse()
+    const predictionXgboost = [...actual_prediction_xgboost].reverse()
+    const predictionEnsemble = [...ensemble].reverse()
+    let minTs = realData[0].datetime
+    let maxTs = realData[0].datetime
+    const maxTimelineLength =
+        realData.length + Math.max(predictionLstm.length, predictionXgboost.length, predictionEnsemble.length)
 
-    for (let i = 0; i < real_data.length; i++) {
-        min_ts = Math.min(min_ts, real_data[i].datetime)
-        max_ts = Math.max(max_ts, real_data[i].datetime)
+    for (let i = 0; i < realData.length; i++) {
+        minTs = Math.min(minTs, realData[i].datetime)
+        maxTs = Math.max(maxTs, realData[i].datetime)
     }
-    for (let i = 0; i < prediction_lstm.length; i++) {
-        min_ts = Math.min(min_ts, prediction_lstm[i].datetime)
-        max_ts = Math.max(max_ts, prediction_lstm[i].datetime)
+    for (let i = 0; i < predictionLstm.length; i++) {
+        minTs = Math.min(minTs, predictionLstm[i].datetime)
+        maxTs = Math.max(maxTs, predictionLstm[i].datetime)
     }
-    for (let i = 0; i < prediction_xgboost.length; i++) {
-        min_ts = Math.min(min_ts, prediction_xgboost[i].datetime)
-        max_ts = Math.max(max_ts, prediction_xgboost[i].datetime)
+    for (let i = 0; i < predictionXgboost.length; i++) {
+        minTs = Math.min(minTs, predictionXgboost[i].datetime)
+        maxTs = Math.max(maxTs, predictionXgboost[i].datetime)
     }
-    for (let i = 0; i < prediction_ensemble.length; i++) {
-        min_ts = Math.min(min_ts, prediction_ensemble[i].datetime)
-        max_ts = Math.max(max_ts, prediction_ensemble[i].datetime)
+    for (let i = 0; i < predictionEnsemble.length; i++) {
+        minTs = Math.min(minTs, predictionEnsemble[i].datetime)
+        maxTs = Math.max(maxTs, predictionEnsemble[i].datetime)
     }
 
-    const timestep_size = Math.floor((max_ts - min_ts) / max_timeline_length)
-    const xs = Array.from({ length: max_timeline_length }, (v, i) => (min_ts + timestep_size * i) / plugin_refresh_rate)
-    const load_consumption = [null, ...real_data].map((e) => e?.load_consumption)
+    const timestepSize = Math.floor((maxTs - minTs) / maxTimelineLength)
+    const xs = Array.from({ length: maxTimelineLength }, (v, i) => (minTs + timestepSize * i) / pluginRefreshRate)
+    const loadConsumption = [null, ...realData].map((e) => e?.load_consumption)
 
     const data = [
         xs,
-        load_consumption,
-        populate({ offset: xs.length - prediction_lstm.length }).concat(prediction_lstm.map((e) => e.load_consumption)),
-        populate({ offset: xs.length - prediction_xgboost.length }).concat(
-            prediction_xgboost.map((e) => e.load_consumption)
+        loadConsumption,
+        populate({ offset: xs.length - predictionLstm.length }).concat(predictionLstm.map((e) => e.load_consumption)),
+        populate({ offset: xs.length - predictionXgboost.length }).concat(
+            predictionXgboost.map((e) => e.load_consumption)
         ),
-        populate({ offset: xs.length - prediction_ensemble.length }).concat(
-            prediction_ensemble.map((e) => e.load_consumption)
+        populate({ offset: xs.length - predictionEnsemble.length }).concat(
+            predictionEnsemble.map((e) => e.load_consumption)
         ),
     ]
 
@@ -257,7 +257,7 @@ export const LoadForecastPureGraph = ({ initialData }: LoadForecastPureGraphProp
         },
         series: [
             {},
-            ...series_data.map(([key, value]) => ({
+            ...seriesData.map(([key, value]) => ({
                 label: key,
                 // eslint-disable-next-line
                 stroke: (value as any).color,

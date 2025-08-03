@@ -107,7 +107,7 @@ export const Sidebar = () => {
                             <IconButton size="small" color="secondary">
                                 <ScreenShareIcon />
                             </IconButton>
-                            {opened && <ListItemText primary={t("widgets.nav_bar.path.main")} />}
+                            {opened && <ListItemText primary={t("widgets.navBar.path.main")} />}
                         </ListItemButton>
                     </ListItem>
                     <ListItem disablePadding>
@@ -115,7 +115,7 @@ export const Sidebar = () => {
                             <IconButton size="small" color="secondary">
                                 <AccessAlarmIcon />
                             </IconButton>
-                            {opened && <ListItemText primary={t("widgets.nav_bar.path.alerts")} />}
+                            {opened && <ListItemText primary={t("widgets.navBar.path.alerts")} />}
                         </ListItemButton>
                     </ListItem>
                     {opened && <Divider />}
@@ -124,7 +124,7 @@ export const Sidebar = () => {
                             <IconButton size="small" color="secondary">
                                 <AddCircleIcon />
                             </IconButton>
-                            {opened && <ListItemText primary={t("widgets.nav_bar.path.forecast")} />}
+                            {opened && <ListItemText primary={t("widgets.navBar.path.forecast")} />}
                         </ListItemButton>
                     </ListItem>
                 </List>

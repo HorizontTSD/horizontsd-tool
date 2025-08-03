@@ -122,7 +122,7 @@ export const LoadForecastGraphBlock = () => {
                 {sensorsListLoading ? (
                     <NavbarSkeleton />
                 ) : sensorsListError ? (
-                    <div>{t("widgets.LoadForecastGraphBlock.sensors_error")}</div>
+                    <div>{t("widgets.LoadForecastGraphBlock.sensorsError")}</div>
                 ) : (
                     <Navbar
                         availableModels={sensorsList || []}
@@ -138,11 +138,11 @@ export const LoadForecastGraphBlock = () => {
             <Card variant="outlined" sx={{ width: "100%", p: 1, minHeight: `600px` }}>
                 {error && (
                     <div style={{ color: "red" }}>
-                        {t("widgets.LoadForecastGraphBlock.error_prefix")}
+                        {t("widgets.LoadForecastGraphBlock.errorPrefix")}
                         {(error as FetchBaseQueryError)?.data &&
                         typeof ((error as FetchBaseQueryError).data as { detail: string }).detail === "string"
                             ? ((error as FetchBaseQueryError).data as { detail: string }).detail
-                            : t("widgets.LoadForecastGraphBlock.unknown_error")}
+                            : t("widgets.LoadForecastGraphBlock.unknownError")}
                     </div>
                 )}
                 {currentData ? <LoadForecastPureGraph initialData={currentData} /> : <ForecastGraphSkeleton />}

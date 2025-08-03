@@ -1,139 +1,131 @@
 import ExcelJS from "exceljs"
 
-export const LoadXLSX = ({
-    setData,
-    setLoaddata
-}) => {
+export const LoadXLSX = ({ setData, setLoadData }) => {
     const loadFileXLSX = async (event) => {
-        const file = event.target.files[0];
-        if (!file) return;
-        const reader = new FileReader();
+        const file = event.target.files[0]
+        if (!file) return
+        const reader = new FileReader()
         reader.onload = async (e) => {
             try {
-                const buffer = e.target.result;
-                const workbook = new ExcelJS.Workbook();
+                const buffer = e.target.result
+                const workbook = new ExcelJS.Workbook()
                 // For .xlsx files
-                await workbook.xlsx.load(buffer);
+                await workbook.xlsx.load(buffer)
                 // For .xls files you would need a different parser
                 // await workbook.xls.load(buffer);
-                const excelData = {};
+                const excelData = {}
 
                 workbook.eachSheet((worksheet, sheetId) => {
-                    const rowData = [];
+                    const rowData = []
 
                     worksheet.eachRow({ includeEmpty: false }, (row, rowNumber) => {
-                        const rowObj = {};
+                        const rowObj = {}
                         row.eachCell({ includeEmpty: false }, (cell, colNumber) => {
                             // Use header row (first row) as property names
                             if (rowNumber === 1) {
-                                rowObj[`header_${colNumber}`] = cell.value;
+                                rowObj[`header${colNumber}`] = cell.value
                             } else {
-                                const header = worksheet.getRow(1).getCell(colNumber).value;
+                                const header = worksheet.getRow(1).getCell(colNumber).value
                                 if (header) {
-                                    rowObj[header] = cell.value;
+                                    rowObj[header] = cell.value
                                 }
                             }
-                        });
+                        })
 
-                        if (rowNumber !== 1) { // Skip header row in data
-                            rowData.push(rowObj);
+                        if (rowNumber !== 1) {
+                            // Skip header row in data
+                            rowData.push(rowObj)
                         }
-                    });
-                    excelData[worksheet.name] = rowData;
-                });
+                    })
+                    excelData[worksheet.name] = rowData
+                })
 
-                setData(excelData);
-                setLoaddata(true);
+                setData(excelData)
+                setLoadData(true)
             } catch (error) {
-                console.error('Error parsing Excel file:', error);
-                setLoaddata(false);
+                console.error("Error parsing Excel file:", error)
+                setLoadData(false)
             }
-        };
+        }
 
-        reader.readAsArrayBuffer(file);
-    };
+        reader.readAsArrayBuffer(file)
+    }
 
     return {
-        loader: loadFileXLSX
-    };
-};
+        loader: loadFileXLSX,
+    }
+}
 
-export const LoadCSV = ({
-    setData,
-    setLoaddata
-}) => {
+export const LoadCSV = ({ setData, setLoadData }) => {
     const loadFileCSV = (event) => {
-        const file = event.target.files[0];
-        if (!file) return;
-        const reader = new FileReader();
+        const file = event.target.files[0]
+        if (!file) return
+        const reader = new FileReader()
         reader.onload = (e) => {
             try {
-                const csvData = e.target.result;
-                const lines = csvData.split('\n');
+                const csvData = e.target.result
+                const lines = csvData.split("\n")
                 if (lines.length === 0) {
-                    setLoaddata(false);
-                    return;
+                    setLoadData(false)
+                    return
                 }
 
                 // Get headers from first line
-                const headers = lines[0].split(',').map(header => header.trim());
+                const headers = lines[0].split(",").map((header) => header.trim())
 
                 // Parse remaining lines
-                const result = [];
+                const result = []
                 for (let i = 1; i < lines.length; i++) {
-                    if (!lines[i].trim()) continue; // Skip empty lines
-                    const currentLine = lines[i].split(',');
-                    const obj = {};
+                    if (!lines[i].trim()) continue // Skip empty lines
+                    const currentLine = lines[i].split(",")
+                    const obj = {}
                     for (let j = 0; j < headers.length; j++) {
-                        obj[headers[j]] = currentLine[j] ? currentLine[j].trim() : '';
+                        obj[headers[j]] = currentLine[j] ? currentLine[j].trim() : ""
                     }
-                    result.push(obj);
+                    result.push(obj)
                 }
-                setData({ 'Sheet1': result });
-                setLoaddata(true);
+                setData({ Sheet1: result })
+                setLoadData(true)
             } catch (error) {
-                console.error('Error parsing CSV file:', error);
-                setLoaddata(false);
+                console.error("Error parsing CSV file:", error)
+                setLoadData(false)
             }
-        };
-        reader.readAsText(file);
-    };
+        }
+        reader.readAsText(file)
+    }
 
     return {
-        loader: loadFileCSV
-    };
-};
+        loader: loadFileCSV,
+    }
+}
 
-export const LoadJSON = ({
-    setData,
-    setLoaddata
-}) => {
+export const LoadJSON = ({ setData, setLoadData }) => {
     const loadFileJSON = (event) => {
-        const file = event.target.files[0];
-        if (!file) return;
+        const file = event.target.files[0]
+        if (!file) return
 
-        const reader = new FileReader();
+        const reader = new FileReader()
 
         reader.onload = (e) => {
             try {
-                const jsonData = JSON.parse(e.target.result);
-                setData({ 'Sheet1': jsonData });
-                setLoaddata(true);
+                const jsonData = JSON.parse(e.target.result)
+                setData({ Sheet1: jsonData })
+                setLoadData(true)
             } catch (error) {
-                console.error('Error parsing JSON file:', error);
-                setLoaddata(false);
+                console.error("Error parsing JSON file:", error)
+                setLoadData(false)
             }
-        };
+        }
 
         reader.onerror = () => {
-            console.error('Error reading file');
-            setLoaddata(false);
-        };
+            console.error("Error reading file")
+            setLoadData(false)
+        }
 
-        reader.readAsText(file);
-    };
+        reader.readAsText(file)
+    }
 
     return {
-        loader: loadFileJSON
-    };
-};
+        loader: loadFileJSON,
+    }
+}

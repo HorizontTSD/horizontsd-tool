@@ -47,7 +47,7 @@ const UserDataChart = ({ data, XY }: { data: DataRow[]; XY: string[] }) => {
     const toTS = (s: string | number): number => new Date(s).valueOf()
     const xs = data.map((row) => toTS(row[timeKey]) / 1000)
     const ys = data.map((row) => (typeof row[valueKey] === "number" ? row[valueKey] : Number(row[valueKey])))
-    const chart_data = [xs, ys]
+    const chartData = [xs, ys]
 
     // Create a function to generate options based on current mode
     const getOptions = (width: number, height: number): Options => ({
@@ -136,9 +136,9 @@ const UserDataChart = ({ data, XY }: { data: DataRow[]; XY: string[] }) => {
                     height: "480px",
                 }}
             >
-                {chart_data && (
+                {chartData && (
                     <UPlotChart
-                        data={chart_data}
+                        data={chartData}
                         opts={opts}
                         callback={(u: uPlot) => {
                             plotRef.current = u
@@ -189,7 +189,7 @@ const LoadData = ({
         }
         return new Date(Number(s)).valueOf()
     }
-    const newest_date =
+    const newestDate =
         data && data.length > 0
             ? data.slice().sort((a: DataRow, b: DataRow) => {
                   const dateA = a[XY[0]]
@@ -199,7 +199,7 @@ const LoadData = ({
             : undefined
 
     const [value, setValue] = React.useState<Dayjs | null>(
-        newest_date && newest_date[XY[0]] ? dayjs(newest_date[XY[0]]) : null
+        newestDate && newestDate[XY[0]] ? dayjs(newestDate[XY[0]]) : null
     )
 
     const { t } = useTranslation("common")
@@ -215,10 +215,10 @@ const LoadData = ({
     return (
         <Stack>
             <Stack spacing={1} sx={{ padding: `1rem 0`, width: "240px" }}>
-                <Typography>{t("widgets.newForecast.controlled_picker_label")}</Typography>
+                <Typography>{t("widgets.newForecast.controlledPickerLabel")}</Typography>
                 <LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale={"en-gb"}>
                     <DateTimePicker
-                        label={t("widgets.newForecast.controlled_picker_label")}
+                        label={t("widgets.newForecast.controlledPickerLabel")}
                         value={value}
                         onChange={(newValue) => {
                             setValue(newValue as Dayjs | null)
@@ -305,19 +305,19 @@ export const NewForecast = () => {
 
     const { t } = useTranslation("common")
     const steps = [
-        t("widgets.newForecast.steps.select_data"),
-        t("widgets.newForecast.steps.choose_xy"),
-        t("widgets.newForecast.steps.choose_time"),
+        t("widgets.newForecast.steps.selectData"),
+        t("widgets.newForecast.steps.chooseXy"),
+        t("widgets.newForecast.steps.chooseTime"),
     ]
 
     // State declarations
-    const [selected_data, setSelected] = useState<string | null>(null)
-    const [load_data, setLoaddata] = useState(false)
+    const [selectedData, setSelected] = useState<string | null>(null)
+    const [loadData, setLoadData] = useState(false)
     const [data, setData] = useState<DataRow[] | null>(null)
-    const [selected_axis, setSelected_axis] = useState<string[]>(["", ""])
+    const [selectedAxis, setSelectedAxis] = useState<string[]>(["", ""])
     const [dataChartLoading, setDataChartLoading] = useState(true)
     const [activeStep, setActiveStep] = React.useState(0)
-    const [forecast_horizon_time, setForecast_horizon_time] = React.useState<string | Dayjs | null>(null)
+    const [forecast_horizon_time, setForecastHorizonTime] = React.useState<string | Dayjs | null>(null)
     const [completed, setCompleted] = React.useState<{
         [k: number]: boolean
     }>({})
@@ -325,48 +325,18 @@ export const NewForecast = () => {
         useFuncGeneratePossibleDateBackendV1GeneratePossibleDatePostMutation()
     const [dateLimits, setDateLimits] = useState<{ min: string; max: string } | null>(null)
     const [minForecastHorizon, setMinForecastHorizon] = useState<string | null>(null)
-
-    // Effects
     const [generateForecast, result] = useFuncGenerateForecastBackendV1GenerateForecastPostMutation()
-
-    useEffect(() => {
-        if (
-            selected_data != null &&
-            selected_axis.every((value) => value.length !== 0) &&
-            completedSteps() === totalSteps() &&
-            data != null
-        ) {
-            generateForecast({
-                predictRequest: {
-                    df: data ? normalizeDataRows(data, selected_axis[0]) : [],
-                    col_target: selected_axis[1],
-                    time_column: selected_axis[0],
-                    forecast_horizon_time: forecast_horizon_time
-                        ? dayjs(forecast_horizon_time).toISOString().replace(`T`, ` `).replace(`.000Z`, ``)
-                        : "",
-                    lag_search_depth: 1,
-                },
-            })
-                .unwrap()
-                .then((payload) => {
-                    return payload
-                })
-                .catch((error) => {
-                    console.error(t("widgets.newForecast.error_generating_forecast"), error)
-                })
-        }
-    }, [selected_data, selected_axis, completed, data, forecast_horizon_time, t])
 
     useEffect(() => {
         setDataChartLoading(result.isLoading)
     }, [result.isLoading])
 
     useEffect(() => {
-        if (selected_axis.every((value) => value.length !== 0) && data && data.length > 0) {
+        if (selectedAxis.every((value) => value.length !== 0) && data && data.length > 0) {
             generatePossibleDate({
                 convertRequest: {
                     df: data,
-                    time_column: selected_axis[0],
+                    time_column: selectedAxis[0],
                 },
             })
                 .unwrap()
@@ -381,7 +351,7 @@ export const NewForecast = () => {
                     setMinForecastHorizon(null)
                 })
         }
-    }, [selected_axis, data])
+    }, [selectedAxis, data])
 
     const totalSteps = () => steps.length
 
@@ -407,12 +377,40 @@ export const NewForecast = () => {
         handleNext()
     }
 
+    const handleSend = () => {
+        if (
+            selectedData != null &&
+            selectedAxis.every((value) => value.length !== 0) &&
+            data != null &&
+            forecast_horizon_time != null
+        ) {
+            generateForecast({
+                predictRequest: {
+                    df: data ? normalizeDataRows(data, selectedAxis[0]) : [],
+                    col_target: selectedAxis[1],
+                    time_column: selectedAxis[0],
+                    forecast_horizon_time: forecast_horizon_time
+                        ? dayjs(forecast_horizon_time).toISOString().replace(`T`, ` `).replace(`.000Z`, ``)
+                        : "",
+                    lag_search_depth: 1,
+                },
+            })
+                .unwrap()
+                .then((payload) => {
+                    return payload
+                })
+                .catch((error) => {
+                    console.error(t("widgets.newForecast.errorGeneratingForecast"), error)
+                })
+        }
+    }
+
     const handleReset = () => {
         setActiveStep(0)
         setCompleted({})
         setSelected(null)
-        setLoaddata(false)
-        setSelected_axis(["", ""])
+        setLoadData(false)
+        setSelectedAxis(["", ""])
         setDataChartLoading(true)
     }
 
@@ -431,34 +429,29 @@ export const NewForecast = () => {
         }
     }
 
-    const steps_requrements = [
-        [selected_data != null, load_data == true || selected_data == "Example" || selected_data == "ExampleCSV"],
-        [selected_axis.every((value) => value.length !== 0)],
-        [
-            selected_data != null,
-            selected_axis.every((value) => value.length !== 0),
-            dateLimits !== null,
-            !possibleDateError,
-        ],
+    const stepsRequirements = [
+        [selectedData != null, loadData == true || selectedData == "Example" || selectedData == "ExampleCSV"],
+        [selectedAxis.every((value) => value.length !== 0)],
+        [selectedData != null, selectedAxis.every((value) => value.length !== 0), forecast_horizon_time !== null],
     ]
 
-    const steps_description = [
+    const stepsDescription = [
         () => (
             <Stack direction={"column"}>
                 <Stack direction={"row"}>
-                    {selected_data != null && <CheckCircleIcon color="success" fontSize="small" />}
+                    {selectedData != null && <CheckCircleIcon color="success" fontSize="small" />}
                     <Typography variant="overline" sx={{ marginLeft: `0.3rem`, lineHeight: `1.4rem` }}>
-                        {t("widgets.newForecast.select_data_description")}
+                        {t("widgets.newForecast.selectDataDescription")}
                     </Typography>
                 </Stack>
                 <Stack direction={"row"}>
-                    {load_data || selected_data == "Example" ? (
+                    {loadData || selectedData == "Example" ? (
                         <CheckCircleIcon color="success" fontSize="small" />
                     ) : (
                         <ErrorIcon color="error" fontSize="small" />
                     )}
                     <Typography variant="overline" sx={{ marginLeft: `0.3rem`, lineHeight: `1.4rem` }}>
-                        {t("widgets.newForecast.load_data_description")}
+                        {t("widgets.newForecast.loadDataDescription")}
                     </Typography>
                 </Stack>
             </Stack>
@@ -466,25 +459,25 @@ export const NewForecast = () => {
         () => (
             <Stack direction={"column"}>
                 <Stack direction={"row"}>
-                    {selected_axis[0].length != 0 && <CheckCircleIcon color="success" fontSize="small" />}
-                    <Typography>{t("widgets.newForecast.select_x_axis_description")}</Typography>
+                    {selectedAxis[0].length != 0 && <CheckCircleIcon color="success" fontSize="small" />}
+                    <Typography>{t("widgets.newForecast.selectXAxisDescription")}</Typography>
                 </Stack>
                 <Stack direction={"row"}>
-                    {selected_axis[1].length != 0 && <CheckCircleIcon color="success" fontSize="small" />}
-                    <Typography>{t("widgets.newForecast.select_y_axis_description")}</Typography>
+                    {selectedAxis[1].length != 0 && <CheckCircleIcon color="success" fontSize="small" />}
+                    <Typography>{t("widgets.newForecast.selectYAxisDescription")}</Typography>
                 </Stack>
             </Stack>
         ),
         () => (
             <>
-                <Typography>{t("widgets.newForecast.select_forecast_date_description")}</Typography>
-                <Typography>{t("widgets.newForecast.send_button_description")}</Typography>
+                <Typography>{t("widgets.newForecast.selectForecastDateDescription")}</Typography>
+                <Typography>{t("widgets.newForecast.sendButtonDescription")}</Typography>
             </>
         ),
     ]
 
     const MsetData = (args: unknown) => {
-        const timeColumn = selected_axis[0]
+        const timeColumn = selectedAxis[0]
         if (Array.isArray(args)) {
             setData(normalizeDataRows(args, timeColumn))
         } else if (args && typeof args === "object") {
@@ -554,7 +547,7 @@ export const NewForecast = () => {
                                         justifyContent: `center`,
                                     }}
                                 >
-                                    {steps_description[index]()}
+                                    {stepsDescription[index]()}
                                 </Stack>
                             )}
                         </Step>
@@ -563,16 +556,14 @@ export const NewForecast = () => {
                 <div>
                     {allStepsCompleted() ? (
                         <React.Fragment>
-                            <Typography sx={{ mt: 2, mb: 1 }}>
-                                {t("widgets.newForecast.all_steps_completed")}
-                            </Typography>
+                            <Typography sx={{ mt: 2, mb: 1 }}>{t("widgets.newForecast.allStepsCompleted")}</Typography>
                             <Stack direction={"row"} spacing={1}>
                                 <Box sx={{ flex: "1 1 auto" }} />
                                 <Button variant="contained" onClick={handleReset}>
-                                    {t("widgets.newForecast.reset_button")}
+                                    {t("widgets.newForecast.resetButton")}
                                 </Button>
                                 <Button variant="contained" onClick={handleDownload}>
-                                    {t("widgets.newForecast.download_button")}
+                                    {t("widgets.newForecast.downloadButton")}
                                 </Button>
                             </Stack>
                         </React.Fragment>
@@ -586,29 +577,27 @@ export const NewForecast = () => {
                                     onClick={handleBack}
                                     sx={{ mr: 1 }}
                                 >
-                                    {t("widgets.newForecast.back_button")}
+                                    {t("widgets.newForecast.backButton")}
                                 </Button>
                                 <Box sx={{ flex: "1 1 auto" }} />
                                 {completed[activeStep] && (
                                     <Button onClick={handleNext} sx={{ mr: 1 }} variant="contained">
-                                        {t("widgets.newForecast.next_button")}
+                                        {t("widgets.newForecast.nextButton")}
                                     </Button>
                                 )}
                                 {activeStep !== steps.length &&
                                     (completed[activeStep] ? (
                                         <Typography variant="caption" sx={{ display: "inline-block" }}>
-                                            {t("widgets.newForecast.step_completed_message", {
+                                            {t("widgets.newForecast.stepCompletedMessage", {
                                                 stepNumber: activeStep + 1,
                                             })}
                                         </Typography>
                                     ) : (
                                         <Button
-                                            onClick={
-                                                completedSteps() < totalSteps() - 1 ? handleComplete : handleComplete
-                                            }
+                                            onClick={completedSteps() < totalSteps() - 1 ? handleComplete : handleSend}
                                             variant="contained"
                                             disabled={
-                                                steps_requrements[activeStep].some((value) => value == false) ||
+                                                stepsRequirements[activeStep].some((value) => value == false) ||
                                                 isPossibleDateLoading
                                             }
                                             sx={{
@@ -621,9 +610,9 @@ export const NewForecast = () => {
                                             {isPossibleDateLoading ? (
                                                 <CircularProgress size={24} color="inherit" />
                                             ) : completedSteps() < totalSteps() - 1 ? (
-                                                t("widgets.newForecast.complete_step_button")
+                                                t("widgets.newForecast.completeStepButton")
                                             ) : (
-                                                t("widgets.newForecast.send_button")
+                                                t("widgets.newForecast.sendButton")
                                             )}
                                         </Button>
                                     ))}
@@ -636,19 +625,19 @@ export const NewForecast = () => {
                 {
                     [
                         <SelectDataSource
-                            selected_data={selected_data}
+                            selectedData={selectedData}
                             setSelected={setSelected}
-                            setLoaddata={setLoaddata}
+                            setLoadData={setLoadData}
                             setData={MsetData}
                         />,
-                        <DataTable selected_axis={selected_axis} setSelected_axis={setSelected_axis} data={data} />,
+                        <DataTable selectedAxis={selectedAxis} setSelectedAxis={setSelectedAxis} data={data} />,
                         <LoadData
                             dataChartLoading={dataChartLoading}
                             data={data}
                             forecast={result}
-                            XY={selected_axis}
+                            XY={selectedAxis}
                             forecast_horizon_time={forecast_horizon_time}
-                            setForecast_horizon_time={setForecast_horizon_time}
+                            setForecast_horizon_time={setForecastHorizonTime}
                             dateLimits={dateLimits}
                             minForecastHorizon={minForecastHorizon}
                         />,
@@ -657,7 +646,7 @@ export const NewForecast = () => {
             </section>
             <footer>
                 <Typography sx={{ mt: 2, mb: 1, py: 1 }}>
-                    {t("widgets.newForecast.current_step_message", { stepNumber: activeStep + 1 })}
+                    {t("widgets.newForecast.currentStepMessage", { stepNumber: activeStep + 1 })}
                 </Typography>
             </footer>
         </Stack>

@@ -7,23 +7,23 @@ import temp from "@/shared/lib/data/temp.json"
 import { Stack } from "@mui/material"
 import { LoadCSV, LoadJSON, LoadXLSX } from "./fileLoader"
 import tempCsvRaw from "@/shared/lib/data/temp.csv?raw"
-import tempJson from "@/shared/lib/data/morocco_energy_data.json"
+import tempJson from "@/shared/lib/data/moroccoEnergyData.json"
 import { DataGrid } from "@mui/x-data-grid"
 import { useTranslation } from "react-i18next"
 
 interface ExamplePreviewProps {
     setData: (v: unknown) => void
-    setLoaddata?: (v: boolean) => void
+    setLoadData?: (v: boolean) => void
 }
 
 export const DataSample = ({
     type,
     setData,
-    setLoaddata,
+    setLoadData,
 }: {
     type: string
     setData: (v: unknown) => void
-    setLoaddata?: (v: boolean) => void
+    setLoadData?: (v: boolean) => void
 }) => {
     const loaders = {
         XLSX: LoadXLSX,
@@ -42,7 +42,7 @@ export const DataSample = ({
 
     const { loader } = loaders[type]({
         setData,
-        setLoaddata,
+        setLoadData,
     })
 
     return (
@@ -58,7 +58,7 @@ export const DataSample = ({
     )
 }
 
-export const MarkdownPreview = ({ setData, setLoaddata }: ExamplePreviewProps) => {
+export const MarkdownPreview = ({ setData, setLoadData }: ExamplePreviewProps) => {
     const { mode, setMode } = useColorScheme()
     const isDark = mode === "dark"
     const bgPalette = ["var(--mui-palette-primary-light)", "var(--mui-palette-primary-dark)"]
@@ -72,7 +72,7 @@ export const MarkdownPreview = ({ setData, setLoaddata }: ExamplePreviewProps) =
             const html = await marked.parse(markdownInput)
             setRenderedMarkdown(html)
             setData({ example: temp })
-            setLoaddata && setLoaddata(true)
+            setLoadData && setLoadData(true)
         }
         renderMarkdown()
     }, [markdownInput])
@@ -121,7 +121,7 @@ export const CsvExamplePreview = ({ setData, setLoaddata }: ExamplePreviewProps)
     return (
         <Box sx={{ mt: 1 }}>
             <Typography variant="h6" gutterBottom>
-                {t("widgets.newForecast.example_csv")}:
+                {t("widgets.newForecast.exampleCsv")}:
             </Typography>
             <Box sx={{ overflowX: "auto", maxHeight: 400 }}>
                 <table className="data-table">
@@ -147,16 +147,16 @@ export const CsvExamplePreview = ({ setData, setLoaddata }: ExamplePreviewProps)
     )
 }
 
-export const JsonExamplePreview = ({ setData, setLoaddata }: ExamplePreviewProps) => {
+export const JsonExamplePreview = ({ setData, setLoadData }: ExamplePreviewProps) => {
     const { t } = useTranslation("common")
     useEffect(() => {
         setData({ example: tempJson })
-        setLoaddata && setLoaddata(true)
+        setLoadData && setLoadData(true)
     }, [])
     return (
         <Box sx={{ mt: 1 }}>
             <Typography variant="h6" gutterBottom>
-                {t("widgets.newForecast.example_json")}:
+                {t("widgets.newForecast.exampleJson")}:
             </Typography>
             <pre style={{ maxHeight: 400, overflow: "auto", background: "#f5f5f5", padding: 8 }}>
                 {JSON.stringify(tempJson, null, 2)}
@@ -182,10 +182,10 @@ function normalizeCsvData(data: any[]) {
 
 export const CsvExampleTableWithDropdowns = ({
     setData,
-    setLoaddata,
+    setLoadData,
 }: {
     setData?: (v: unknown) => void
-    setLoaddata?: (v: boolean) => void
+    setLoadData?: (v: boolean) => void
 }) => {
     const { t } = useTranslation("common")
     // CSV данные (пример)
@@ -210,14 +210,14 @@ export const CsvExampleTableWithDropdowns = ({
         const normalizedData = normalizeCsvData(data)
         setCsvRows(normalizedData.map((row, idx) => ({ ...row, id: idx })))
         if (setData) setData(normalizedData)
-        if (setLoaddata) setLoaddata(true)
+        if (setLoadData) setLoadData(true)
     }, [])
     // Функция для чередования строк
     const getRowClassName = (params: any) => (params.indexRelativeToCurrentPage % 2 === 0 ? "even" : "odd")
     return (
         <Box sx={{ mt: 1 }}>
             <Typography variant="h6" gutterBottom>
-                {t("widgets.newForecast.example_csv")}:
+                {t("widgets.newForecast.exampleCsv")}:
             </Typography>
             <Box
                 sx={{
