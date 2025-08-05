@@ -13,18 +13,10 @@ import ArrowCircleRightIcon from "@mui/icons-material/ArrowCircleRight"
 import ScreenShareIcon from "@mui/icons-material/ScreenShare"
 import AccessAlarmIcon from "@mui/icons-material/AccessAlarm"
 import AddCircleIcon from "@mui/icons-material/AddCircle"
+import StorageIcon from "@mui/icons-material/Storage"
+import SmartToyIcon from "@mui/icons-material/SmartToy"
 
 import React, { useState } from "react"
-
-const drawerWidth = 240
-
-interface Props {
-    /**
-     * Injected by the documentation to work in an iframe.
-     * Remove this when copying and pasting into your project.
-     */
-    window?: () => Window
-}
 
 export const Sidebar = () => {
     const { t } = useTranslation()
@@ -118,13 +110,29 @@ export const Sidebar = () => {
                             {opened && <ListItemText primary={t("widgets.navBar.path.alerts")} />}
                         </ListItemButton>
                     </ListItem>
-                    {opened && <Divider />}
                     <ListItem disablePadding>
                         <ListItemButton component={Link} to="/forecast" sx={{ padding: 1 }}>
                             <IconButton size="small" color="secondary">
                                 <AddCircleIcon />
                             </IconButton>
                             {opened && <ListItemText primary={t("widgets.navBar.path.forecast")} />}
+                        </ListItemButton>
+                    </ListItem>
+                    {opened && <Divider />}
+                    <ListItem disablePadding>
+                        <ListItemButton component={Link} to="/db-connections" sx={{ padding: 1 }}>
+                            <IconButton size="small" color="secondary">
+                                <StorageIcon />
+                            </IconButton>
+                            {opened && <ListItemText primary={t("widgets.navBar.path.dbConnections")} />}
+                        </ListItemButton>
+                    </ListItem>
+                    <ListItem disablePadding>
+                        <ListItemButton component={Link} to="/ai-agent" sx={{ padding: 1 }}>
+                            <IconButton size="small" color="secondary">
+                                <SmartToyIcon />
+                            </IconButton>
+                            {opened && <ListItemText primary={t("widgets.navBar.path.aiAgent")} />}
                         </ListItemButton>
                     </ListItem>
                 </List>

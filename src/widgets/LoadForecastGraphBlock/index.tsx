@@ -1,5 +1,5 @@
 import React from "react"
-import { Box, Card, Stack, Typography } from "@mui/material"
+import { Card, Stack, Typography } from "@mui/material"
 import { LoadForecastPureGraph } from "@/widgets/LoadForecastGraphBlock/LoadForecastPureGraph"
 import { useState, useEffect } from "react"
 import {
@@ -32,7 +32,7 @@ export const LoadForecastGraphBlock = () => {
         error: sensorsListError,
         isLoading: sensorsListLoading,
     } = useFuncGetSensorIdListBackendV1GetSensorIdListGetQuery()
-    const [triggerForecast, { data, isLoading, error }] = useFuncGetForecastDataBackendV1GetForecastDataPostMutation()
+    const [triggerForecast, { data, error }] = useFuncGetForecastDataBackendV1GetForecastDataPostMutation()
     const { t } = useTranslation()
 
     // Track selected model and refresh interval
@@ -111,14 +111,10 @@ export const LoadForecastGraphBlock = () => {
 
     return (
         <Stack direction={"column"} sx={{ margin: `1rem 0` }}>
-            <Typography
-                variant="button"
-                sx={{ fontSize: { xs: "0.85rem", sm: "1rem" }, textTransform: "capitalize", fontWeight: 600 }}
-            >
-                {t("widgets.LoadForecastGraphBlock.title")}
-            </Typography>
-
             <Stack direction={"column"} sx={{ margin: `1rem 0` }}>
+                <Typography variant="h4">{t("widgets.LoadForecastGraphBlock.title")}</Typography>
+            </Stack>
+            <Card variant="outlined" sx={{ width: "100%", p: 2, minHeight: `600px` }}>
                 {sensorsListLoading ? (
                     <NavbarSkeleton />
                 ) : sensorsListError ? (
@@ -129,13 +125,9 @@ export const LoadForecastGraphBlock = () => {
                         selectedModel={selectedModel || ""}
                         onSelect={handleSubmit}
                         onRefreshSelect={handleRefreshChart}
-                        // Передаю проп fontSize для выравнивания стиля
-                        fontSize={{ xs: "0.85rem", sm: "1rem" }}
                     />
                 )}
-            </Stack>
 
-            <Card variant="outlined" sx={{ width: "100%", p: 1, minHeight: `600px` }}>
                 {error && (
                     <div style={{ color: "red" }}>
                         {t("widgets.LoadForecastGraphBlock.errorPrefix")}
@@ -146,7 +138,6 @@ export const LoadForecastGraphBlock = () => {
                     </div>
                 )}
                 {currentData ? <LoadForecastPureGraph initialData={currentData} /> : <ForecastGraphSkeleton />}
-                {/* <ForecastGraphSkeleton /> */}
             </Card>
         </Stack>
     )

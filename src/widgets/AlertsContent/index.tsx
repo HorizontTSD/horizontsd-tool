@@ -346,10 +346,15 @@ export const AlertsContent = () => {
     const [selectedSensors, setSelectedSensors] = useState<string[]>([])
     const [selectedModels, setSelectedModels] = useState<string[]>([])
     const [search, setSearch] = useState("")
+    const [isInitialized, setIsInitialized] = useState(false)
 
-    // get a load of this guy
+    // Initialize sensor selection and make initial forecast request
     useEffect(() => {
-        if (sensors && sensors.length > 0) {
+        if (sensors && sensors.length > 0 && !isInitialized) {
+            setSelectedSensors(Array.isArray(sensors) ? sensors.filter((s): s is string => typeof s === "string") : [])
+            setIsInitialized(true)
+
+            // Make initial forecast request
             triggerForecast({
                 forecastData: {
                     sensor_ids: [sensors[0]],
@@ -358,18 +363,11 @@ export const AlertsContent = () => {
                 .unwrap()
                 .catch(console.error)
         }
-    }, [sensors, selectedSensors, triggerForecast])
-
-    // Initialize sensor selection
-    useEffect(() => {
-        if (sensors?.[0] && !selectedSensors) {
-            setSelectedSensors(Array.isArray(sensors) ? sensors.filter((s): s is string => typeof s === "string") : [])
-        }
-    }, [sensors, selectedSensors])
+    }, [sensors, isInitialized, triggerForecast])
 
     // Initialize model selection when metrics data arrives
     useEffect(() => {
-        if (forecastData && forecastData.length > 0 && !selectedModels) {
+        if (forecastData && forecastData.length > 0 && !selectedModels.length) {
             const availableModels = Array.from(
                 new Set(
                     forecastData
@@ -387,7 +385,7 @@ export const AlertsContent = () => {
                 setSelectedModels(availableModels)
             }
         }
-    }, [forecastData, selectedModels])
+    }, [forecastData, selectedModels.length])
 
     //
     const handleSensorChange = (sensors: string[]) => {
@@ -499,7 +497,6 @@ export const AlertsContent = () => {
                 overflow: `auto`,
             }}
         >
-            Header
             <Header />
             {/* Filters bar */}
             <FiltersBar

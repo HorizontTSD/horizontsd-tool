@@ -4,7 +4,9 @@
             "path": {
                 "main": "Dashboard",
                 "alerts": "Avvisi",
-                "forecast": "Nuova Previsione"
+                "forecast": "Nuova Previsione",
+                "dbConnections": "DB Connections",
+                "aiAgent": "AI Agent"
             },
             "title": "HorizonTSD",
             "toggleTooltip": {
@@ -12,6 +14,8 @@
                 "expand": "Espandi barra laterale"
             }
         },
+        "comingSoon": "Prossimamente",
+        "weatherData": "Dati Meteo",
         "weatherStatCard": {
             "loading": "Caricamento...",
             "errorLoadingChartsData": "Errore nel caricamento dei dati dei grafici",

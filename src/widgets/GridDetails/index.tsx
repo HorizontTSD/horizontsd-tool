@@ -25,18 +25,12 @@ export const CustomizedDataGrid: React.FC = () => {
     const [selectedSensor, setSelectedSensor] = useState<string | null>(null)
     const [selectedModel, setSelectedModel] = useState<string | null>(null)
 
-    // Initialize sensor and fetch initial forecast
+    // Initialize sensor selection only (no forecast request here)
     useEffect(() => {
         if (sensors?.[0] && !selectedSensor) {
-            const initialSensor = sensors[0]
-            setSelectedSensor(initialSensor)
-            triggerForecast({
-                forecastData: { sensor_ids: [initialSensor] },
-            })
-                .unwrap()
-                .catch(console.error)
+            setSelectedSensor(sensors[0])
         }
-    }, [sensors, selectedSensor, triggerForecast])
+    }, [sensors, selectedSensor])
 
     // Extract metrics tables from forecast data
     const metricsTables = forecastData?.[0]?.[selectedSensor || ""]?.metrix_tables || {}
@@ -84,13 +78,8 @@ export const CustomizedDataGrid: React.FC = () => {
         if (selectedSensor == selected) return
         try {
             setSelectedSensor(selected)
-            await triggerForecast({
-                forecastData: {
-                    sensor_ids: [selected],
-                },
-            }).unwrap()
         } catch (err) {
-            console.error("Failed to fetch forecast:", err)
+            console.error("Failed to update sensor selection:", err)
         }
     }
 
