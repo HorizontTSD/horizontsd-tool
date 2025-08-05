@@ -526,7 +526,12 @@ export const AlertsContent = () => {
                     handleDeleteAlert={handleDeleteAlert}
                 />
             )}
-            <CreateAlertModal open={openCreate} onClose={() => setOpenCreate(false)} onSubmit={handleCreateAlert} />
+            <CreateAlertModal
+                open={openCreate}
+                onClose={() => setOpenCreate(false)}
+                onSubmit={handleCreateAlert}
+                forecastData={forecastData}
+            />
             <CreateAlertModal
                 open={openEdit}
                 onClose={() => {
@@ -534,6 +539,7 @@ export const AlertsContent = () => {
                     setSelectedAlert(null)
                 }}
                 alert={selectedAlert}
+                forecastData={forecastData}
                 // onSubmit={(alert) => handleUpdateAlert(alert as Alert)}
             />
         </Stack>
