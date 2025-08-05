@@ -87,7 +87,7 @@
             "mape": "Errore Percentuale Assoluto Medio (MAPE)"
         },
         "alertsContent": {
-            "alertRules": "Regole di allerta",
+            "alertRules": "Avvisi",
             "search": "Cerca",
             "searchAlertsPlaceholder": "cerca avvisi",
             "createButton": "Crea",

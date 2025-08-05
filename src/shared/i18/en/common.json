@@ -87,7 +87,7 @@
             "mape": "Mean Absolute Percentage Error (MAPE)"
         },
         "alertsContent": {
-            "alertRules": "Alert rules",
+            "alertRules": "Alerts",
             "search": "Search",
             "searchAlertsPlaceholder": "search alerts",
             "createButton": "Create",

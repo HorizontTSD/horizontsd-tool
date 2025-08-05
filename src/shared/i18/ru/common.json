@@ -87,7 +87,7 @@
             "mape": "Средняя абсолютная процентная ошибка (MAPE)"
         },
         "alertsContent": {
-            "alertRules": "Правила оповещений",
+            "alertRules": "Оповещения",
             "search": "Поиск",
             "searchAlertsPlaceholder": "поиск оповещений",
             "createButton": "Создать",
