@@ -4,7 +4,9 @@
             "path": {
                 "main": "Dashboard",
                 "alerts": "Alerts",
-                "forecast": "New Forecast"
+                "forecast": "New Forecast",
+                "dbConnections": "DB Connections",
+                "aiAgent": "AI Agent"
             },
             "title": "HorizonTSD",
             "toggleTooltip": {
@@ -12,6 +14,8 @@
                 "expand": "Expand sidebar"
             }
         },
+        "comingSoon": "Coming Soon",
+        "weatherData": "Weather Data",
         "weatherStatCard": {
             "loading": "Loading...",
             "errorLoadingChartsData": "Error loading charts data",
@@ -83,7 +87,7 @@
             "mape": "Mean Absolute Percentage Error (MAPE)"
         },
         "alertsContent": {
-            "alertRules": "Alert rules",
+            "alertRules": "Alerts",
             "search": "Search",
             "searchAlertsPlaceholder": "search alerts",
             "createButton": "Create",

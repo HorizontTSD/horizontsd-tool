@@ -27,6 +27,7 @@ interface CreateAlertModalProps {
     onClose: () => void
     alert?: Alert | null
     onSubmit?: (alert: Alert | Omit<Alert, "id" | "eventId">) => Promise<void>
+    forecastData?: any
 }
 
 interface AlerModalFormProps {
@@ -535,15 +536,13 @@ const AlertModalChart = ({ formValues }: { formValues: AlertConfigRequest }) => 
                 maxHeight: `79%`,
             }}
         >
-            <ForecastGraphPanel selectedSensor={formValues.sensor_id} />
+            <ForecastGraphPanel selectedSensor={formValues.sensor_id} forecastData={forecastData} />
         </Box>
     )
 }
 
-export const CreateAlertModal = ({ open, onClose, alert, onSubmit }: CreateAlertModalProps) => {
+export const CreateAlertModal = ({ open, onClose, alert, onSubmit, forecastData }: CreateAlertModalProps) => {
     const { data: sensors } = useFuncGetSensorIdListBackendV1GetSensorIdListGetQuery()
-
-    const [triggerForecast, { data: forecastData }] = useFuncGetForecastDataBackendV1GetForecastDataPostMutation()
 
     const [availableModels, setAvailableModels] = useState<string[]>([])
     const [selectedSensor, setSelectedSensor] = useState<string>("")
@@ -568,25 +567,16 @@ export const CreateAlertModal = ({ open, onClose, alert, onSubmit }: CreateAlert
         model: availableModels[0],
     })
 
-    // Fetch forecast data when sensors change
+    // Initialize sensor selection
     useEffect(() => {
-        if (sensors && sensors.length > 0) {
-            triggerForecast({
-                forecastData: {
-                    sensor_ids: [sensors[0]],
-                },
-            })
-                .unwrap()
-                .catch(console.error)
-
-            // Set first sensor as default
+        if (sensors && sensors.length > 0 && !selectedSensor) {
             setSelectedSensor(sensors[0])
             setFormValues((prev) => ({
                 ...prev,
                 sensor_id: sensors[0],
             }))
         }
-    }, [sensors, triggerForecast])
+    }, [sensors, selectedSensor])
 
     // Extract available models from forecast data
     useEffect(() => {
@@ -613,25 +603,6 @@ export const CreateAlertModal = ({ open, onClose, alert, onSubmit }: CreateAlert
             }
         }
     }, [forecastData])
-
-    // Update form values when sensor or model changes
-    useEffect(() => {
-        if (selectedSensor) {
-            setFormValues((prev) => ({
-                ...prev,
-                sensor_id: selectedSensor,
-            }))
-        }
-    }, [selectedSensor])
-
-    useEffect(() => {
-        if (selectedModel) {
-            setFormValues((prev) => ({
-                ...prev,
-                model: selectedModel,
-            }))
-        }
-    }, [selectedModel])
 
     type HandleChange = <K extends keyof CreateAlertFormValues>(field: K, value: CreateAlertFormValues[K]) => void
     const handleChange: HandleChange = (field, value) => {

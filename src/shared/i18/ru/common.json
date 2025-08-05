@@ -4,7 +4,9 @@
             "path": {
                 "main": "Главная",
                 "alerts": "Оповещения",
-                "forecast": "Новый прогноз"
+                "forecast": "Новый прогноз",
+                "dbConnections": "Подключения к БД",
+                "aiAgent": "ИИ Агент"
             },
             "title": "HorizonTSD",
             "toggleTooltip": {
@@ -12,6 +14,8 @@
                 "expand": "Развернуть боковую панель"
             }
         },
+        "comingSoon": "Скоро появится",
+        "weatherData": "Погодные данные",
         "weatherStatCard": {
             "loading": "Загрузка...",
             "errorLoadingChartsData": "Ошибка загрузки данных графиков",
@@ -83,7 +87,7 @@
             "mape": "Средняя абсолютная процентная ошибка (MAPE)"
         },
         "alertsContent": {
-            "alertRules": "Правила оповещений",
+            "alertRules": "Оповещения",
             "search": "Поиск",
             "searchAlertsPlaceholder": "поиск оповещений",
             "createButton": "Создать",
