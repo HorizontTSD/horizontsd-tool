@@ -25,17 +25,30 @@ export const CustomizedDataGrid: React.FC = () => {
     const [selectedSensor, setSelectedSensor] = useState<string | null>(null)
     const [selectedModel, setSelectedModel] = useState<string | null>(null)
 
-    // Initialize sensor selection only (no forecast request here)
+    // Initialize sensor selection and make initial forecast request
     useEffect(() => {
         if (sensors?.[0] && !selectedSensor) {
             setSelectedSensor(sensors[0])
         }
     }, [sensors, selectedSensor])
 
+    // Make forecast request when sensor changes
+    useEffect(() => {
+        if (selectedSensor) {
+            triggerForecast({
+                forecastData: {
+                    sensor_ids: [selectedSensor],
+                },
+            })
+                .unwrap()
+                .catch(console.error)
+        }
+    }, [selectedSensor, triggerForecast])
+
     // Extract metrics tables from forecast data
     const metricsTables = forecastData?.[0]?.[selectedSensor || ""]?.metrix_tables || {}
 
-    // Initialize model selection
+    // Initialize model selection when metrics data arrives
     useEffect(() => {
         if (Object.keys(metricsTables).length > 0 && !selectedModel) {
             setSelectedModel(Object.keys(metricsTables)[0])
@@ -75,9 +88,10 @@ export const CustomizedDataGrid: React.FC = () => {
     }, [selectedModel, metricsTables, t])
 
     const handleSubmit = async (selected: string) => {
-        if (selectedSensor == selected) return
+        if (selectedSensor === selected) return
         try {
             setSelectedSensor(selected)
+            setSelectedModel(null) // Reset model selection when sensor changes
         } catch (err) {
             console.error("Failed to update sensor selection:", err)
         }
@@ -85,9 +99,9 @@ export const CustomizedDataGrid: React.FC = () => {
 
     const handleSubmitModel = async (selected: string) => {
         try {
-            setSelectedModel(Object.keys(metricsTables)[Object.keys(metricsTables).indexOf(selected)])
+            setSelectedModel(selected)
         } catch (err) {
-            console.error("Failed to fetch forecast:", err)
+            console.error("Failed to update model selection:", err)
         }
     }
 
