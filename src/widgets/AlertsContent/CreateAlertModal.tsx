@@ -15,10 +15,7 @@ import {
 import { ForecastGraphPanel } from "./ForecastGraphPanel"
 import { CreateAlertFormValues } from "./types"
 import { Alert } from "@/shared/types/Alert"
-import {
-    useFuncGetForecastDataBackendV1GetForecastDataPostMutation,
-    useFuncGetSensorIdListBackendV1GetSensorIdListGetQuery,
-} from "@/shared/api/model_fast_api"
+import { useFuncGetSensorIdListBackendV1GetSensorIdListGetQuery } from "@/shared/api/model_fast_api"
 import { useTranslation } from "react-i18next"
 import { AlertConfigRequest } from "@/shared/api/alert"
 
@@ -275,8 +272,8 @@ const AlerModalForm = ({
                         </Typography>
                         <OutlinedInput
                             type="date"
-                            value={formValues.date_start}
-                            onChange={(e) => handleChange("date_start", e.target.value)}
+                            value={formValues.dateStart}
+                            onChange={(e) => handleChange("dateStart", e.target.value)}
                             sx={{
                                 background: "white",
                                 color: "black",
@@ -293,8 +290,8 @@ const AlerModalForm = ({
                         </Typography>
                         <OutlinedInput
                             type="time"
-                            value={formValues.time_start}
-                            onChange={(e) => handleChange("time_start", e.target.value)}
+                            value={formValues.timeStart}
+                            onChange={(e) => handleChange("timeStart", e.target.value)}
                             sx={{
                                 background: "white",
                                 color: "black",
@@ -314,8 +311,8 @@ const AlerModalForm = ({
                         </Typography>
                         <OutlinedInput
                             type="date"
-                            value={formValues.date_end}
-                            onChange={(e) => handleChange("date_end", e.target.value)}
+                            value={formValues.dateEnd}
+                            onChange={(e) => handleChange("dateEnd", e.target.value)}
                             sx={{
                                 background: "white",
                                 color: "black",
@@ -332,8 +329,8 @@ const AlerModalForm = ({
                         </Typography>
                         <OutlinedInput
                             type="time"
-                            value={formValues.time_end}
-                            onChange={(e) => handleChange("time_end", e.target.value)}
+                            value={formValues.timeEnd}
+                            onChange={(e) => handleChange("timeEnd", e.target.value)}
                             sx={{
                                 background: "white",
                                 color: "black",
@@ -354,10 +351,10 @@ const AlerModalForm = ({
                         </Typography>
                         <OutlinedInput
                             fullWidth
-                            value={formValues.email_addresses.join(", ")}
+                            value={formValues.emailAddresses.join(", ")}
                             onChange={(e) =>
                                 handleChange(
-                                    "email_addresses",
+                                    "emailAddresses",
                                     e.target.value.split(",").map((email) => email.trim())
                                 )
                             }
@@ -377,10 +374,10 @@ const AlerModalForm = ({
                         </Typography>
                         <OutlinedInput
                             fullWidth
-                            value={formValues.telegram_nicknames.join(", ")}
+                            value={formValues.telegramNicknames.join(", ")}
                             onChange={(e) =>
                                 handleChange(
-                                    "telegram_nicknames",
+                                    "telegramNicknames",
                                     e.target.value.split(",").map((name) => name.trim())
                                 )
                             }
@@ -399,8 +396,8 @@ const AlerModalForm = ({
                 {/**/}
                 <Box sx={{ display: "flex", alignItems: "center" }}>
                     <Checkbox
-                        checked={formValues.include_graph}
-                        onChange={(e) => handleChange("include_graph", e.target.checked)}
+                        checked={formValues.includeGraph}
+                        onChange={(e) => handleChange("includeGraph", e.target.checked)}
                         sx={{ color: "white", "&.Mui-checked": { color: "white" } }}
                     />
                     <Typography sx={{ color: "white", fontSize: 15 }}>
@@ -521,7 +518,7 @@ const AlerModalForm = ({
     )
 }
 
-const AlertModalChart = ({ formValues }: { formValues: AlertConfigRequest }) => {
+const AlertModalChart = ({ formValues, forecastData }: { formValues: CreateAlertFormValues; forecastData?: any }) => {
     const { mode } = useColorScheme()
     const isDark = mode === "dark"
     const bgPalette = ["var(--mui-palette-primary-main)", "var(--mui-palette-primary-light)"]
@@ -536,7 +533,7 @@ const AlertModalChart = ({ formValues }: { formValues: AlertConfigRequest }) => 
                 maxHeight: `79%`,
             }}
         >
-            <ForecastGraphPanel selectedSensor={formValues.sensor_id} forecastData={forecastData} />
+            <ForecastGraphPanel selectedSensor={formValues.sensorId} forecastData={forecastData} />
         </Box>
     )
 }
@@ -546,26 +543,54 @@ export const CreateAlertModal = ({ open, onClose, alert, onSubmit, forecastData 
 
     const [availableModels, setAvailableModels] = useState<string[]>([])
     const [selectedSensor, setSelectedSensor] = useState<string>("")
-    const [selectedModel, setSelectedModel] = useState<string>("")
 
     // Initialize form values
-    const [formValues, setFormValues] = useState<AlertConfigRequest>({
+    const [formValues, setFormValues] = useState<CreateAlertFormValues>({
         name: "",
-        threshold_value: 0.0,
-        alert_scheme: "Выше значения",
-        trigger_frequency: "trigger_frequency",
+        thresholdValue: 0.0,
+        alertScheme: "Выше значения",
+        triggerFrequency: "Каждый день",
         message: "",
-        telegram_nicknames: [] as string[],
-        email_addresses: [] as string[],
-        include_graph: false,
-        date_start: new Date().toISOString().split("T")[0],
-        date_end: new Date(Date.now() + 86400000 * 2).toISOString().split("T")[0],
-        time_start: "00:00",
-        time_end: "23:59",
-        start_warning_interval: "60m",
-        sensor_id: "",
+        telegramNicknames: [] as string[],
+        emailAddresses: [] as string[],
+        includeGraph: false,
+        dateStart: new Date().toISOString().split("T")[0],
+        dateEnd: new Date(Date.now() + 86400000 * 2).toISOString().split("T")[0],
+        timeStart: "00:00",
+        timeEnd: "23:59",
+        startWarningInterval: "60m",
+        sensorId: "",
         model: availableModels[0],
+        atValue: 0,
+        betweenValue1: 0,
+        betweenValue2: 0,
+        refreshRate: "",
+        from: "",
+        to: "",
+        email: "",
+        telegram: "",
     })
+
+    // Function to convert CreateAlertFormValues to AlertConfigRequest
+    const convertToAlertConfigRequest = (formData: CreateAlertFormValues): AlertConfigRequest => {
+        return {
+            name: formData.name,
+            threshold_value: Number(formData.thresholdValue),
+            alert_scheme: formData.alertScheme,
+            trigger_frequency: String(formData.triggerFrequency),
+            message: formData.message,
+            telegram_nicknames: formData.telegramNicknames,
+            email_addresses: formData.emailAddresses,
+            include_graph: formData.includeGraph,
+            date_start: formData.dateStart,
+            date_end: formData.dateEnd,
+            time_start: formData.timeStart,
+            time_end: formData.timeEnd,
+            start_warning_interval: String(formData.startWarningInterval),
+            sensor_id: formData.sensorId,
+            model: formData.model,
+        }
+    }
 
     // Initialize sensor selection
     useEffect(() => {
@@ -573,7 +598,7 @@ export const CreateAlertModal = ({ open, onClose, alert, onSubmit, forecastData 
             setSelectedSensor(sensors[0])
             setFormValues((prev) => ({
                 ...prev,
-                sensor_id: sensors[0],
+                sensorId: sensors[0],
             }))
         }
     }, [sensors, selectedSensor])
@@ -595,7 +620,6 @@ export const CreateAlertModal = ({ open, onClose, alert, onSubmit, forecastData 
             setAvailableModels(models)
 
             if (models.length > 0) {
-                setSelectedModel(models[0])
                 setFormValues((prev) => ({
                     ...prev,
                     model: String(models[0]),
@@ -609,10 +633,8 @@ export const CreateAlertModal = ({ open, onClose, alert, onSubmit, forecastData 
         setFormValues((prev) => ({ ...prev, [field]: value }))
 
         // Special handling for sensor and model changes
-        if (field === "sensor_id") {
+        if (field === "sensorId") {
             setSelectedSensor(value as string)
-        } else if (field === "model") {
-            setSelectedModel(value as string)
         }
     }
 
@@ -621,7 +643,8 @@ export const CreateAlertModal = ({ open, onClose, alert, onSubmit, forecastData 
             ;(e as { preventDefault: () => void }).preventDefault()
         }
         if (onSubmit) {
-            onSubmit(formValues)
+            const alertConfigRequest = convertToAlertConfigRequest(formValues)
+            onSubmit(alertConfigRequest as any)
             onClose()
         }
     }
@@ -629,23 +652,30 @@ export const CreateAlertModal = ({ open, onClose, alert, onSubmit, forecastData 
     const handleReset = () => {
         setFormValues({
             name: "",
-            threshold_value: 0.0,
-            alert_scheme: "Выше значения",
-            trigger_frequency: "Каждый день",
+            thresholdValue: 0.0,
+            alertScheme: "Выше значения",
+            triggerFrequency: "Каждый день",
             message: "",
-            telegram_nicknames: [] as string[],
-            email_addresses: [] as string[],
-            include_graph: false,
-            date_start: new Date().toISOString().split("T")[0],
-            date_end: new Date(Date.now() + 86400000 * 2).toISOString().split("T")[0],
-            time_start: "00:00",
-            time_end: "23:59",
-            start_warning_interval: "60m",
-            sensor_id: sensors?.[0] || "",
+            telegramNicknames: [] as string[],
+            emailAddresses: [] as string[],
+            includeGraph: false,
+            dateStart: new Date().toISOString().split("T")[0],
+            dateEnd: new Date(Date.now() + 86400000 * 2).toISOString().split("T")[0],
+            timeStart: "00:00",
+            timeEnd: "23:59",
+            startWarningInterval: "60m",
+            sensorId: sensors?.[0] || "",
             model: availableModels?.[0] || "",
+            atValue: 0,
+            betweenValue1: 0,
+            betweenValue2: 0,
+            refreshRate: "",
+            from: "",
+            to: "",
+            email: "",
+            telegram: "",
         })
         setSelectedSensor(Array.isArray(sensors) ? ((sensors as string[])[0] ?? "") : "")
-        setSelectedModel(Array.isArray(availableModels) ? ((availableModels as string[])[0] ?? "") : "")
     }
 
     const isEdit = !!alert
@@ -691,7 +721,7 @@ export const CreateAlertModal = ({ open, onClose, alert, onSubmit, forecastData 
                     sensors={sensors || []}
                 />
                 {/**/}
-                <AlertModalChart formValues={formValues} />
+                <AlertModalChart formValues={formValues} forecastData={forecastData} />
             </DialogContent>
         </Dialog>
     )
