@@ -118,14 +118,19 @@
     },
     "lint-staged": {
         "**/*.{js,jsx,ts,tsx}": [
+            "echo '🎨 Форматирую JS/TS файлы с Prettier...'",
             "prettier --write",
+            "echo '🔍 Проверяю JS/TS файлы с ESLint...'",
             "eslint --fix --max-warnings=0 --no-warn-ignored"
         ],
         "**/*.{css,scss,sass}": [
+            "echo '🎨 Форматирую CSS файлы с Prettier...'",
             "prettier --write",
+            "echo '🔍 Проверяю CSS файлы с Stylelint...'",
             "stylelint --fix"
         ],
         "**/*.{json,md}": [
+            "echo '🎨 Форматирую JSON/MD файлы с Prettier...'",
             "prettier --write"
         ]
     }
