@@ -72,11 +72,49 @@ const MaterialUISwitch = styled(Switch, {
 })
 
 export default function ColorModeIconDropdown() {
-    const { mode, setMode } = useColorScheme()
-    const safeMode: "light" | "dark" = mode === "dark" ? "dark" : "light"
+    const { setMode } = useColorScheme()
+    const [themeMode, setThemeMode] = React.useState<"light" | "dark" | "system">(() => {
+        if (typeof window !== "undefined") {
+            return (localStorage.getItem("themeMode") as "light" | "dark" | "system") || "system"
+        }
+        return "system"
+    })
+
+    // Определяем системную тему
+    const systemTheme = React.useMemo(() => {
+        if (typeof window !== "undefined" && window.matchMedia) {
+            return window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light"
+        }
+        return "light"
+    }, [])
+
+    // Фактическая тема для отображения переключателя
+    const actualTheme = themeMode === "system" ? systemTheme : themeMode
+
+    React.useEffect(() => {
+        if (themeMode === "system") {
+            setMode(systemTheme)
+        } else {
+            setMode(themeMode)
+        }
+        localStorage.setItem("themeMode", themeMode)
+    }, [themeMode, systemTheme, setMode])
+
     const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-        setMode(event.target.checked ? "dark" : "light")
+        if (event.target.checked) {
+            // Переключаем на темную тему
+            setThemeMode("dark")
+        } else {
+            // Переключаем на светлую тему
+            setThemeMode("light")
+        }
     }
+
+    // Двойной клик для переключения на системную тему
+    const handleDoubleClick = () => {
+        setThemeMode("system")
+    }
+
     return (
         <Box
             style={{
@@ -84,8 +122,10 @@ export default function ColorModeIconDropdown() {
                 justifyContent: "center",
                 alignItems: "center",
             }}
+            onDoubleClick={handleDoubleClick}
+            title="Двойной клик для системной темы"
         >
-            <MaterialUISwitch checked={safeMode === "dark"} onChange={handleChange} modeProp={safeMode} />
+            <MaterialUISwitch checked={actualTheme === "dark"} onChange={handleChange} modeProp={actualTheme} />
         </Box>
     )
 }
