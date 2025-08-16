@@ -26,11 +26,11 @@
 
 /* annotations.css */
 .u-annotate {
-    background: rgba(255, 193, 7, 0.15) !important;
-    border-color: rgba(255, 193, 7, 0.5) !important;
+    background: rgb(255 193 7 / 15%) !important;
+    border-color: rgb(255 193 7 / 50%) !important;
 }
 
 .u-annotate .u-select {
-    background: rgba(255, 193, 7, 0.15) !important;
-    border-color: rgba(255, 193, 7, 0.5) !important;
+    background: rgb(255 193 7 / 15%) !important;
+    border-color: rgb(255 193 7 / 50%) !important;
 }
