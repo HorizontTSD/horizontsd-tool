@@ -15,6 +15,41 @@
             }
         },
         "comingSoon": "Coming Soon",
+        "aiAgent": {
+            "title": "AI Agent",
+            "inputPlaceholder": "Say something and/or attach an image",
+            "send": "Send",
+            "chats": "Chats",
+            "newChat": "New chat",
+            "newChatTooltip": "Create chat",
+            "newChatDefault": "New chat",
+            "confirmDelete": {
+                "title": "Delete chat?",
+                "text": "Are you sure you want to delete this chat? This action cannot be undone.",
+                "cancel": "Cancel",
+                "delete": "Delete"
+            },
+            "loading": "Thinking...",
+            "backendError": "Backend request error",
+            "emptyValidation": "Please type a message",
+            "hint": "Start the dialog: describe your task, attach data or ask a question.",
+            "deleteChatTooltip": "Delete chat",
+            "attachTooltip": "Attach image",
+            "copyTooltip": "Copy",
+            "editTooltip": "Edit",
+            "saveTooltip": "Save",
+            "cancelTooltip": "Cancel",
+            "regenerateTooltip": "Regenerate",
+            "submit": "Submit",
+            "debugBanner": {
+                "title": "Horizon AI is currently running in debug mode.\n\nSoon it will be able to:",
+                "capCSV": "Work with CSV and XLSX tables",
+                "capForecast": "Forecast time series",
+                "capAnalyze": "Analyze data",
+                "capCharts": "Draw informative charts",
+                "capInteractive": "Provide interactive chat experience"
+            }
+        },
         "weatherData": "Weather Data",
         "weatherStatCard": {
             "loading": "Loading...",
