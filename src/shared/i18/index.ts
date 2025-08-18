@@ -5,6 +5,8 @@ import enTranslations from "./en/common.json"
 import ruTranslations from "./ru/common.json"
 import itTranslations from "./it/common.json"
 
+export {}
+
 i18n.use(initReactI18next)
     .use(LanguageDetector)
     .init({

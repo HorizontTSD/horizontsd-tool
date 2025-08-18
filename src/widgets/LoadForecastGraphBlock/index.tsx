@@ -114,7 +114,7 @@ export const LoadForecastGraphBlock = () => {
             <Stack direction={"column"} sx={{ margin: `1rem 0` }}>
                 <Typography variant="h4">{t("widgets.LoadForecastGraphBlock.title")}</Typography>
             </Stack>
-            <Card variant="outlined" sx={{ width: "100%", p: 2, minHeight: `600px` }}>
+            <Card variant="outlined" sx={{ width: "100%", p: 2, minHeight: `650px` }}>
                 {sensorsListLoading ? (
                     <NavbarSkeleton />
                 ) : sensorsListError ? (

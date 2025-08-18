@@ -82,7 +82,32 @@ export const AppTheme = (props: AppThemeProps) => {
     const { setMode } = useColorScheme()
 
     React.useEffect(() => {
-        if (initialMode) {
+        // Если не указана начальная тема, определяем системную
+        if (!initialMode) {
+            const systemTheme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light"
+            setMode(systemTheme)
+
+            // Слушаем изменения системной темы
+            const mediaQuery = window.matchMedia("(prefers-color-scheme: dark)")
+            const handleChange = (e: MediaQueryListEvent) => {
+                setMode(e.matches ? "dark" : "light")
+            }
+
+            if (mediaQuery.addEventListener) {
+                mediaQuery.addEventListener("change", handleChange)
+            } else {
+                // Fallback для старых браузеров
+                mediaQuery.addListener(handleChange)
+            }
+
+            return () => {
+                if (mediaQuery.removeEventListener) {
+                    mediaQuery.removeEventListener("change", handleChange)
+                } else {
+                    mediaQuery.removeListener(handleChange)
+                }
+            }
+        } else {
             setMode(initialMode)
         }
     }, [initialMode, setMode])

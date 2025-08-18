@@ -20,7 +20,7 @@ export const router = createBrowserRouter([
         element: <DbConnectionsPage />,
     },
     {
-        path: "/ai-agent",
+        path: "/ai-agent/:chatId?",
         element: <AiAgentPage />,
     },
     {
