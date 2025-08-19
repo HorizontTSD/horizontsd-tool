@@ -1,4 +1,8 @@
 {
+    "common": {
+        "yes": "Sì",
+        "no": "No"
+    },
     "widgets": {
         "navBar": {
             "path": {
@@ -148,6 +152,11 @@
             "alertBlockMoreButton": "Altro",
             "alertBlockEditMenuItem": "Modifica",
             "alertBlockDeleteMenuItem": "Elimina",
+            "alertBlockMainParameters": "Parametri principali",
+            "alertBlockNotifications": "Notifiche",
+            "alertBlockTimeParameters": "Parametri temporali",
+            "alertBlockTriggerFrequencyDaily": "Giornaliero",
+            "alertBlockTriggerFrequencyHourly": "Orario",
             "createAlertModalTitleEdit": "Modifica avviso",
             "createAlertModalTitleCreate": "Crea avviso",
             "createAlertModalAlertNameLabel": "Nome avviso*",
@@ -172,7 +181,12 @@
             "createAlertModalDeleteButton": "Elimina",
             "createAlertModalCreateButton": "Crea",
             "createAlertModalResetButton": "Reimposta",
-            "createAlertModalCancelButton": "Annulla"
+            "createAlertModalCancelButton": "Annulla",
+            "confirmDelete": "Eliminare l'avviso? Questa azione non può essere annullata.",
+            "confirmDeleteTitle": "Conferma Eliminazione",
+            "confirmDeleteMessage": "Sei sicuro di voler eliminare questo avviso? Questa azione non può essere annullata.",
+            "cancel": "Annulla",
+            "delete": "Elimina"
         },
         "newForecast": {
             "steps": {

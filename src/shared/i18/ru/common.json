@@ -1,4 +1,8 @@
 {
+    "common": {
+        "yes": "Да",
+        "no": "Нет"
+    },
     "widgets": {
         "navBar": {
             "path": {
@@ -148,6 +152,11 @@
             "alertBlockMoreButton": "Ещё",
             "alertBlockEditMenuItem": "Редактировать",
             "alertBlockDeleteMenuItem": "Удалить",
+            "alertBlockMainParameters": "Основные параметры",
+            "alertBlockNotifications": "Уведомления",
+            "alertBlockTimeParameters": "Временные параметры",
+            "alertBlockTriggerFrequencyDaily": "Каждый день",
+            "alertBlockTriggerFrequencyHourly": "Каждый час",
             "createAlertModalTitleEdit": "Редактировать оповещение",
             "createAlertModalTitleCreate": "Создать оповещение",
             "createAlertModalAlertNameLabel": "Название оповещения*",
@@ -172,7 +181,12 @@
             "createAlertModalDeleteButton": "Удалить",
             "createAlertModalCreateButton": "Создать",
             "createAlertModalResetButton": "Сбросить",
-            "createAlertModalCancelButton": "Отмена"
+            "createAlertModalCancelButton": "Отмена",
+            "confirmDelete": "Удалить оповещение? Это действие нельзя отменить.",
+            "confirmDeleteTitle": "Подтверждение удаления",
+            "confirmDeleteMessage": "Вы уверены, что хотите удалить это оповещение? Это действие нельзя отменить.",
+            "cancel": "Отмена",
+            "delete": "Удалить"
         },
         "newForecast": {
             "steps": {

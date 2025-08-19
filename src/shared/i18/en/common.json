@@ -1,4 +1,8 @@
 {
+    "common": {
+        "yes": "Yes",
+        "no": "No"
+    },
     "widgets": {
         "navBar": {
             "path": {
@@ -148,6 +152,11 @@
             "alertBlockMoreButton": "More",
             "alertBlockEditMenuItem": "Edit",
             "alertBlockDeleteMenuItem": "Delete",
+            "alertBlockMainParameters": "Main parameters",
+            "alertBlockNotifications": "Notifications",
+            "alertBlockTimeParameters": "Time parameters",
+            "alertBlockTriggerFrequencyDaily": "Daily",
+            "alertBlockTriggerFrequencyHourly": "Hourly",
             "createAlertModalTitleEdit": "Edit alert",
             "createAlertModalTitleCreate": "Create alert",
             "createAlertModalAlertNameLabel": "Alert name*",
@@ -172,7 +181,12 @@
             "createAlertModalDeleteButton": "Delete",
             "createAlertModalCreateButton": "Create",
             "createAlertModalResetButton": "Reset",
-            "createAlertModalCancelButton": "Cancel"
+            "createAlertModalCancelButton": "Cancel",
+            "confirmDelete": "Delete the alert? This action cannot be undone.",
+            "confirmDeleteTitle": "Confirm Deletion",
+            "confirmDeleteMessage": "Are you sure you want to delete this alert? This action cannot be undone.",
+            "cancel": "Cancel",
+            "delete": "Delete"
         },
         "newForecast": {
             "steps": {

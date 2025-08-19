@@ -46,6 +46,19 @@ const modelProxy = {
     },
 }
 
+const orchestratorProxy = {
+    target: "http://77.37.136.11:8081",
+    changeOrigin: true,
+    rewrite: (path: string) => path.replace(/^\/orchestrator/, ""),
+    configure: (proxy: any) => {
+        proxy.on("proxyReq", (proxyReq: any, req: any, res: any) => {
+            if (process.env.VITE_ORCHESTRATOR_TOKEN) {
+                proxyReq.setHeader("Authorization", `Bearer ${process.env.VITE_ORCHESTRATOR_TOKEN}`)
+            }
+        })
+    },
+}
+
 // eslint-disable-next-line
 export default defineConfig(async ({ command, mode }) => {
     const env = loadEnv(mode, process.cwd())
@@ -69,6 +82,7 @@ export default defineConfig(async ({ command, mode }) => {
                 "/alert_endpoint": alertProxy,
                 "/backend_endpoint": backendProxy,
                 "/model_fast_api_endpoint": modelProxy,
+                "/orchestrator": orchestratorProxy,
             },
             esbuild: {
                 target: "esnext",

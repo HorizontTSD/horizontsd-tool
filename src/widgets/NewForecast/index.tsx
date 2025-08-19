@@ -153,9 +153,6 @@ const UserDataChart = ({ data, XY }: { data: DataRow[]; XY: string[] }) => {
                     />
                 )}
             </div>
-            <Typography variant="caption" color="info.main" sx={{ mt: 1 }}>
-                Это ваши данные. После отправки появится прогноз.
-            </Typography>
         </Stack>
     )
 }
@@ -168,7 +165,7 @@ const LoadData = ({
     forecast_horizon_time,
     setForecast_horizon_time,
     dateLimits,
-    minForecastHorizon,
+    minForecastHorizon: _minForecastHorizon,
 }: {
     dataChartLoading: boolean
     data: DataRow[] | null
@@ -179,6 +176,7 @@ const LoadData = ({
     dateLimits: { min: string; max: string } | null
     minForecastHorizon: string | null
 }) => {
+    void _minForecastHorizon
     const stts = (s: string | number | Date | Dayjs | null | undefined) => {
         if (s === null || s === undefined) return NaN
         if (s instanceof Date) return s.valueOf()
@@ -321,7 +319,7 @@ export const NewForecast = () => {
     const [completed, setCompleted] = React.useState<{
         [k: number]: boolean
     }>({})
-    const [generatePossibleDate, { isLoading: isPossibleDateLoading, error: possibleDateError }] =
+    const [generatePossibleDate, { isLoading: isPossibleDateLoading }] =
         useFuncGeneratePossibleDateBackendV1GeneratePossibleDatePostMutation()
     const [dateLimits, setDateLimits] = useState<{ min: string; max: string } | null>(null)
     const [minForecastHorizon, setMinForecastHorizon] = useState<string | null>(null)
@@ -392,7 +390,6 @@ export const NewForecast = () => {
                     forecast_horizon_time: forecast_horizon_time
                         ? dayjs(forecast_horizon_time).toISOString().replace(`T`, ` `).replace(`.000Z`, ``)
                         : "",
-                    lag_search_depth: 1,
                 },
             })
                 .unwrap()

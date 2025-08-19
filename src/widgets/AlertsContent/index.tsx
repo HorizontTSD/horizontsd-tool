@@ -4,7 +4,7 @@ import FormControl from "@mui/material/FormControl"
 import ListItemText from "@mui/material/ListItemText"
 import Select, { SelectChangeEvent } from "@mui/material/Select"
 import Checkbox from "@mui/material/Checkbox"
-import { Box, Stack, Typography, TextField, MenuItem, InputAdornment, Button } from "@mui/material"
+import { Stack, Typography, TextField, MenuItem, InputAdornment, Button } from "@mui/material"
 import SearchIcon from "@mui/icons-material/Search"
 import { useState, useEffect } from "react"
 import { useColorScheme, useTheme } from "@mui/material/styles"
@@ -23,6 +23,8 @@ import {
 } from "@/shared/api/alert"
 import { useTranslation } from "react-i18next"
 import { AlertBlockSkeleton } from "@/shared/ui/skeletons/AlertBlockSkeleton"
+import { AlertPreviewModal } from "./AlertPreviewModal"
+import type { ForecastDataArray } from "./AlertPreviewModal"
 
 const ITEM_HEIGHT = 48
 const ITEM_PADDING_TOP = 8
@@ -76,7 +78,15 @@ const MultipleSelectCheckmarks: React.FC<MultipleSelectCheckmarksProps> = ({
                 >
                     {list.map((name) => (
                         <MenuItem key={name} value={name}>
-                            <Checkbox checked={selected.includes(name)} />
+                            <Checkbox
+                                checked={selected.includes(name)}
+                                sx={{
+                                    color: isDark ? "white" : "primary.main",
+                                    "&.Mui-checked": {
+                                        color: isDark ? "white" : "primary.main",
+                                    },
+                                }}
+                            />
                             <ListItemText primary={name} />
                         </MenuItem>
                     ))}
@@ -108,20 +118,20 @@ const SensorAndModelSelection: React.FC<SensorAndModelSelectionProps> = ({
 
     return (
         <Stack direction={{ xs: "column", sm: "row" }} spacing={1} sx={{ width: "100%" }}>
-            <Stack sx={{ width: { xs: "100%", sm: 220 } }}>
+            <Stack sx={{ width: { xs: "100%", sm: 300 } }}>
                 <Typography>{t("widgets.alertsContent.sensorSelection")}</Typography>
                 <MultipleSelectCheckmarks
-                    width={220}
+                    width={300}
                     list={sensors || []}
                     selected={selectedSensors || []}
                     onSelect={handleSensorChange}
                     disabled={sensorsLoading}
                 />
             </Stack>
-            <Stack sx={{ width: { xs: "100%", sm: 140 } }}>
+            <Stack sx={{ width: { xs: "100%", sm: 200 } }}>
                 <Typography>{t("widgets.alertsContent.modelSelection")}</Typography>
                 <MultipleSelectCheckmarks
-                    width={140}
+                    width={200}
                     list={availableModels || []}
                     selected={selectedModels || []}
                     onSelect={handleModelChange}
@@ -285,6 +295,7 @@ interface AlertBlocksProps {
     setSelectedAlert: (alert: unknown) => void
     setOpenEdit: (open: boolean) => void
     handleDeleteAlert: (fileName: string) => void
+    onView: (sensorId: string) => void
 }
 const AlertBlocks: React.FC<AlertBlocksProps> = ({
     filteredAlerts,
@@ -293,6 +304,7 @@ const AlertBlocks: React.FC<AlertBlocksProps> = ({
     setSelectedAlert,
     setOpenEdit,
     handleDeleteAlert,
+    onView,
 }: AlertBlocksProps) => {
     return (
         <Stack
@@ -302,31 +314,44 @@ const AlertBlocks: React.FC<AlertBlocksProps> = ({
                 height: "100%",
             }}
         >
-            <Box sx={{ margin: `1rem  1rem 0 1rem` }}>
-                {(filteredAlerts as { alert: Alert; file_name: string }[]).map(({ alert, file_name }, idx) => (
-                    <AlertBlock
-                        key={idx}
-                        name={alert.name}
-                        threshold={alert.threshold_value}
-                        scheme={alert.alert_scheme}
-                        trigger_frequency={alert.trigger_frequency}
-                        message={alert.message}
-                        notifications={{ email: alert.email_addresses, telegram: alert.telegram_nicknames }}
-                        include_graph={alert.include_graph}
-                        time_interval={{ start_date: alert.date_start, end_date: alert.date_end }}
-                        start_warning_interval={alert.start_warning_interval}
-                        sensor_id={alert.sensor_id}
-                        model={alert.model}
-                        expanded={expandedIdx === idx}
-                        onToggle={() => setExpandedIdx(expandedIdx === idx ? null : idx)}
-                        onEdit={() => {
-                            setSelectedAlert(alert)
-                            setOpenEdit(true)
-                        }}
-                        onDelete={() => handleDeleteAlert(file_name)}
-                    />
-                ))}
-            </Box>
+            {(filteredAlerts as { alert: Alert; file_name: string }[]).map(({ alert, file_name }, idx) => (
+                <AlertBlock
+                    key={idx}
+                    name={alert.name || ""}
+                    threshold={alert.threshold || 0}
+                    scheme={alert.scheme || ""}
+                    triggerFrequency={alert.trigger_frequency || ""}
+                    message={alert.message || ""}
+                    notifications={{
+                        email: Array.isArray(alert.notifications?.email)
+                            ? alert.notifications.email.filter(Boolean)
+                            : Array.isArray(alert.email_addresses)
+                              ? alert.email_addresses.filter(Boolean)
+                              : [],
+                        telegram: Array.isArray(alert.notifications?.telegram)
+                            ? alert.notifications.telegram.filter(Boolean)
+                            : Array.isArray(alert.telegram_nicknames)
+                              ? alert.telegram_nicknames.filter(Boolean)
+                              : [],
+                    }}
+                    includeGraph={alert.include_graph || false}
+                    timeInterval={{
+                        startDate: alert.time_interval?.start_date || alert.date_start || "",
+                        endDate: alert.time_interval?.end_date || alert.date_end || "",
+                    }}
+                    startWarningInterval={alert.start_warning_interval || ""}
+                    sensorId={alert.sensor_id || ""}
+                    model={alert.model || ""}
+                    expanded={expandedIdx === idx}
+                    onToggle={() => setExpandedIdx(expandedIdx === idx ? null : idx)}
+                    onEdit={() => {
+                        setSelectedAlert(alert)
+                        setOpenEdit(true)
+                    }}
+                    onDelete={() => handleDeleteAlert(file_name)}
+                    onView={onView}
+                />
+            ))}
         </Stack>
     )
 }
@@ -442,13 +467,14 @@ export const AlertsContent = () => {
         })
 
     /**
-     *
+     * Preview modal state
      */
-
     const [openCreate, setOpenCreate] = useState(false)
     const [openEdit, setOpenEdit] = useState(false)
     const [selectedAlert, setSelectedAlert] = useState<Alert | null>(null)
     const [expandedIdx, setExpandedIdx] = useState<number | null>(null)
+    const [openPreview, setOpenPreview] = useState(false)
+    const [previewSensorId, setPreviewSensorId] = useState<string | null>(null)
 
     const [createAlertMutation] = useCreateAlertEndpointAlertManagerV1CreatePostMutation()
     const [deleteAlertMutation] = useDeleteAlertEndpointAlertManagerV1DeleteDeleteMutation()
@@ -456,12 +482,26 @@ export const AlertsContent = () => {
     // Create alert
     const handleCreateAlert = async (alert: AlertConfigRequest) => {
         try {
+            // Если это редактирование, сначала удаляем старый файл
+            if (selectedAlert) {
+                const fileToDelete = alerts.find(
+                    (a: { alert: Alert; file_name: string }) => a.alert === selectedAlert
+                )?.file_name
+                if (fileToDelete) {
+                    await deleteAlertMutation({
+                        deleteAlertRequest: { filename: fileToDelete },
+                    }).unwrap()
+                }
+            }
+
             await createAlertMutation({
                 alertConfigRequest: alert,
             }).unwrap()
 
             await refetchAlerts()
             setOpenCreate(false)
+            setOpenEdit(false)
+            setSelectedAlert(null)
         } catch (error) {
             console.error(t("widgets.alertsContent.errorCreatingAlert"), error)
             // TODO toast
@@ -483,6 +523,20 @@ export const AlertsContent = () => {
         } catch (error) {
             console.error(t("widgets.alertsContent.errorDeletingAlert"), error)
             // TODO toast
+        }
+    }
+
+    const handleViewAlert = async (sensorId: string) => {
+        setPreviewSensorId(sensorId)
+        setOpenPreview(true)
+        try {
+            await triggerForecast({
+                forecastData: {
+                    sensor_ids: [sensorId],
+                },
+            }).unwrap()
+        } catch (e) {
+            console.error(e)
         }
     }
 
@@ -513,9 +567,7 @@ export const AlertsContent = () => {
             />
             {/* Alert blocks */}
             {isLoadingAlerts ? (
-                <Box sx={{ margin: `1rem  1rem 0 1rem` }}>
-                    <AlertBlockSkeleton />
-                </Box>
+                <AlertBlockSkeleton />
             ) : (
                 <AlertBlocks
                     filteredAlerts={filteredAlerts}
@@ -524,6 +576,7 @@ export const AlertsContent = () => {
                     setSelectedAlert={setSelectedAlert as (alert: unknown) => void}
                     setOpenEdit={setOpenEdit}
                     handleDeleteAlert={handleDeleteAlert}
+                    onView={handleViewAlert}
                 />
             )}
             <CreateAlertModal
@@ -540,7 +593,21 @@ export const AlertsContent = () => {
                 }}
                 alert={selectedAlert}
                 forecastData={forecastData}
-                // onSubmit={(alert) => handleUpdateAlert(alert as Alert)}
+                onSubmit={handleCreateAlert}
+                onDelete={() => {
+                    const fileToDelete =
+                        alerts.find((a: { alert: Alert; file_name: string }) => a.alert === selectedAlert)?.file_name ||
+                        ""
+                    if (fileToDelete) {
+                        handleDeleteAlert(fileToDelete)
+                    }
+                }}
+            />
+            <AlertPreviewModal
+                open={openPreview}
+                onClose={() => setOpenPreview(false)}
+                sensorId={previewSensorId || ""}
+                forecastData={forecastData as ForecastDataArray}
             />
         </Stack>
     )

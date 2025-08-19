@@ -136,7 +136,7 @@ const injectedRtkApi = api.injectEndpoints({
             FuncGeneratePossibleDateBackendV1GeneratePossibleDatePostApiArg
         >({
             query: (queryArg) => ({
-                url: `/api/v1/possible_date`,
+                url: `/api/v1/generate_possible_date`,
                 method: "POST",
                 body: queryArg.convertRequest,
             }),
@@ -146,7 +146,7 @@ const injectedRtkApi = api.injectEndpoints({
             FuncGenerateForecastBackendV1GenerateForecastPostApiArg
         >({
             query: (queryArg) => ({
-                url: `/api/v1/predict-xgboost`,
+                url: `/api/v1/generate_forecast/`,
                 method: "POST",
                 body: queryArg.predictRequest,
             }),
