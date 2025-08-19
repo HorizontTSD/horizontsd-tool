@@ -3,9 +3,9 @@ import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react"
 export const backend = createApi({
     reducerPath: "backend",
     baseQuery: fetchBaseQuery({
-        baseUrl: `${import.meta.env.VITE_BACKEND_ENDPOINT}/`,
+        baseUrl: `/orchestrator/horizon_orchestrator/`,
         prepareHeaders: (headers) => {
-            const token = import.meta.env.VITE_BACKEND_TOKEN
+            const token = import.meta.env.VITE_ORCHESTRATOR_TOKEN
             if (token) {
                 headers.set("Authorization", `Bearer ${token}`)
             }
