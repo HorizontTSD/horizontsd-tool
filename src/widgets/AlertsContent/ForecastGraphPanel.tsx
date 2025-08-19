@@ -1,9 +1,11 @@
 import React, { useEffect, useState, useMemo } from "react"
 import { LoadForecastPureGraph } from "@/widgets/LoadForecastGraphBlock/LoadForecastPureGraph"
+import { ForecastGraphSkeleton } from "@/shared/ui/skeletons/ForecastGraphSkeleton"
+import type { ForecastDataArray } from "./AlertPreviewModal"
 
 interface ForecastGraphPanelProps {
     selectedSensor: string | null
-    forecastData?: any // Pass data from parent instead of fetching
+    forecastData?: ForecastDataArray
 }
 
 type ForecastData = Record<string, unknown>
@@ -16,7 +18,11 @@ export const ForecastGraphPanel: React.FC<ForecastGraphPanelProps> = ({ selected
             const sensorData = forecastData?.[0]?.[selectedSensor]
             if (sensorData) {
                 setCurrentData(sensorData)
+            } else {
+                setCurrentData(null)
             }
+        } else {
+            setCurrentData(null)
         }
     }, [selectedSensor, forecastData])
 
@@ -26,9 +32,20 @@ export const ForecastGraphPanel: React.FC<ForecastGraphPanelProps> = ({ selected
     }, [currentData])
 
     if (!selectedSensor) {
-        return <div style={{ width: 700, height: 200, background: "#e3ecf5", borderRadius: 16 }} />
+        return <ForecastGraphSkeleton height={600} width="100%" />
     }
-    if (!currentData) return <div style={{ width: 700, height: 200, background: "#e3ecf5", borderRadius: 16 }} />
+    if (!currentData) return <ForecastGraphSkeleton height={600} width="100%" />
 
-    return <div style={{ width: 700, height: 200 }}>{memoizedGraph}</div>
+    return (
+        <div
+            style={{
+                width: "100%",
+                height: "100%",
+                display: "flex",
+                flexDirection: "column",
+            }}
+        >
+            {memoizedGraph}
+        </div>
+    )
 }
