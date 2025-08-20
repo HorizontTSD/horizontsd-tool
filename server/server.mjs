@@ -33,13 +33,13 @@ const modelProxy = createProxyMiddleware({
 })
 
 const orchestratorProxy = createProxyMiddleware({
-	target: process.env.NODE_ORCHESTRATOR_ENDPOINT,
-	changeOrigin: true,
-	onProxyReq: (proxyReq) => {
-		if (process.env.VITE_ORCHESTRATOR_TOKEN && !proxyReq.getHeader("authorization")) {
-			proxyReq.setHeader("Authorization", `Bearer ${process.env.VITE_ORCHESTRATOR_TOKEN}`)
-		}
-	},
+    target: process.env.NODE_ORCHESTRATOR_ENDPOINT,
+    changeOrigin: true,
+    onProxyReq: (proxyReq) => {
+        if (process.env.VITE_ORCHESTRATOR_TOKEN && !proxyReq.getHeader("authorization")) {
+            proxyReq.setHeader("Authorization", `Bearer ${process.env.VITE_ORCHESTRATOR_TOKEN}`)
+        }
+    },
 })
 
 // Proxy API requests
@@ -69,16 +69,16 @@ app.use(
 )
 
 app.use(
-	"/orchestrator",
-	(req, res, next) => {
-		const prefix = process.env.VITE_ORCHESTRATOR_PATH_PREFIX || "horizon_orchestrator"
-		if (prefix) {
-			// remove "/horizon_orchestrator" from the path
-			req.url = req.url.replace(`/${prefix}`, "")
-		}
-		next()
-	},
-	orchestratorProxy
+    "/orchestrator",
+    (req, res, next) => {
+        const prefix = process.env.VITE_ORCHESTRATOR_PATH_PREFIX || "horizon_orchestrator"
+        if (prefix) {
+            // remove "/horizon_orchestrator" from the path
+            req.url = req.url.replace(`/${prefix}`, "")
+        }
+        next()
+    },
+    orchestratorProxy
 )
 
 // SPA fallback
