@@ -44,10 +44,7 @@ const orchestratorProxy = orchestratorTarget
     ? createProxyMiddleware(withAuth({ target: orchestratorTarget, changeOrigin: true }, "VITE_ORCHESTRATOR_TOKEN"))
     : null
 
-const orchestratorProxy = createProxyMiddleware({
-    target: process.env.NODE_ORCHESTRATOR_ENDPOINT,
-    changeOrigin: true,
-})
+// orchestratorProxy уже объявлен выше через withAuth
 
 // Proxy API requests
 if (alertProxy) {
@@ -110,16 +107,7 @@ if (orchestratorProxy) {
     console.warn("[server] NODE_ORCHESTRATOR_ENDPOINT is not set; /orchestrator proxy disabled")
 }
 
-// Proxy orchestrator requests
-app.use(
-    "/orchestrator",
-    (req, res, next) => {
-        // Remove /orchestrator prefix to match upstream paths like /horizon_orchestrator/...
-        req.url = req.url.replace(/^\/orchestrator/, "")
-        next()
-    },
-    orchestratorProxy
-)
+// Duplicate orchestrator proxy removed
 
 // SPA fallback
 app.get("/", (req, res) => {
