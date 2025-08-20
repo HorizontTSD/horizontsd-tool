@@ -34,9 +34,7 @@ const modelProxy = createProxyMiddleware({
 
 const orchestratorProxy = createProxyMiddleware({
     target:
-        process.env.NODE_ORCHESTRATOR_ENDPOINT ||
-        process.env.VITE_ORCHESTRATOR_ENDPOINT ||
-        "http://77.37.136.11:7071",
+        process.env.NODE_ORCHESTRATOR_ENDPOINT || process.env.VITE_ORCHESTRATOR_ENDPOINT || "http://77.37.136.11:7071",
     changeOrigin: true,
     onProxyReq: (proxyReq) => {
         if (process.env.VITE_ORCHESTRATOR_TOKEN && !proxyReq.getHeader("authorization")) {
