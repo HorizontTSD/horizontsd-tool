@@ -1,0 +1,143 @@
+import { Theme, useTheme } from "@mui/material/styles"
+import Card from "@mui/material/Card"
+import Chip from "@mui/material/Chip"
+import Stack from "@mui/material/Stack"
+import Typography from "@mui/material/Typography"
+import { SparkLineChart } from "@mui/x-charts/SparkLineChart"
+import { areaElementClasses } from "@mui/x-charts/LineChart"
+import { useFuncGetMiniChartsDataBackendV1GetMiniChartsDataGetQuery } from "@/shared/api/model_fast_api"
+import { useTranslation } from "react-i18next"
+import { MiniChartStat } from "@/shared/types/MiniChartData"
+import { WeatherStatCardSkeleton } from "@/shared/ui/skeletons/WeatherStatCardSkeleton"
+import useMediaQuery from "@mui/material/useMediaQuery"
+
+const trendColors = (theme: Theme) => ({
+    positive: theme.palette.success.main,
+    negative: theme.palette.error.main,
+})
+
+const trendLabels = {
+    positive: "↑",
+    negative: "↓",
+} as const
+
+const chipColors = {
+    positive: "success",
+    negative: "error",
+} as const
+
+export const WeatherStatCard = () => {
+    const theme = useTheme()
+    const colors = trendColors(theme)
+    const { data: charts, isLoading, error } = useFuncGetMiniChartsDataBackendV1GetMiniChartsDataGetQuery()
+    const { t } = useTranslation()
+    const isMobile = useMediaQuery(theme.breakpoints.down("md"))
+
+    if (isLoading) return <WeatherStatCardSkeleton />
+    if (error) return <div>{t("widgets.weatherStatCard.errorLoadingChartsData")}</div>
+    if (!charts) return null
+
+    // Show full data series without time filtering
+
+    const parsePointDate = (value: unknown): Date => {
+        // Supports ISO string, ms since epoch, or seconds since epoch
+        if (typeof value === "number") {
+            const ms = value < 1e12 ? value * 1000 : value
+            return new Date(ms)
+        }
+        if (typeof value === "string") {
+            // Try ISO first
+            const maybeIso = new Date(value)
+            if (!isNaN(maybeIso.getTime())) return maybeIso
+            // Then numeric string (seconds or ms)
+            const numeric = Number(value)
+            if (!isNaN(numeric)) {
+                const ms = numeric < 1e12 ? numeric * 1000 : numeric
+                return new Date(ms)
+            }
+        }
+        return new Date(NaN)
+    }
+
+    // No time filtering, only robust datetime parsing kept
+
+    const filteredCharts: MiniChartStat[] = charts
+
+    return (
+        <Stack
+            component="div"
+            sx={{
+                display: "grid",
+                gridTemplateColumns: {
+                    xs: "1fr", // до 768px — 1 карточка в ряд
+                    lg: "1fr 1fr 1fr 1fr", // с 1200px и выше — 4 карточки в ряд
+                },
+                gap: "1rem",
+                width: "100%",
+                alignItems: "stretch",
+                padding: "1rem 0",
+                "@media (min-width:768px) and (max-width:1199.98px)": {
+                    gridTemplateColumns: "1fr 1fr", // только между 768px и 1200px — 2 карточки в ряд
+                },
+            }}
+        >
+            {filteredCharts.map((stat: MiniChartStat, i: number) => (
+                <Card
+                    key={i}
+                    variant="outlined"
+                    sx={{
+                        maxHeight: `360px`,
+                        width: `100%`,
+                        marginRight: !isMobile && i < charts.length - 1 ? `1rem` : 0,
+                        marginBottom: isMobile && i < charts.length - 1 ? `1rem` : 0,
+                    }}
+                >
+                    <Stack direction="column" sx={{ padding: `1rem` }}>
+                        <Typography variant="h6" gutterBottom>
+                            {t(
+                                stat.title["en"] === "Temperature"
+                                    ? "widgets.weatherStatCard.titleTemperature"
+                                    : stat.title["en"] === "Wind speed"
+                                      ? "widgets.weatherStatCard.titleWindSpeed"
+                                      : stat.title["en"] === "Humidity"
+                                        ? "widgets.weatherStatCard.titleHumidity"
+                                        : stat.title["en"] === "Pressure"
+                                          ? "widgets.weatherStatCard.titlePressure"
+                                          : stat.title["en"]
+                            )}
+                        </Typography>
+                        <Stack direction="row" justifyContent="space-between" alignItems="center">
+                            <Typography variant="h4">{stat.values}</Typography>
+                            <Chip
+                                sx={{ lineHeight: `1rem`, fontSize: `1rem` }}
+                                size="small"
+                                label={`${stat.percentages.value} ${t(`widgets.weatherStatCard.trend${stat.percentages.mark.charAt(0).toUpperCase() + stat.percentages.mark.slice(1)}`) || trendLabels[stat.percentages.mark]}`}
+                                color={chipColors[stat.percentages.mark]}
+                            />
+                        </Stack>
+                        {/* Description removed per requirements */}
+                        <SparkLineChart
+                            color={colors[stat.percentages.mark]}
+                            data={stat.data.map((el: { value: number; datetime: string }) => el.value)}
+                            area
+                            showHighlight
+                            showTooltip
+                            xAxis={{
+                                scaleType: "point",
+                                data: stat.data.map((el: { value: number; datetime: string | number }) =>
+                                    parsePointDate(el.datetime)
+                                ),
+                            }}
+                            sx={{
+                                [`& .${areaElementClasses.root}`]: {
+                                    fill: colors[stat.percentages.mark],
+                                    opacity: 0.3,
+                                },
+                            }}
+                        />
+                    </Stack>
+                </Card>
+            ))}
+        </Stack>
+    )
+}

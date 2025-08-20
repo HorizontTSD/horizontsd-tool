@@ -1,11 +1,75 @@
-FROM
+# syntax=docker/dockerfile:1
+#
+#
+FROM node:23-alpine AS base
+WORKDIR /app
+ENV NODE_ENV=production
 
-WORKDIR
+ARG NODE_BACKEND_ENDPOINT
+ARG NODE_ALERT_ENDPOINT
+ARG NODE_MODEL_FAST_API_ENDPOINT
 
-ENV
+ARG VITE_BACKEND_ENDPOINT
+ARG VITE_ALERT_ENDPOINT
+ARG VITE_MODEL_FAST_API_ENDPOINT
 
-COPY
+ENV NODE_BACKEND_ENDPOINT=$NODE_BACKEND_ENDPOINT
+ENV NODE_ALERT_ENDPOINT=$NODE_ALERT_ENDPOINT
+ENV NODE_MODEL_FAST_API_ENDPOINT=$NODE_MODEL_FAST_API_ENDPOINT
 
-RUN
+ENV VITE_BACKEND_ENDPOINT=$VITE_BACKEND_ENDPOINT
+ENV VITE_ALERT_ENDPOINT=$VITE_ALERT_ENDPOINT
+ENV VITE_MODEL_FAST_API_ENDPOINT=$VITE_MODEL_FAST_API_ENDPOINT
 
-ENTRYPOINT []
+RUN apk update && apk upgrade && \
+	apk add --no-cache libc6-compat && \
+	npm install -g corepack && \
+	corepack enable && \
+	corepack prepare yarn@4.9.1 --activate
+
+COPY . .
+COPY ./src/main.tsx ./src/main.tsx 
+RUN ls -la
+RUN ls -la ./src/
+RUN yarn install --immutable
+RUN yarn build
+
+#
+#
+FROM base AS production
+WORKDIR /app
+ENV NODE_ENV=production
+ENV PORT=3000
+
+ARG NODE_BACKEND_ENDPOINT
+ARG NODE_ALERT_ENDPOINT
+ARG NODE_MODEL_FAST_API_ENDPOINT
+
+ARG VITE_BACKEND_ENDPOINT
+ARG VITE_ALERT_ENDPOINT
+ARG VITE_MODEL_FAST_API_ENDPOINT
+
+ENV NODE_BACKEND_ENDPOINT=$NODE_BACKEND_ENDPOINT
+ENV NODE_ALERT_ENDPOINT=$NODE_ALERT_ENDPOINT
+ENV NODE_MODEL_FAST_API_ENDPOINT=$NODE_MODEL_FAST_API_ENDPOINT
+
+ENV VITE_BACKEND_ENDPOINT=$VITE_BACKEND_ENDPOINT
+ENV VITE_ALERT_ENDPOINT=$VITE_ALERT_ENDPOINT
+ENV VITE_MODEL_FAST_API_ENDPOINT=$VITE_MODEL_FAST_API_ENDPOINT
+
+RUN apk add --no-cache libc6-compat
+
+# Copy built artifacts from builder stage
+COPY --from=base --chown=node:node /app/dist ./dist
+COPY --from=base --chown=node:node /app/server ./server
+COPY --from=base --chown=node:node /app/package.json ./
+
+# Install production dependencies (only server dependencies)
+RUN yarn workspaces focus --production
+
+# Expose application port
+USER node
+EXPOSE ${PORT}
+
+# Start the server
+CMD ["node", "./server/server.mjs"]

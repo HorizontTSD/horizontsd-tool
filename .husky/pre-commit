@@ -1,0 +1,15 @@
+#!/usr/bin/env sh
+
+echo "🚀 Запуск pre-commit хука..."
+echo "📋 Проверяю staged файлы..."
+
+# Показываем какие файлы будут проверены
+git diff --cached --name-only | while read file; do
+    echo "  📄 $file"
+done
+
+echo ""
+echo "🔍 Запускаю lint-staged..."
+yarn lint-staged
+
+echo "✅ Pre-commit хук завершен!"

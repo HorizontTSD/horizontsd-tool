@@ -1,0 +1,42 @@
+@media (prefers-color-scheme: dark) {
+  :root {
+    --background-color: var(--mui-palette-secondary-dark);
+    --text-color: white;
+    --input-border: var(--mui-palette-primary-dark);
+  }
+}
+
+@media (prefers-color-scheme: light) {
+  :root {
+    --background-color: var(--mui-palette-secondary-light);
+    --text-color: var(--mui-palette-text-primary);
+    --input-border: var(--mui-palette-primary-light);
+  }
+}
+
+.data-table th {
+  vertical-align: top;
+  padding: 3px;
+  margin: 1px;
+  color: var(--text-color);
+  border-bottom: 2px solid var(--mui-palette-secondary-main);
+  background: var(--background-color);
+}
+
+.data-table tr {
+  color: var(--mui-palette-text-primary);
+}
+
+.data-table tr td input {
+  width: 100%;
+  border-radius: 2px;
+  border: 1px solid var(--input-border);
+}
+
+table {}
+
+table thead {
+  position: sticky;
+  top: -16px;
+  z-index: 1;
+}

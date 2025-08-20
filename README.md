@@ -1,68 +1,84 @@
-# horizontsd-tool
+![alt text](/readme_materials/dashboard.png "Dashboard")
 
-<p align="center">
+# `.env`
 
-[![pre-commit](https://img.shields.io/badge/pre--commit-enabled-brightgreen?logo=pre-commit)](https://github.com/pre-commit/pre-commit)
-![Code Coverage](coverage.svg)
+Example:
 
-</p>
+```txt
+# .env
 
-# Запуск на своей машине
+# to build client
+VITE_BACKEND_ENDPOINT=/backend_endpoint
+VITE_ALERT_ENDPOINT=/alert_endpoint
+VITE_MODEL_FAST_API_ENDPOINT=/model_fast_api_endpoint
+# to run server
+NODE_BACKEND_ENDPOINT=http://XX.XX.XX.XX:XXXX
+NODE_ALERT_ENDPOINT=http://XX.XX.XX.XX:XXXX
+NODE_MODEL_FAST_API_ENDPOINT=http://XX.XX.XX.XX:XXXX
 
-#### Установка зависимостей
-```bash
-
+VITE_FIGMA_URL=https://www.figma.com/design/XXXXXXXXXXXXXXXXX/XXXXXXXXXXXXXXXXX?node-id=XXX-XXX
 ```
 
-
-Активация окружения
-```bash
-
+```txt
+# .storybook/.env.development
+VITE_BACKEND_URL=0.0.0.0
+VITE_BACKEND=http://localhost:6006
 ```
 
+<br/>
 
-Запуск на своей машине
-```bash
-
-```
-
-
-
-# Запуск контейнера локально
-
-### Строим контейнер
-```bash
-sudo docker build -t horizon_tool .
-```
-Узнаем его ID
-```bash
-sudo docker images
-```
+# DEVELOPMENT
 
 ```bash
-sudo docker run -d -p 7070:7071 <IMAGE ID>
+# pull
+git clone https://github.com/HorizontTSD/horizontsd-tool.git --branch ...
+
+# setup .env
+...
+# setup .storybook/.env.development
+...
+
+
+# install dependencies
+yarn install
+
+# Generate OpenAPI schemas:
+VITE_MODEL_FAST_API_ENDPOINT=https://1X.XX.XX.XX:XXXX npx @rtk-query/codegen-openapi ./openapi-config-model_fast_api.ts
+VITE_ALERT_ENDPOINT=http://2X.XX.XX.XX:XXXX npx @rtk-query/codegen-openapi ./openapi-config-alerts.ts
+VITE_BACKEND_ENDPOINT=http://3X.XX.XX.XX:XXXX npx @rtk-query/codegen-openapi ./openapi-config-model_fast_api.ts
+
+# run development server
+yarn dev
+
+# launch for components preview and testing
+yarn storybook
+
+# run production build
+yarn build
+
+# preview production build
+yarn server
 ```
 
-# Запуск контейнера публично
+<br/>
 
-### Строим контейнер
-```bash
-sudo docker build -t  .
-```
-Узнаем его IMAGE ID
-```bash
-sudo docker images
-```
+# DEPLOY
 
 ```bash
-docker run -d -p 7070:7070 <IMAGE ID>
+docker build --pull --rm -f Dockerfile -t horizontsdtool:latest . --progress=plain \
+--build-arg VITE_BACKEND_ENDPOINT=/backend_endpoint \
+--build-arg VITE_ALERT_ENDPOINT=/alert_endpoint \
+--build-arg VITE_MODEL_FAST_API_ENDPOINT=/model_fast_api_endpoint \
+--build-arg NODE_BACKEND_ENDPOINT=http://XX.XX.XX.XX:XXXX \
+--build-arg NODE_ALERT_ENDPOINT=http://XX.XX.XX.XX:XXXX \
+--build-arg NODE_MODEL_FAST_API_ENDPOINT=http://XX.XX.XX.XX:XXXX
+
+docker run -d -p 3000:80 -e --name horizontsdtool:latest
 ```
 
-```bash
-docker run -d -p 80:7070 <IMAGE ID>
-```
+> map 3000 to 80 port
 
-```bash
-docker run -d -p 7070:80 <IMAGE ID>
-```
+<br/>
+<br/>
+<br/>
 

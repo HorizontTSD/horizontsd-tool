@@ -1,0 +1,210 @@
+import React from "react"
+import { useEffect, useMemo, useState } from "react"
+import { DataGrid, GridColDef, GridRowsProp } from "@mui/x-data-grid"
+import { Box, Stack, Typography } from "@mui/material"
+import { GridDropdown } from "@/widgets/GridDropdown"
+import {
+    useFuncGetForecastDataBackendV1GetForecastDataPostMutation,
+    useFuncGetSensorIdListBackendV1GetSensorIdListGetQuery,
+} from "@/shared/api/model_fast_api"
+import { CustomRow } from "@/shared/types"
+import { useTranslation } from "react-i18next"
+import { GridDetailsSkeleton } from "@/shared/ui/skeletons/GridDetailsSkeleton"
+import { GridDropdownSkeleton } from "@/shared/ui/skeletons/GridDropdownSkeleton"
+
+export const CustomizedDataGrid: React.FC = () => {
+    const { t } = useTranslation("common")
+    const {
+        data: sensors,
+        isLoading: sensorsLoading,
+        error: sensorsError,
+    } = useFuncGetSensorIdListBackendV1GetSensorIdListGetQuery()
+    const [triggerForecast, { data: forecastData, isLoading: forecastLoading, error: forecastError }] =
+        useFuncGetForecastDataBackendV1GetForecastDataPostMutation()
+
+    const [selectedSensor, setSelectedSensor] = useState<string | null>(null)
+    const [selectedModel, setSelectedModel] = useState<string | null>(null)
+
+    // Initialize sensor selection and make initial forecast request
+    useEffect(() => {
+        if (sensors?.[0] && !selectedSensor) {
+            setSelectedSensor(sensors[0])
+        }
+    }, [sensors, selectedSensor])
+
+    // Make forecast request when sensor changes
+    useEffect(() => {
+        if (selectedSensor) {
+            triggerForecast({
+                forecastData: {
+                    sensor_ids: [selectedSensor],
+                },
+            })
+                .unwrap()
+                .catch(console.error)
+        }
+    }, [selectedSensor, triggerForecast])
+
+    // Extract metrics tables from forecast data
+    const metricsTables = forecastData?.[0]?.[selectedSensor || ""]?.metrix_tables || {}
+
+    // Initialize model selection when metrics data arrives
+    useEffect(() => {
+        if (Object.keys(metricsTables).length > 0 && !selectedModel) {
+            setSelectedModel(Object.keys(metricsTables)[0])
+        }
+    }, [metricsTables, selectedModel])
+
+    const rows: GridRowsProp<CustomRow> = useMemo(() => {
+        if (!selectedModel || !metricsTables || !metricsTables[selectedModel]?.metrics_table) return []
+
+        return metricsTables[selectedModel].metrics_table.map((item: any, index: number) => {
+            const { Time, ...otherFields } = item
+            return {
+                id: index,
+                Time: new Date(Time as number).toUTCString(),
+                ...otherFields,
+            }
+        })
+    }, [metricsTables, selectedModel])
+
+    const columns: GridColDef[] = useMemo(() => {
+        if (!selectedModel || !metricsTables || !metricsTables[selectedModel]?.metrics_table[0]) return []
+
+        const columnKeys = Object.keys(metricsTables[selectedModel].metrics_table[0])
+
+        return columnKeys.map((key) => ({
+            field: key,
+            headerName: key === "Time" ? t("widgets.GridDetails.dateTimeHeader") : key,
+            flex: 1,
+            minWidth: 120,
+            sortable: true,
+            ...(key === "Time" && {
+                sortComparator: (v1, v2) => {
+                    return new Date(v1).getTime() - new Date(v2).getTime()
+                },
+            }),
+        }))
+    }, [selectedModel, metricsTables, t])
+
+    const handleSubmit = async (selected: string) => {
+        if (selectedSensor === selected) return
+        try {
+            setSelectedSensor(selected)
+            setSelectedModel(null) // Reset model selection when sensor changes
+        } catch (err) {
+            console.error("Failed to update sensor selection:", err)
+        }
+    }
+
+    const handleSubmitModel = async (selected: string) => {
+        try {
+            setSelectedModel(selected)
+        } catch (err) {
+            console.error("Failed to update model selection:", err)
+        }
+    }
+
+    return (
+        <Stack direction={"column"} sx={{ margin: `1rem 0` }}>
+            <Stack direction={"column"} sx={{ margin: `1rem 0` }}>
+                <Typography variant="h4">{t("widgets.GridDetails.tableTitle")}</Typography>
+            </Stack>
+            <Box
+                sx={{
+                    height: 700,
+                    width: "100%",
+                    display: "flex",
+                    flexDirection: "column",
+                    gap: 2,
+                }}
+            >
+                <Box
+                    sx={{
+                        display: "flex",
+                        flexDirection: { xs: "column", sm: "row" },
+                        justifyContent: "space-between",
+                        width: "100%",
+                        gap: 2,
+                    }}
+                >
+                    {sensorsLoading || forecastLoading ? (
+                        <GridDropdownSkeleton />
+                    ) : (
+                        <>
+                            <Stack>
+                                <Typography>{t("widgets.GridDetails.sensorSelectionLabel")}</Typography>
+                                <GridDropdown
+                                    list={sensors || []}
+                                    selected={selectedSensor || ""}
+                                    onSelect={handleSubmit}
+                                />
+                            </Stack>
+
+                            <Stack>
+                                <Typography>{t("widgets.GridDetails.modelSelectionLabel")}</Typography>
+                                {selectedSensor && (
+                                    <GridDropdown
+                                        list={Object.keys(metricsTables) || []}
+                                        selected={selectedModel || ""}
+                                        onSelect={handleSubmitModel}
+                                    />
+                                )}
+                            </Stack>
+                        </>
+                    )}
+                </Box>
+
+                {/* Loading and Error States */}
+                {sensorsError && <Typography color="error">{t("widgets.GridDetails.sensorFetchError")}</Typography>}
+                {forecastError && (
+                    <Typography color="error">{`${t("widgets.GridDetails.forecastFetchErrorPrefix")} ${JSON.stringify(forecastError)}`}</Typography>
+                )}
+
+                {/* <GridDetailsSkeleton /> */}
+                {(sensorsLoading || forecastLoading) && <GridDetailsSkeleton />}
+
+                {/* Data Grid */}
+                {!forecastLoading && selectedModel && !sensorsLoading && (
+                    <DataGrid
+                        rows={rows}
+                        columns={columns}
+                        density="compact"
+                        pageSizeOptions={[25, 50, 100]}
+                        initialState={{
+                            pagination: { paginationModel: { pageSize: 100, page: 0 } },
+                        }}
+                        disableColumnResize
+                        getRowClassName={(params) => (params.indexRelativeToCurrentPage % 2 === 0 ? "even" : "odd")}
+                        slotProps={{
+                            filterPanel: {
+                                filterFormProps: {
+                                    logicOperatorInputProps: {
+                                        variant: "outlined",
+                                        size: "small",
+                                    },
+                                    columnInputProps: {
+                                        variant: "outlined",
+                                        size: "small",
+                                        sx: { mt: "auto" },
+                                    },
+                                    operatorInputProps: {
+                                        variant: "outlined",
+                                        size: "small",
+                                        sx: { mt: "auto" },
+                                    },
+                                    valueInputProps: {
+                                        InputComponentProps: {
+                                            variant: "outlined",
+                                            size: "small",
+                                        },
+                                    },
+                                },
+                            },
+                        }}
+                    />
+                )}
+            </Box>
+        </Stack>
+    )
+}

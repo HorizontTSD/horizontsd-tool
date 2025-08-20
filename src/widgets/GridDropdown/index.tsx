@@ -1,0 +1,96 @@
+import React from "react"
+import { useState } from "react"
+import IconButton from "@mui/material/IconButton"
+import Menu from "@mui/material/Menu"
+import MenuItem from "@mui/material/MenuItem"
+import Typography from "@mui/material/Typography"
+import { ArrowDropDown as ArrowDropDownIcon } from "@mui/icons-material"
+// import { useForecastData } from "@/hooks/useForecastData"
+
+interface GridDropdownProps {
+    list: string[]
+    selected: string | null
+    onSelect: (model: string) => void
+}
+
+export const GridDropdown = ({ list, selected, onSelect }: GridDropdownProps) => {
+    const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null)
+
+    const handleClick = (event: React.MouseEvent<HTMLElement>) => {
+        setAnchorEl(event.currentTarget)
+    }
+
+    const handleClose = () => {
+        setAnchorEl(null)
+    }
+
+    const handleModelSelect = (model: string) => {
+        onSelect(model)
+        handleClose()
+    }
+
+    return (
+        <>
+            <IconButton
+                onClick={handleClick}
+                size="small"
+                sx={{
+                    minWidth: { xs: "100%", sm: 160 },
+                    border: "1px solid",
+                    borderColor: "divider",
+                    borderRadius: 1,
+                    padding: "6px 12px",
+                    width: { xs: "100%", sm: "auto" },
+                    "&:hover": {
+                        backgroundColor: "action.hover",
+                    },
+                }}
+            >
+                <Typography variant="body2" sx={{ mr: 1, textTransform: "none" }}>
+                    {selected || "Select sensor"}
+                </Typography>
+                <ArrowDropDownIcon fontSize="small" />
+            </IconButton>
+
+            <Menu
+                anchorEl={anchorEl}
+                open={Boolean(anchorEl)}
+                onClose={handleClose}
+                slotProps={{
+                    paper: {
+                        sx: {
+                            minWidth: { xs: "90%", sm: 160 },
+                            maxHeight: 300,
+                            boxShadow: 2,
+                            mt: 1,
+                            "& .MuiMenuItem-root": {
+                                minHeight: 36,
+                            },
+                        },
+                    },
+                }}
+            >
+                {list.map((model) => (
+                    <MenuItem
+                        key={model}
+                        selected={model === selected}
+                        onClick={() => handleModelSelect(model)}
+                        sx={{
+                            pl: 2,
+                            "&.Mui-selected": {
+                                backgroundColor: "action.selected",
+                                "&:hover": {
+                                    backgroundColor: "action.selected",
+                                },
+                            },
+                        }}
+                    >
+                        <Typography variant="body2" sx={{ textTransform: "none" }}>
+                            {model}
+                        </Typography>
+                    </MenuItem>
+                ))}
+            </Menu>
+        </>
+    )
+}
