@@ -32,6 +32,11 @@ const modelProxy = createProxyMiddleware({
     changeOrigin: true,
 })
 
+const orchestratorProxy = createProxyMiddleware({
+    target: process.env.NODE_ORCHESTRATOR_ENDPOINT,
+    changeOrigin: true,
+})
+
 // Proxy API requests
 app.use(
     "/alert_endpoint",
@@ -56,6 +61,15 @@ app.use(
         next()
     },
     modelProxy
+)
+
+app.use(
+    "/orchestrator",
+    (req, res, next) => {
+        req.url = req.url.replaceAll("/orchestrator", "")
+        next()
+    },
+    orchestratorProxy
 )
 
 // SPA fallback

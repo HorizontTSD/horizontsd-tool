@@ -11,10 +11,12 @@ Example:
 VITE_BACKEND_ENDPOINT=/backend_endpoint
 VITE_ALERT_ENDPOINT=/alert_endpoint
 VITE_MODEL_FAST_API_ENDPOINT=/model_fast_api_endpoint
+VITE_ORCHESTRATOR_ENDPOINT=/orchestrator
 # to run server
 NODE_BACKEND_ENDPOINT=http://XX.XX.XX.XX:XXXX
 NODE_ALERT_ENDPOINT=http://XX.XX.XX.XX:XXXX
 NODE_MODEL_FAST_API_ENDPOINT=http://XX.XX.XX.XX:XXXX
+NODE_ORCHESTRATOR_ENDPOINT=http://XX.XX.XX.XX:XXXX
 
 VITE_FIGMA_URL=https://www.figma.com/design/XXXXXXXXXXXXXXXXX/XXXXXXXXXXXXXXXXX?node-id=XXX-XXX
 ```
@@ -69,9 +71,11 @@ docker build --pull --rm -f Dockerfile -t horizontsdtool:latest . --progress=pla
 --build-arg VITE_BACKEND_ENDPOINT=/backend_endpoint \
 --build-arg VITE_ALERT_ENDPOINT=/alert_endpoint \
 --build-arg VITE_MODEL_FAST_API_ENDPOINT=/model_fast_api_endpoint \
+--build-arg VITE_ORCHESTRATOR_ENDPOINT=/orchestrator \
 --build-arg NODE_BACKEND_ENDPOINT=http://XX.XX.XX.XX:XXXX \
 --build-arg NODE_ALERT_ENDPOINT=http://XX.XX.XX.XX:XXXX \
---build-arg NODE_MODEL_FAST_API_ENDPOINT=http://XX.XX.XX.XX:XXXX
+--build-arg NODE_MODEL_FAST_API_ENDPOINT=http://XX.XX.XX.XX:XXXX \
+--build-arg NODE_ORCHESTRATOR_ENDPOINT=http://XX.XX.XX.XX:XXXX
 
 docker run -d -p 3000:80 -e --name horizontsdtool:latest
 ```
@@ -81,4 +85,3 @@ docker run -d -p 3000:80 -e --name horizontsdtool:latest
 <br/>
 <br/>
 <br/>
-
