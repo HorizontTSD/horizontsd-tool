@@ -13,6 +13,8 @@ VITE_ALERT_ENDPOINT=/alert_endpoint
 VITE_MODEL_FAST_API_ENDPOINT=/model_fast_api_endpoint
 VITE_ORCHESTRATOR_ENDPOINT=/orchestrator
 VITE_ORCHESTRATOR_PATH_PREFIX=horizon_orchestrator
+# Абсолютный URL для продакшена (опционально, тогда клиент бьет напрямую)
+# VITE_ORCHESTRATOR_ABSOLUTE=https://horizon-tool.ru/orchestrator
 # to run server
 NODE_BACKEND_ENDPOINT=http://XX.XX.XX.XX:XXXX
 NODE_ALERT_ENDPOINT=http://XX.XX.XX.XX:XXXX
