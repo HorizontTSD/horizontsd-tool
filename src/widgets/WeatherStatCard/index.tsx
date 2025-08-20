@@ -37,6 +37,32 @@ export const WeatherStatCard = () => {
     if (error) return <div>{t("widgets.weatherStatCard.errorLoadingChartsData")}</div>
     if (!charts) return null
 
+    // Show full data series without time filtering
+
+    const parsePointDate = (value: unknown): Date => {
+        // Supports ISO string, ms since epoch, or seconds since epoch
+        if (typeof value === "number") {
+            const ms = value < 1e12 ? value * 1000 : value
+            return new Date(ms)
+        }
+        if (typeof value === "string") {
+            // Try ISO first
+            const maybeIso = new Date(value)
+            if (!isNaN(maybeIso.getTime())) return maybeIso
+            // Then numeric string (seconds or ms)
+            const numeric = Number(value)
+            if (!isNaN(numeric)) {
+                const ms = numeric < 1e12 ? numeric * 1000 : numeric
+                return new Date(ms)
+            }
+        }
+        return new Date(NaN)
+    }
+
+    // No time filtering, only robust datetime parsing kept
+
+    const filteredCharts: MiniChartStat[] = charts
+
     return (
         <Stack
             component="div"
@@ -55,7 +81,7 @@ export const WeatherStatCard = () => {
                 },
             }}
         >
-            {charts.map((stat: MiniChartStat, i: number) => (
+            {filteredCharts.map((stat: MiniChartStat, i: number) => (
                 <Card
                     key={i}
                     variant="outlined"
@@ -89,13 +115,7 @@ export const WeatherStatCard = () => {
                                 color={chipColors[stat.percentages.mark]}
                             />
                         </Stack>
-                        <Typography variant="caption" sx={{ color: "text.secondary" }}>
-                            {t(
-                                stat.description["en"] === "The last 24 hours"
-                                    ? "widgets.weatherStatCard.descriptionLast24h"
-                                    : stat.description["en"]
-                            )}
-                        </Typography>
+                        {/* Description removed per requirements */}
                         <SparkLineChart
                             color={colors[stat.percentages.mark]}
                             data={stat.data.map((el: { value: number; datetime: string }) => el.value)}
@@ -104,7 +124,9 @@ export const WeatherStatCard = () => {
                             showTooltip
                             xAxis={{
                                 scaleType: "point",
-                                data: stat.data.map((el: { value: number; datetime: string }) => new Date(el.datetime)),
+                                data: stat.data.map((el: { value: number; datetime: string | number }) =>
+                                    parsePointDate(el.datetime)
+                                ),
                             }}
                             sx={{
                                 [`& .${areaElementClasses.root}`]: {

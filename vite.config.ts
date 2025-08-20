@@ -47,7 +47,8 @@ const modelProxy = {
 }
 
 const orchestratorProxy = {
-    target: "http://77.37.136.11:8081",
+    target:
+        process.env.NODE_ORCHESTRATOR_ENDPOINT || process.env.VITE_ORCHESTRATOR_ENDPOINT || "http://77.37.136.11:7071",
     changeOrigin: true,
     rewrite: (path: string) => path.replace(/^\/orchestrator/, ""),
     configure: (proxy: any) => {
