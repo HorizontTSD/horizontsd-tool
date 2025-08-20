@@ -12,28 +12,31 @@ const __filename = fileURLToPath(import.meta.url)
 const __dirname = path.dirname(__filename)
 
 const app = express()
-const port = 3000
+const port = process.env.PORT || 3000
 
 const distPath = path.resolve(process.cwd(), "dist")
 app.use(express.static(distPath))
 
 const alertProxy = createProxyMiddleware({
-    target: process.env.NODE_ALERT_ENDPOINT,
+    target: process.env.NODE_ALERT_ENDPOINT || "http://77.37.136.11:7080",
     changeOrigin: true,
 })
 
 const backendProxy = createProxyMiddleware({
-    target: process.env.NODE_BACKEND_ENDPOINT,
+    target: process.env.NODE_BACKEND_ENDPOINT || "http://77.37.136.11:7070",
     changeOrigin: true,
 })
 
 const modelProxy = createProxyMiddleware({
-    target: process.env.NODE_MODEL_FAST_API_ENDPOINT,
+    target: process.env.NODE_MODEL_FAST_API_ENDPOINT || "http://77.37.136.11:7072",
     changeOrigin: true,
 })
 
 const orchestratorProxy = createProxyMiddleware({
-    target: process.env.NODE_ORCHESTRATOR_ENDPOINT,
+    target:
+        process.env.NODE_ORCHESTRATOR_ENDPOINT ||
+        process.env.VITE_ORCHESTRATOR_ENDPOINT ||
+        "http://77.37.136.11:7071",
     changeOrigin: true,
     onProxyReq: (proxyReq) => {
         if (process.env.VITE_ORCHESTRATOR_TOKEN && !proxyReq.getHeader("authorization")) {
