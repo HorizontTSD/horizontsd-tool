@@ -97,8 +97,19 @@ if (orchestratorProxy) {
     app.use(
         "/orchestrator",
         (req, res, next) => {
-            // Remove /orchestrator prefix to match upstream paths like /horizon_orchestrator/...
-            req.url = req.url.replace(/^\/orchestrator/, "")
+            // Удаляем префикс /orchestrator
+            let newPath = req.url.replace(/^\/orchestrator/, "")
+
+            // Если настроен префикс для оркестратора, но он отсутствует в пути, добавим его
+            const rawPrefix =
+                process.env.VITE_ORCHESTRATOR_PATH_PREFIX || process.env.NODE_ORCHESTRATOR_PATH_PREFIX || ""
+            const orchestratorPrefix = rawPrefix.replace(/(^\/+|\/+?$)/g, "")
+
+            if (orchestratorPrefix && !newPath.startsWith(`/${orchestratorPrefix}/`)) {
+                newPath = `/${orchestratorPrefix}${newPath.startsWith("/") ? "" : "/"}${newPath}`
+            }
+
+            req.url = newPath
             next()
         },
         orchestratorProxy

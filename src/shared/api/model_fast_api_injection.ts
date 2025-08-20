@@ -1,6 +1,7 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react"
 
-const orchestratorPrefix = import.meta.env.VITE_ORCHESTRATOR_PATH_PREFIX?.replace(/(^\/+|\/+?$)/g, "") || ""
+const orchestratorPrefix =
+    import.meta.env.VITE_ORCHESTRATOR_PATH_PREFIX?.replace(/(^\/+|\/+?$)/g, "") || "horizon_orchestrator"
 
 export const model_fast_api = createApi({
     reducerPath: `model_fast_api`,
