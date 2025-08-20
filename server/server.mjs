@@ -34,22 +34,23 @@ requiredEnvVars.forEach((envVar) => {
 console.log("Environment variables check passed")
 
 const alertProxy = createProxyMiddleware({
-    target: process.env.NODE_ALERT_ENDPOINT,
+    target: process.env.NODE_ALERT_ENDPOINT || "http://77.37.136.11:7080",
     changeOrigin: true,
 })
 
 const backendProxy = createProxyMiddleware({
-    target: process.env.NODE_BACKEND_ENDPOINT,
+    target: process.env.NODE_BACKEND_ENDPOINT || "http://77.37.136.11:7070",
     changeOrigin: true,
 })
 
 const modelProxy = createProxyMiddleware({
-    target: process.env.NODE_MODEL_FAST_API_ENDPOINT,
+    target: process.env.NODE_MODEL_FAST_API_ENDPOINT || "http://77.37.136.11:7072",
     changeOrigin: true,
 })
 
 const orchestratorProxy = createProxyMiddleware({
-    target: process.env.NODE_ORCHESTRATOR_ENDPOINT,
+    target:
+        process.env.NODE_ORCHESTRATOR_ENDPOINT || process.env.VITE_ORCHESTRATOR_ENDPOINT || "http://77.37.136.11:7071",
     changeOrigin: true,
     onProxyReq: (proxyReq, req) => {
         // Всегда добавляем Authorization header для оркестратора
