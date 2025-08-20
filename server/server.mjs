@@ -32,6 +32,11 @@ const modelProxy = createProxyMiddleware({
     changeOrigin: true,
 })
 
+const orchestratorProxy = createProxyMiddleware({
+    target: process.env.NODE_ORCHESTRATOR_ENDPOINT,
+    changeOrigin: true,
+})
+
 // Proxy API requests
 app.use(
     "/alert_endpoint",
@@ -56,6 +61,17 @@ app.use(
         next()
     },
     modelProxy
+)
+
+// Proxy orchestrator requests
+app.use(
+    "/orchestrator",
+    (req, res, next) => {
+        // Remove /orchestrator prefix to match upstream paths like /horizon_orchestrator/...
+        req.url = req.url.replace(/^\/orchestrator/, "")
+        next()
+    },
+    orchestratorProxy
 )
 
 // SPA fallback
