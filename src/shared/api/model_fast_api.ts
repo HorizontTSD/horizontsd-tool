@@ -32,7 +32,7 @@ const injectedRtkApi = api.injectEndpoints({
             UpdateColForTrainLstmRequestBackendV1UpdateColForTrainLstmPostApiArg
         >({
             query: (queryArg) => ({
-                url: `/backend/v1/update_col_for_train_lstm`,
+                url: `/api/v1/update_col_for_train_lstm`,
                 method: "POST",
                 body: queryArg.updateColRequest,
             }),
@@ -42,7 +42,7 @@ const injectedRtkApi = api.injectEndpoints({
             FuncGetForecastDataBackendV1GetForecastDataPostApiArg
         >({
             query: (queryArg) => ({
-                url: `/backend/v1/get_forecast_data`,
+                url: `/api/v1/get_forecast_data`,
                 method: "POST",
                 body: queryArg.forecastData,
             }),
@@ -51,20 +51,20 @@ const injectedRtkApi = api.injectEndpoints({
             FuncGetMiniChartsDataBackendV1GetMiniChartsDataGetApiResponse,
             FuncGetMiniChartsDataBackendV1GetMiniChartsDataGetApiArg
         >({
-            query: () => ({ url: `/backend/v1/get_mini_charts_data` }),
+            query: () => ({ url: `/api/v1/get_mini_charts_data` }),
         }),
         funcGetSensorIdListBackendV1GetSensorIdListGet: build.query<
             FuncGetSensorIdListBackendV1GetSensorIdListGetApiResponse,
             FuncGetSensorIdListBackendV1GetSensorIdListGetApiArg
         >({
-            query: () => ({ url: `/backend/v1/get_sensor_id_list` }),
+            query: () => ({ url: `/api/v1/get_sensor_id_list` }),
         }),
         funcFetchPossibleDateForMetriBackendV1FetchPossibleDateForMetrixPost: build.mutation<
             FuncFetchPossibleDateForMetriBackendV1FetchPossibleDateForMetrixPostApiResponse,
             FuncFetchPossibleDateForMetriBackendV1FetchPossibleDateForMetrixPostApiArg
         >({
             query: (queryArg) => ({
-                url: `/backend/v1/fetch_possible_date_for_metrix`,
+                url: `/api/v1/fetch_possible_date_for_metrix`,
                 method: "POST",
                 body: queryArg.forecastData,
             }),
@@ -74,7 +74,7 @@ const injectedRtkApi = api.injectEndpoints({
             FuncMetrixByPeriodBackendV1MetrixByPeriodPostApiArg
         >({
             query: (queryArg) => ({
-                url: `/backend/v1/accuracy_by_period`,
+                url: `/api/v1/accuracy_by_period`,
                 method: "POST",
                 body: queryArg.metrixByPeriod,
             }),
