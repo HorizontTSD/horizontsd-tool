@@ -37,7 +37,7 @@ const orchestratorProxy = createProxyMiddleware({
         process.env.NODE_ORCHESTRATOR_ENDPOINT || process.env.VITE_ORCHESTRATOR_ENDPOINT || "http://77.37.136.11:7071",
     changeOrigin: true,
     onProxyReq: (proxyReq) => {
-        if (process.env.VITE_ORCHESTRATOR_TOKEN && !proxyReq.getHeader("authorization")) {
+        if (process.env.VITE_ORCHESTRATOR_TOKEN) {
             proxyReq.setHeader("Authorization", `Bearer ${process.env.VITE_ORCHESTRATOR_TOKEN}`)
         }
     },
@@ -69,18 +69,7 @@ app.use(
     modelProxy
 )
 
-app.use(
-    "/orchestrator",
-    (req, res, next) => {
-        const prefix = process.env.VITE_ORCHESTRATOR_PATH_PREFIX || "horizon_orchestrator"
-        if (prefix) {
-            // remove "/horizon_orchestrator" from the path
-            req.url = req.url.replace(`/${prefix}`, "")
-        }
-        next()
-    },
-    orchestratorProxy
-)
+app.use("/orchestrator", orchestratorProxy)
 
 // SPA fallback
 app.get("/", (req, res) => {
