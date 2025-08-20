@@ -1,22 +1,21 @@
 # syntax=docker/dockerfile:1
-#
-#
 FROM node:23-alpine AS base
 WORKDIR /app
-ENV NODE_ENV=production
 
-ARG NODE_BACKEND_ENDPOINT
-ARG NODE_ALERT_ENDPOINT
-ARG NODE_MODEL_FAST_API_ENDPOINT
-ARG NODE_ORCHESTRATOR_ENDPOINT
+# Установка переменных окружения ДЛЯ СБОРКИ
+ARG NODE_BACKEND_ENDPOINT=http://77.37.136.11:7070
+ARG NODE_ALERT_ENDPOINT=http://77.37.136.11:7080
+ARG NODE_MODEL_FAST_API_ENDPOINT=http://77.37.136.11:7072
+ARG NODE_ORCHESTRATOR_ENDPOINT=http://77.37.136.11:7071
 
-ARG VITE_BACKEND_ENDPOINT
-ARG VITE_ALERT_ENDPOINT
-ARG VITE_MODEL_FAST_API_ENDPOINT
-ARG VITE_ORCHESTRATOR_ENDPOINT
-ARG VITE_ORCHESTRATOR_PATH_PREFIX
-ARG VITE_ORCHESTRATOR_TOKEN
+ARG VITE_BACKEND_ENDPOINT=/backend_endpoint
+ARG VITE_ALERT_ENDPOINT=/alert_endpoint
+ARG VITE_MODEL_FAST_API_ENDPOINT=/model_fast_api_endpoint
+ARG VITE_ORCHESTRATOR_ENDPOINT=/orchestrator
+ARG VITE_ORCHESTRATOR_PATH_PREFIX=horizon_orchestrator
+ARG VITE_ORCHESTRATOR_TOKEN=zfd2oosl2RGqsdKpBA9MSrYlSfafQqXF1q9PuPCxi9LqtwDQva58SSH7pr7wldhe
 
+# Преобразование ARG в ENV для РАНТАЙМА
 ENV NODE_BACKEND_ENDPOINT=$NODE_BACKEND_ENDPOINT
 ENV NODE_ALERT_ENDPOINT=$NODE_ALERT_ENDPOINT
 ENV NODE_MODEL_FAST_API_ENDPOINT=$NODE_MODEL_FAST_API_ENDPOINT
@@ -30,37 +29,21 @@ ENV VITE_ORCHESTRATOR_PATH_PREFIX=$VITE_ORCHESTRATOR_PATH_PREFIX
 ENV VITE_ORCHESTRATOR_TOKEN=$VITE_ORCHESTRATOR_TOKEN
 
 RUN apk update && apk upgrade && \
-	apk add --no-cache libc6-compat && \
-	npm install -g corepack && \
-	corepack enable && \
-	corepack prepare yarn@4.9.1 --activate
+    apk add --no-cache libc6-compat && \
+    npm install -g corepack && \
+    corepack enable && \
+    corepack prepare yarn@4.9.1 --activate
 
 COPY . .
-COPY ./src/main.tsx ./src/main.tsx 
-RUN ls -la
-RUN ls -la ./src/
 RUN yarn install --immutable
 RUN yarn build
 
-#
-#
-FROM base AS production
+FROM node:23-alpine AS production
 WORKDIR /app
 ENV NODE_ENV=production
 ENV PORT=3000
 
-ARG NODE_BACKEND_ENDPOINT
-ARG NODE_ALERT_ENDPOINT
-ARG NODE_MODEL_FAST_API_ENDPOINT
-ARG NODE_ORCHESTRATOR_ENDPOINT
-
-ARG VITE_BACKEND_ENDPOINT
-ARG VITE_ALERT_ENDPOINT
-ARG VITE_MODEL_FAST_API_ENDPOINT
-ARG VITE_ORCHESTRATOR_ENDPOINT
-ARG VITE_ORCHESTRATOR_PATH_PREFIX
-ARG VITE_ORCHESTRATOR_TOKEN
-
+# Копируем ВСЕ переменные окружения из builder stage
 ENV NODE_BACKEND_ENDPOINT=$NODE_BACKEND_ENDPOINT
 ENV NODE_ALERT_ENDPOINT=$NODE_ALERT_ENDPOINT
 ENV NODE_MODEL_FAST_API_ENDPOINT=$NODE_MODEL_FAST_API_ENDPOINT
@@ -75,17 +58,13 @@ ENV VITE_ORCHESTRATOR_TOKEN=$VITE_ORCHESTRATOR_TOKEN
 
 RUN apk add --no-cache libc6-compat
 
-# Copy built artifacts from builder stage
 COPY --from=base --chown=node:node /app/dist ./dist
 COPY --from=base --chown=node:node /app/server ./server
 COPY --from=base --chown=node:node /app/package.json ./
 
-# Install production dependencies (only server dependencies)
 RUN yarn workspaces focus --production
 
-# Expose application port
 USER node
 EXPOSE ${PORT}
 
-# Start the server
 CMD ["node", "./server/server.mjs"]
