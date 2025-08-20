@@ -11,10 +11,13 @@ Example:
 VITE_BACKEND_ENDPOINT=/backend_endpoint
 VITE_ALERT_ENDPOINT=/alert_endpoint
 VITE_MODEL_FAST_API_ENDPOINT=/model_fast_api_endpoint
+VITE_ORCHESTRATOR_ENDPOINT=/orchestrator
+VITE_ORCHESTRATOR_PATH_PREFIX=horizon_orchestrator
 # to run server
 NODE_BACKEND_ENDPOINT=http://XX.XX.XX.XX:XXXX
 NODE_ALERT_ENDPOINT=http://XX.XX.XX.XX:XXXX
 NODE_MODEL_FAST_API_ENDPOINT=http://XX.XX.XX.XX:XXXX
+NODE_ORCHESTRATOR_ENDPOINT=http://XX.XX.XX.XX:XXXX
 
 VITE_FIGMA_URL=https://www.figma.com/design/XXXXXXXXXXXXXXXXX/XXXXXXXXXXXXXXXXX?node-id=XXX-XXX
 ```
@@ -66,19 +69,22 @@ yarn server
 
 ```bash
 docker build --pull --rm -f Dockerfile -t horizontsdtool:latest . --progress=plain \
---build-arg VITE_BACKEND_ENDPOINT=/backend_endpoint \
---build-arg VITE_ALERT_ENDPOINT=/alert_endpoint \
---build-arg VITE_MODEL_FAST_API_ENDPOINT=/model_fast_api_endpoint \
---build-arg NODE_BACKEND_ENDPOINT=http://XX.XX.XX.XX:XXXX \
---build-arg NODE_ALERT_ENDPOINT=http://XX.XX.XX.XX:XXXX \
---build-arg NODE_MODEL_FAST_API_ENDPOINT=http://XX.XX.XX.XX:XXXX
+  --build-arg VITE_BACKEND_ENDPOINT=/backend_endpoint \
+  --build-arg VITE_ALERT_ENDPOINT=/alert_endpoint \
+  --build-arg VITE_MODEL_FAST_API_ENDPOINT=/model_fast_api_endpoint \
+  --build-arg VITE_ORCHESTRATOR_ENDPOINT=/orchestrator \
+  --build-arg VITE_ORCHESTRATOR_PATH_PREFIX=horizon_orchestrator \
+  --build-arg NODE_BACKEND_ENDPOINT=http://XX.XX.XX.XX:XXXX \
+  --build-arg NODE_ALERT_ENDPOINT=http://XX.XX.XX.XX:XXXX \
+  --build-arg NODE_MODEL_FAST_API_ENDPOINT=http://XX.XX.XX.XX:XXXX \
+  --build-arg NODE_ORCHESTRATOR_ENDPOINT=http://XX.XX.XX.XX:XXXX
 
-docker run -d -p 3000:80 -e --name horizontsdtool:latest
+# Прод-образ запускает Node-сервер на 3000
+docker run -d --name horizontsdtool -p 3000:3000 horizontsdtool:latest
 ```
 
-> map 3000 to 80 port
+> На проде приложение слушает 3000 порт (Node `server/server.mjs`). Проксируйте домен на этот порт.
 
 <br/>
 <br/>
 <br/>
-
