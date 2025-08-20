@@ -75,17 +75,13 @@ docker build --pull --rm -f Dockerfile -t horizontsdtool:latest . --progress=pla
   --build-arg VITE_ALERT_ENDPOINT=/alert_endpoint \
   --build-arg VITE_MODEL_FAST_API_ENDPOINT=/model_fast_api_endpoint \
   --build-arg VITE_ORCHESTRATOR_ENDPOINT=/orchestrator \
-  --build-arg VITE_ORCHESTRATOR_PATH_PREFIX=horizon_orchestrator \
-  --build-arg NODE_BACKEND_ENDPOINT=http://XX.XX.XX.XX:XXXX \
-  --build-arg NODE_ALERT_ENDPOINT=http://XX.XX.XX.XX:XXXX \
-  --build-arg NODE_MODEL_FAST_API_ENDPOINT=http://XX.XX.XX.XX:XXXX \
-  --build-arg NODE_ORCHESTRATOR_ENDPOINT=http://XX.XX.XX.XX:XXXX
+  --build-arg VITE_ORCHESTRATOR_PATH_PREFIX=horizon_orchestrator
 
-# Прод-образ запускает Node-сервер на 3000
-docker run -d --name horizontsdtool -p 3000:3000 horizontsdtool:latest
+# Прод-образ теперь на Nginx и слушает 80
+docker run -d --name horizontsdtool -p 3000:80 horizontsdtool:latest
 ```
 
-> На проде приложение слушает 3000 порт (Node `server/server.mjs`). Проксируйте домен на этот порт.
+> На проде приложение слушает 80 порт (Nginx). В конфиге уже есть прокси `/orchestrator/` → `http://77.37.136.11:7071/`.
 
 <br/>
 <br/>
