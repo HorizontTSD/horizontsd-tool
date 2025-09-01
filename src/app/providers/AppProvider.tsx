@@ -1,4 +1,4 @@
-import { ReactNode } from "react"
+import { ReactNode, useState } from "react"
 import { Provider as ReduxProvider } from "react-redux"
 import { CssBaseline } from "@mui/material"
 import { StyledEngineProvider } from "@mui/material/styles"
@@ -10,6 +10,9 @@ import { AppTheme } from "@/shared/theme"
 import i18n from "@/shared/i18"
 
 import { chartsCustomizations, treeViewCustomizations, loaderCustomizations } from "@/shared/theme"
+import { AuthModal } from "@/widgets/AuthModal/AuthModal"
+import { useAuth } from "./AuthProvider"
+// import { useNavigate } from "react-router"
 
 type Props = {
     children: ReactNode
@@ -24,11 +27,23 @@ const themeComponents = {
 }
 
 export function AppProvider({ children, initialTheme, initialLanguage }: Props) {
+    const { showLoginModal } = useAuth()
+    console.log("showLoginModal", showLoginModal)
+    // const navigate = useNavigate()
+
     useEffect(() => {
         if (initialLanguage) {
             i18n.changeLanguage(initialLanguage)
         }
     }, [initialLanguage])
+
+    const handleCloseModal = () => {
+        // closeLoginModal()
+    }
+
+    const handleAuthSuccess = () => {
+        // closeLoginModal()
+    }
 
     return (
         <ReduxProvider store={store}>
@@ -36,7 +51,24 @@ export function AppProvider({ children, initialTheme, initialLanguage }: Props) 
                 <StyledEngineProvider injectFirst>
                     <AppTheme themeComponents={themeComponents} initialMode={initialTheme}>
                         <CssBaseline enableColorScheme />
-                        {children}
+                        {children} {/* Всегда рендерим children */}
+                        {showLoginModal && (
+                            <AuthModal
+                                isOpen={showLoginModal}
+                                onClose={handleCloseModal}
+                                onAuthSuccess={handleAuthSuccess}
+                            />
+                        )}
+                        {/* {showLoginModal ? (
+                            <AuthModal
+                                isOpen={showLoginModal}
+                                onClose={handleCloseModal}
+                                onAuthSuccess={handleAuthSuccess}
+                                navigate={() => (window.location.href = "/register")}
+                            ></AuthModal>
+                        ) : (
+                            children
+                        )} */}
                     </AppTheme>
                 </StyledEngineProvider>
             </I18nextProvider>
