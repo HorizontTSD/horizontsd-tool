@@ -16,7 +16,7 @@ export interface AuthResponse {
 
 export interface AuthModalProps {
     isOpen?: boolean
-    onClose: () => void
+    onClose?: () => void
     onAuthSuccess?: () => void
 }
 

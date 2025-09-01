@@ -1,6 +1,5 @@
 "use client"
 
-import { isAdmin } from "@/widgets/AuthModal/AuthModal.constants"
 import React, { createContext, useContext, useState, useEffect } from "react"
 
 export interface User {
@@ -34,7 +33,7 @@ interface AuthProviderProps {
 export const AuthProvider = ({ children }: AuthProviderProps) => {
     const [user, setUser] = useState<User | null>(null)
     const [loading, setLoading] = useState(true)
-    const [initialized, setInitialized] = useState(false)
+    // const [initialized, setInitialized] = useState(false)
     const [isAuthenticated, setIsAuthenticated] = useState(false)
     const [showLoginModal, setShowLoginModal] = useState(false)
 
@@ -180,14 +179,6 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
         hasPermission,
         setUser,
     }
-
-    console.log("AuthProvider: Providing value:", {
-        user,
-        isAuthenticated: !!user,
-        showLoginModal: !user,
-        loading,
-        initialized,
-    })
 
     return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>
 }

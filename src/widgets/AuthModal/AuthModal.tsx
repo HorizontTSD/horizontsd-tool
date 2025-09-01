@@ -16,9 +16,8 @@ import { authCardSx, btn, btnReg, modalSx } from "./AuthModal.styles"
 import { useAuth } from "@/app/providers/AuthProvider"
 import { validateForm } from "./AuthModal.utils"
 import { AuthModalProps, FormErrors } from "./AuthModal.interfaces"
-// import { useNavigate } from "react-router"
 
-export const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose, onAuthSuccess }) => {
+export const AuthModal: React.FC<AuthModalProps> = ({ isOpen }) => {
     const [error, setError] = useState<string>("")
     const [formData, setFormData] = useState({
         email: "",
@@ -27,7 +26,6 @@ export const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose, onAuthSuc
     const [errors, setErrors] = useState<FormErrors>({})
     const [loading, setLoading] = useState(false)
     const { login } = useAuth()
-    // const navigate = useNavigate()
 
     const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const { name, value } = e.target
@@ -59,13 +57,8 @@ export const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose, onAuthSuc
         try {
             const result = await login(formData.email, formData.password)
 
-            // saveAuthData(authData)
             if (result.success) {
-                await new Promise((resolve) => setTimeout(resolve, 100))
-
-                if (onAuthSuccess) {
-                    onAuthSuccess()
-                }
+                console.log("Успешная авторизация")
             } else {
                 setError(result.error || "Ошибка аутентификации")
             }
@@ -83,8 +76,6 @@ export const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose, onAuthSuc
 
     const handleRegister = () => {
         setLoading(true)
-
-        // navigate("/register")
 
         window.location.href = "/register"
     }
