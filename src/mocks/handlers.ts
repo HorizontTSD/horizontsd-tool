@@ -911,7 +911,7 @@ const model_fast_api_handlers = [
 ]
 
 const backend_handlers = [
-    http.post<{ sensor_ids: string[] }>(`${backend_endpoint}/backend/v1/generate_forecast/`, async ({ request }) => {
+    http.post<{ sensor_ids: string[] }>(`${backend_endpoint}/backend/v1/generate_forecast`, async ({ request }) => {
         const { df, time_column, col_target, forecast_horizon_time, lag, forecast_type, norm_values } =
             await request.json()
 
