@@ -8,6 +8,7 @@ import useMediaQuery from "@mui/material/useMediaQuery"
 import { getWidthStyles } from "@/shared/lib/styles/breakpoints"
 import IconButton from "@mui/material/IconButton"
 import MenuIcon from "@mui/icons-material/Menu"
+import AuthUserDisplay from "../AuthUserDisplay/AuthUserDisplay"
 
 interface HeaderProps {
     copyright?: string
@@ -78,6 +79,7 @@ export function Header({ copyright = "local", theme, language, width, title = "F
                     gap: 1,
                 }}
             >
+                <AuthUserDisplay />
                 <LanguageDropdown isVerySmall={isVerySmall} />
                 <ColorModeIconDropdown />
             </Stack>

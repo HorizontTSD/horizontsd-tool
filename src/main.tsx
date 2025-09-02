@@ -5,6 +5,7 @@ import { AppProvider } from "@/app/providers"
 import { App } from "@/app"
 
 import "./main.css"
+import { AuthProvider } from "./app/providers/AuthProvider"
 
 // async function enableMocking() {
 //     if (process.env.NODE_ENV !== "development") return
@@ -16,16 +17,20 @@ import "./main.css"
 const root = createRoot(document.getElementById("root")!)
 if (process.env.NODE_ENV !== "development") {
     root.render(
-        <AppProvider>
-            <App />
-        </AppProvider>
+        <AuthProvider>
+            <AppProvider>
+                <App />
+            </AppProvider>
+        </AuthProvider>
     )
 } else {
     root.render(
         <React.StrictMode>
-            <AppProvider>
-                <App />
-            </AppProvider>
+            <AuthProvider>
+                <AppProvider>
+                    <App />
+                </AppProvider>
+            </AuthProvider>
         </React.StrictMode>
     )
 }

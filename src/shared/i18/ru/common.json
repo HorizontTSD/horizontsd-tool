@@ -3,6 +3,22 @@
         "yes": "Да",
         "no": "Нет"
     },
+    "validation": {
+        "emailRequired": "Email обязателен",
+        "invalidEmail": "Некорректный формат email",
+        "passwordRequired": "Пароль обязателен",
+        "passwordMinLength": "Пароль должен содержать минимум 8 символов",
+        "passwordMaxLength": "Пароль слишком длинный (максимум 128 символов)",
+        "passwordLowercase": "Пароль должен содержать хотя бы одну строчную букву",
+        "passwordUppercase": "Пароль должен содержать хотя бы одну заглавную букву",
+        "passwordNumber": "Пароль должен содержать хотя бы одну цифру",
+        "passwordSpecial": "Пароль должен содержать хотя бы один специальный символ (@$!%*?&)",
+        "passwordNoRepeat": "Пароль не должен содержать 3 одинаковых символа подряд",
+        "passwordNotSimple": "Пароль слишком простой",
+        "confirmPasswordRequired": "Подтверждение пароля обязательно",
+        "passwordsNotMatch": "Пароли не совпадают"
+    },
+
     "widgets": {
         "navBar": {
             "path": {
@@ -18,6 +34,22 @@
                 "expand": "Развернуть боковую панель"
             }
         },
+        "auth": {
+            "title": "Авторизация",
+            "email": "Email",
+            "password": "Password",
+            "login": "Войти",
+            "register": "Зарегистрироваться",
+            "entry": "Вход",
+            "logout": "Выйти",
+            "Unknown_company": "Неизвестная компания",
+            "company": "Компания"
+        },
+
+        "mock_data": {
+            "user": "Пользователь"
+        },
+
         "comingSoon": "Скоро появится",
         "aiAgent": {
             "title": "ИИ Агент",

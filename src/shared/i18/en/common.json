@@ -3,6 +3,22 @@
         "yes": "Yes",
         "no": "No"
     },
+
+    "validation": {
+        "emailRequired": "Email required",
+        "invalidEmail": "Incorrect email format",
+        "passwordRequired": "Password required",
+        "passwordMinLength": "Password must be at least 8 characters long",
+        "passwordMaxLength": "Password is too long (maximum 128 characters)",
+        "passwordLowercase": "The password must contain at least one lowercase letter.",
+        "passwordUppercase": "The password must contain at least one capital letter.",
+        "passwordNumber": "The password must contain at least one number.",
+        "passwordSpecial": "Password must contain at least one special character (@$!%*?&)",
+        "passwordNoRepeat": "The password must not contain 3 identical characters in a row",
+        "passwordNotSimple": "Password is too simple",
+        "confirmPasswordRequired": "Password confirmation is required",
+        "passwordsNotMatch": "The passwords do not match"
+    },
     "widgets": {
         "navBar": {
             "path": {
@@ -17,6 +33,22 @@
                 "collapse": "Collapse sidebar",
                 "expand": "Expand sidebar"
             }
+        },
+
+        "auth": {
+            "title": "Authorization",
+            "email": "Email",
+            "password": "Password",
+            "login": "login",
+            "register": "Register",
+            "entry": "Entry",
+            "logout": "logout",
+            "Unknown_company": "Unknown company",
+            "company": "Company"
+        },
+
+        "mock_data": {
+            "user": "User"
         },
         "comingSoon": "Coming Soon",
         "aiAgent": {

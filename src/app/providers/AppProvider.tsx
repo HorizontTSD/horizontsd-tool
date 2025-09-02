@@ -10,6 +10,8 @@ import { AppTheme } from "@/shared/theme"
 import i18n from "@/shared/i18"
 
 import { chartsCustomizations, treeViewCustomizations, loaderCustomizations } from "@/shared/theme"
+import { AuthModal } from "@/widgets/AuthModal/AuthModal"
+import { useAuth } from "./AuthProvider"
 
 type Props = {
     children: ReactNode
@@ -24,6 +26,8 @@ const themeComponents = {
 }
 
 export function AppProvider({ children, initialTheme, initialLanguage }: Props) {
+    const { showLoginModal } = useAuth()
+
     useEffect(() => {
         if (initialLanguage) {
             i18n.changeLanguage(initialLanguage)
@@ -37,6 +41,7 @@ export function AppProvider({ children, initialTheme, initialLanguage }: Props) 
                     <AppTheme themeComponents={themeComponents} initialMode={initialTheme}>
                         <CssBaseline enableColorScheme />
                         {children}
+                        {showLoginModal && <AuthModal isOpen={showLoginModal} />}
                     </AppTheme>
                 </StyledEngineProvider>
             </I18nextProvider>
