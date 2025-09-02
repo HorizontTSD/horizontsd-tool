@@ -3,8 +3,8 @@ import * as React from "react"
 import { Typography, Box, Container, Paper, TextField, Button, Alert, Stack } from "@mui/material"
 import { useAuth, User } from "@/app/providers/AuthProvider"
 import { useNavigate } from "react-router"
-import { validateForm } from "../AuthModal/AuthModal.utils"
-import { FormErrors } from "../AuthModal/AuthModal.interfaces"
+// import { validateForm } from "../AuthModal/AuthModal.utils"
+import { FormErrors } from "../AuthModal/types"
 
 export default function RegisterPage() {
     type PartialUser = Partial<User>
@@ -27,14 +27,14 @@ export default function RegisterPage() {
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault()
 
-        if (
-            !validateForm(setErrors, {
-                email: formData.email || "",
-                password: formData.password || "",
-                confirmPassword: formData.confirmPassword || "",
-            })
-        )
-            return
+        // if (
+        //     !validateForm(setErrors, {
+        //         email: formData.email || "",
+        //         password: formData.password || "",
+        //         confirmPassword: formData.confirmPassword || "",
+        //     })
+        // )
+        //     return
 
         try {
             setError("")

@@ -1,6 +1,8 @@
 "use client"
 
+import i18n from "@/shared/i18"
 import React, { createContext, useContext, useState, useEffect } from "react"
+import { useTranslation } from "react-i18next"
 
 export interface User {
     email: string
@@ -36,6 +38,11 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
     // const [initialized, setInitialized] = useState(false)
     const [isAuthenticated, setIsAuthenticated] = useState(false)
     const [showLoginModal, setShowLoginModal] = useState(false)
+    const { t, ready } = useTranslation()
+
+    if (!ready) {
+        return <div>Loading translations...</div>
+    }
 
     useEffect(() => {
         const initializeAuth = () => {
@@ -101,13 +108,9 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
 
     const login = async (email: string, password: string) => {
         try {
-            setLoading(true)
-
             let userData: User
             const token = "fake-jwt-token-" + Date.now()
             const refreshToken = "fake-refresh-token-" + Date.now()
-
-            //isAdmin
 
             if (import.meta.env.VITE_DISABLE_AUTH === "true") {
                 userData = {
@@ -121,7 +124,7 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
             } else {
                 userData = {
                     email,
-                    first_name: "Пользователь",
+                    first_name: i18n.t("widgets.mock_data.user"),
                     last_name: "",
                     organization: "",
                     role: "user",

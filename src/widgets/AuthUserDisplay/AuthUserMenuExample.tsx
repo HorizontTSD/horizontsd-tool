@@ -1,8 +1,9 @@
 import { Menu, MenuItem, IconButton, Typography, Box, CircularProgress, Button } from "@mui/material"
 import MoreVertIcon from "@mui/icons-material/MoreVert"
 import { useState } from "react"
-import { User } from "../AuthModal/AuthModal.interfaces"
-import { btnExit } from "./AuthUserDisplay.styles"
+import { User } from "../AuthModal/types"
+import { useTranslation } from "react-i18next"
+import { brand } from "@/shared/theme/colors"
 
 interface AuthUserMenuExampleProps {
     user: User | null | undefined
@@ -11,6 +12,7 @@ interface AuthUserMenuExampleProps {
 
 const AuthUserMenuExample: React.FC<AuthUserMenuExampleProps> = ({ user, logout }) => {
     const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null)
+    const { t } = useTranslation()
     const open = Boolean(anchorEl)
 
     const handleClick = (event: React.MouseEvent<HTMLElement>) => {
@@ -69,19 +71,35 @@ const AuthUserMenuExample: React.FC<AuthUserMenuExampleProps> = ({ user, logout 
                         <Typography variant="body2">
                             {user.first_name && user.last_name
                                 ? `${user.first_name} ${user.last_name}`
-                                : user.first_name || user.email || "Пользователь"}
+                                : user.first_name || user.email || t("widgets.mock_data.user")}
                         </Typography>
                     </Box>
                 </MenuItem>
                 <MenuItem sx={{ display: "flex", gap: 1 }}>
-                    <Typography variant="body2">Компания:</Typography>
+                    <Typography variant="body2"> {t("widgets.auth.company")}:</Typography>
                     <Typography variant="body2">
-                        {user.organization ? user.organization : "Неизвестная компания"}
+                        {user.organization ? user.organization : t("widgets.auth.Unknown_company")}
                     </Typography>
                 </MenuItem>
                 <MenuItem onClick={handleLogout}>
-                    <Button variant="contained" color="primary" sx={btnExit}>
-                        Выйти
+                    <Button
+                        variant="contained"
+                        color="primary"
+                        sx={{
+                            backgroundColor: brand[500],
+                            color: "white",
+                            borderRadius: "8px",
+                            padding: "5px 10px",
+                            width: "100%",
+                            textTransform: "none",
+                            boxShadow: "0 2px 4px rgba(0, 127, 255, 0.2)",
+                            "&:hover": {
+                                backgroundColor: brand[600],
+                                boxShadow: "0 4px 8px rgba(0, 127, 255, 0.3)",
+                            },
+                        }}
+                    >
+                        {t("widgets.auth.logout")}
                     </Button>
                 </MenuItem>
             </Menu>

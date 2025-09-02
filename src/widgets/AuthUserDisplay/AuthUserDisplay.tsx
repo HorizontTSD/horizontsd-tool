@@ -1,8 +1,10 @@
 import { useAuth } from "@/app/providers/AuthProvider"
 import { Box, CircularProgress, Tooltip, Typography } from "@mui/material"
 import AuthUserMenuExample from "./AuthUserMenuExample"
+import { useTranslation } from "react-i18next"
 
 const AuthUserDisplay = () => {
+    const { t } = useTranslation()
     const { user, isAuthenticated, loading, logout } = useAuth()
 
     if (loading) {
@@ -46,7 +48,7 @@ const AuthUserDisplay = () => {
                 >
                     {user.first_name && user.last_name
                         ? `${user.first_name} ${user.last_name}`
-                        : user.first_name || user.email || "Пользователь"}
+                        : user.first_name || user.email || t("widgets.mock_data.user")}
                 </Typography>
 
                 <AuthUserMenuExample user={user} logout={logout} />
